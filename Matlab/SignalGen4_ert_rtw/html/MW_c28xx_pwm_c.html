@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td>1</td><td><span class="pp">#include "F2806x_Device.h"</span></td></tr>
+<tr name="2" id="2">
+<td>2</td><td><span class="pp">#include "F2806x_Examples.h"</span></td></tr>
+<tr name="3" id="3">
+<td>3</td><td><span class="pp">#include "F2806x_GlobalPrototypes.h"</span></td></tr>
+<tr name="4" id="4">
+<td>4</td><td><span class="pp">#include "rtwtypes.h"</span></td></tr>
+<tr name="5" id="5">
+<td>5</td><td><span class="pp">#include "SignalGen4.h"</span></td></tr>
+<tr name="6" id="6">
+<td>6</td><td><span class="pp">#include "SignalGen4_private.h"</span></td></tr>
+<tr name="7" id="7">
+<td>7</td><td></td></tr>
+<tr name="8" id="8">
+<td>8</td><td><span class="kw">void</span> <a id="8c6" class="tk">config_ePWM_GPIO</a> (<span class="kw">void</span>)</td></tr>
+<tr name="9" id="9">
+<td>9</td><td><span class="br">{</span></td></tr>
+<tr name="10" id="10">
+<td>10</td><td>  <a id="10c3" class="tk">EALLOW</a>;</td></tr>
+<tr name="11" id="11">
+<td>11</td><td></td></tr>
+<tr name="12" id="12">
+<td>12</td><td>  <span class="ct">/*-- Configure pin assignments for ePWM7 --*/</span></td></tr>
+<tr name="13" id="13">
+<td>13</td><td>  <a id="13c3" class="tk">GpioCtrlRegs</a>.<a id="13c16" class="tk">GPBMUX1</a>.<a id="13c24" class="tk">bit</a>.<a id="13c28" class="tk">GPIO40</a> = 1; <span class="ct">/* Configure GPIOGPIO40 as EPWM7A*/</span></td></tr>
+<tr name="14" id="14">
+<td>14</td><td>  <a id="14c3" class="tk">GpioCtrlRegs</a>.<a id="14c16" class="tk">GPBMUX1</a>.<a id="14c24" class="tk">bit</a>.<a id="14c28" class="tk">GPIO41</a> = 1; <span class="ct">/* Configure GPIOGPIO41 as EPWM7B*/</span></td></tr>
+<tr name="15" id="15">
+<td>15</td><td></td></tr>
+<tr name="16" id="16">
+<td>16</td><td>  <span class="ct">/*-- Configure pin assignments for ePWM8 --*/</span></td></tr>
+<tr name="17" id="17">
+<td>17</td><td>  <a id="17c3" class="tk">GpioCtrlRegs</a>.<a id="17c16" class="tk">GPBMUX1</a>.<a id="17c24" class="tk">bit</a>.<a id="17c28" class="tk">GPIO42</a> = 1; <span class="ct">/* Configure GPIOGPIO42 as EPWM8A*/</span></td></tr>
+<tr name="18" id="18">
+<td>18</td><td>  <a id="18c3" class="tk">GpioCtrlRegs</a>.<a id="18c16" class="tk">GPBMUX1</a>.<a id="18c24" class="tk">bit</a>.<a id="18c28" class="tk">GPIO43</a> = 1; <span class="ct">/* Configure GPIOGPIO43 as EPWM8B*/</span></td></tr>
+<tr name="19" id="19">
+<td>19</td><td></td></tr>
+<tr name="20" id="20">
+<td>20</td><td>  <span class="ct">/*--- Configure pin assignments for TZn ---*/</span></td></tr>
+<tr name="21" id="21">
+<td>21</td><td>  <a id="21c3" class="tk">EDIS</a>;</td></tr>
+<tr name="22" id="22">
+<td>22</td><td><span class="br">}</span></td></tr>
+<tr name="23" id="23">
+<td>23</td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>
