@@ -1,0 +1,264 @@
+/*
+ * settings.c
+ *
+ *  Created on: 4 de set de 2017
+ *      Author: skelter_win
+ */
+#include "project_includes/settings.h"
+
+// uncoment line bellow to reset all settings
+//#define STANDARD_SETTINGS
+
+#define EEPROM_START_ADR 0x0000
+
+typedef struct
+{
+    float       channel_gain;
+    uint16_t    channel_offset;
+    float       channel_limit;
+    uint8_t     channel_purpose;
+} channelSettings;
+
+typedef struct
+{
+    uint8_t channels;
+    uint16_t samples;
+    uint8_t networkServer[15];
+    uint8_t networkAddress[15];
+    uint8_t networkMask[15];
+    uint8_t networkGateway[15];
+    uint8_t networkDhcp;
+    uint8_t syncTimeZone;
+    int8_t networkTimeZone;
+    uint8_t rfidRead;
+    uint16_t moduleNumber;
+    uint8_t maxHarmonics;
+    uint8_t eventLimit;
+    uint8_t mboxLenght;
+    uint16_t delayTry;
+    uint16_t delaySend;
+    uint8_t logEnabled;
+    uint8_t logMarks;
+    uint16_t logMarksInterval;
+    uint16_t logLevel;
+    channelSettings channel[NUM_OF_ADC_CHANNELS];
+    uint8_t outlet1;
+    uint8_t outlet2;
+    uint8_t outlet3;
+    uint8_t outlet4;
+    uint8_t outlet5;
+    uint8_t outlet6;
+
+}ptgmSettings;
+
+ptgmSettings ptgmSettingsWrite =
+{
+    NUM_OF_ADC_CHANNELS,   //channels=6
+    256,//samples=256
+    "192.168.2.106",//networkServer=192.168.1.10
+    "192.168.2.110",//networkAddress=192.168.1.241
+    "255.255.255.0",//networkMask=255.255.255.0
+    "192.168.2.1",//networkGateway=192.168.1.1
+    0,//networkDhcp=false
+    0,//syncTimeZone=false
+    -3,//networkTimeZone=-3
+    1,//rfidRead=true
+    8,//moduleNumber=8
+    12,//maxHarmonics=12
+    10,//eventLimit=10
+    10,//mboxLenght=10
+    500,//delayTry=500
+    50,//delaySend=50
+    1,//logEnabled=true
+    1,//logMarks=true
+    600,//logMarksInterval=600
+    90,//logLevel=90
+    123.9107,//channel0_gain=123.9107
+    2085,//channel0_offset=2085
+    0.1,//channel0_limit=0.1
+    'p',//channel0_purpose=p
+    1154.7621,//channel1_gain=1154.7621
+    2063,//channel1_offset=2063
+    0.1,//channel1_limit=0.1
+    'd',//channel1_purpose=d
+    123.9107,//channel0_gain=123.9107
+    2085,//channel0_offset=2085
+    0.1,//channel0_limit=0.1
+    'p',//channel0_purpose=p
+    1154.7621,//channel1_gain=1154.7621
+    2063,//channel1_offset=2063
+    0.1,//channel1_limit=0.1
+    'd',//channel1_purpose=d
+    123.9107,//channel0_gain=123.9107
+    2085,//channel0_offset=2085
+    0.1,//channel0_limit=0.1
+    'p',//channel0_purpose=p
+    1154.7621,//channel1_gain=1154.7621
+    2063,//channel1_offset=2063
+    0.1,//channel1_limit=0.1
+    'd',//channel1_purpose=d
+    123.9107,//channel0_gain=123.9107
+    2085,//channel0_offset=2085
+    0.1,//channel0_limit=0.1
+    'p',//channel0_purpose=p
+    1154.7621,//channel1_gain=1154.7621
+    2063,//channel1_offset=2063
+    0.1,//channel1_limit=0.1
+    'd',//channel1_purpose=d
+    123.9107,//channel0_gain=123.9107
+    2085,//channel0_offset=2085
+    0.1,//channel0_limit=0.1
+    'p',//channel0_purpose=p
+    1154.7621,//channel1_gain=1154.7621
+    2063,//channel1_offset=2063
+    0.1,//channel1_limit=0.1
+    'd',//channel1_purpose=d
+    123.9107,//channel0_gain=123.9107
+    2085,//channel0_offset=2085
+    0.1,//channel0_limit=0.1
+    'p',//channel0_purpose=p
+    1154.7621,//channel1_gain=1154.7621
+    2063,//channel1_offset=2063
+    0.1,//channel1_limit=0.1
+    'd',//channel1_purpose=d
+    123.9107,//channel0_gain=123.9107
+    2085,//channel0_offset=2085
+    0.1,//channel0_limit=0.1
+    'p',//channel0_purpose=p
+    1154.7621,//channel1_gain=1154.7621
+    2063,//channel1_offset=2063
+    0.1,//channel1_limit=0.1
+    'd',//channel1_purpose=d
+    123.9107,//channel0_gain=123.9107
+    2085,//channel0_offset=2085
+    0.1,//channel0_limit=0.1
+    'p',//channel0_purpose=p
+    1154.7621,//channel1_gain=1154.7621
+    2063,//channel1_offset=2063
+    0.1,//channel1_limit=0.1
+    'd',//channel1_purpose=d
+    1,//outlet0=7
+    2,//outlet1=8
+    3,//outlet2=9
+    4,//
+    5,//
+    6 //
+}; /* Write struct */
+
+ptgmSettings ptgmSettingsRead =
+{
+    0,   //channels=6
+    0,//samples=256
+    "",//networkServer=192.168.1.10
+    "",//networkAddress=192.168.1.241
+    "",//networkMask=255.255.255.0
+    "",//networkGateway=192.168.1.1
+    0,//networkDhcp=false
+    0,//syncTimeZone=false
+    0,//networkTimeZone=-3
+    0,//rfidRead=true
+    0,//moduleNumber=8
+    0,//maxHarmonics=12
+    0,//eventLimit=10
+    0,//mboxLenght=10
+    0,//delayTry=500
+    0,//delaySend=50
+    0,//logEnabled=true
+    0,//logMarks=true
+    0,//logMarksInterval=600
+    0,//logLevel=90
+    0,//channel0_gain=123.9107
+    0,//channel0_offset=2085
+    0,//channel0_limit=0.1
+    0,//channel0_purpose=p
+    0,//channel1_gain=1154.7621
+    0,//channel1_offset=2063
+    0,//channel1_limit=0.1
+    0,//channel1_purpose=d
+    0,//channel0_gain=123.9107
+    0,//channel0_offset=2085
+    0,//channel0_limit=0.1
+    0,//channel0_purpose=p
+    0,//channel1_gain=1154.7621
+    0,//channel1_offset=2063
+    0,//channel1_limit=0.1
+    0,//channel1_purpose=d
+    0,//channel0_gain=123.9107
+    0,//channel0_offset=2085
+    0,//channel0_limit=0.1
+    0,//channel0_purpose=p
+    0,//channel1_gain=1154.7621
+    0,//channel1_offset=2063
+    0,//channel1_limit=0.1
+    0,//channel1_purpose=d
+    0,//channel0_gain=123.9107
+    0,//channel0_offset=2085
+    0,//channel0_limit=0.1
+    0,//channel0_purpose=p
+    0,//channel1_gain=1154.7621
+    0,//channel1_offset=2063
+    0,//channel1_limit=0.1
+    0,//channel1_purpose=d
+    0,//channel0_gain=123.9107
+    0,//channel0_offset=2085
+    0,//channel0_limit=0.1
+    0,//channel0_purpose=p
+    0,//channel1_gain=1154.7621
+    0,//channel1_offset=2063
+    0,//channel1_limit=0.1
+    0,//channel1_purpose=d
+    0,//channel0_gain=123.9107
+    0,//channel0_offset=2085
+    0,//channel0_limit=0.1
+    0,//channel0_purpose=p
+    0,//channel1_gain=1154.7621
+    0,//channel1_offset=2063
+    0,//channel1_limit=0.1
+    0,//channel1_purpose=d
+    0,//channel0_gain=123.9107
+    0,//channel0_offset=2085
+    0,//channel0_limit=0.1
+    0,//channel0_purpose=p
+    0,//channel1_gain=1154.7621
+    0,//channel1_offset=2063
+    0,//channel1_limit=0.1
+    0,//channel1_purpose=d
+    0,//channel0_gain=123.9107
+    0,//channel0_offset=2085
+    0,//channel0_limit=0.1
+    0,//channel0_purpose=p
+    0,//channel1_gain=1154.7621
+    0,//channel1_offset=2063
+    0,//channel1_limit=0.1
+    0,//channel1_purpose=d
+    0,//outlet0=7
+    0,//outlet1=8
+    0,//outlet2=9
+    0,//
+    0,//
+    0//
+}; /* Read struct */
+
+void e2Test(void)
+{
+
+    /* EEPROM SETTINGS */
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_EEPROM0); // EEPROM activate
+    while(EEPROMInit()!=EEPROM_INIT_OK); // EEPROM start TODO: Verify return code
+
+#ifdef STANDARD_SETTINGS
+    //Write struct to EEPROM start from 0x0000
+    EEPROMProgram((uint32_t *) &ptgmSettingsWrite, EEPROM_START_ADR,
+                  sizeof(ptgmSettingsWrite));
+
+    //Read from struct at EEPROM start from 0x0000
+    EEPROMRead((uint32_t *) &ptgmSettingsRead, EEPROM_START_ADR,
+               sizeof(ptgmSettingsRead));
+#endif
+
+    //Read from struct at EEPROM start from 0x0000
+    EEPROMRead((uint32_t *) &ptgmSettingsRead, EEPROM_START_ADR,
+               sizeof(ptgmSettingsRead));
+
+    System_printf("break point here!");
+}

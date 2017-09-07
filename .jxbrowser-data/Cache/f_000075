@@ -1,0 +1,326 @@
+[
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHMcgKgro-p7M&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "Board.h",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHMcgKgro-p7M",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHMcgKgro-p7M?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.h",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "Board.h",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHWL8e5mkcdWA&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "EK_TM4C129EXL.c",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHWL8e5mkcdWA",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHWL8e5mkcdWA?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.c",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "EK_TM4C129EXL.c",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHLSVitD4xfzQ&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "EK_TM4C129EXL.cmd",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHLSVitD4xfzQ",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHLSVitD4xfzQ?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.cmd",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "EK_TM4C129EXL.cmd",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHvB18hbR3BZ4&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "EK_TM4C129EXL.h",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHvB18hbR3BZ4",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHvB18hbR3BZ4?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.h",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "EK_TM4C129EXL.h",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHkTl67UQWjSU&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "makefile.defs",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHkTl67UQWjSU",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHkTl67UQWjSU?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.defs",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "makefile.defs",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHUaoGJic1P5M&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "tcpEcho.c",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHUaoGJic1P5M",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHUaoGJic1P5M?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.c",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "tcpEcho.c",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrH-n38PHg_IDY&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "tcpEcho.cfg",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrH-n38PHg_IDY",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrH-n38PHg_IDY?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.cfg",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "tcpEcho.cfg",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHz2RWZoVrWRw&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "tcpEchoHooks.c",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHz2RWZoVrWRw",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHz2RWZoVrWRw?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.c",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "tcpEchoHooks.c",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHAT_1buQBLJY&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Network Examples/Ethernet Examples/TCP Echo&removeoffline=true",
+    "name": "tcpEcho_readme.txt",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHAT_1buQBLJY",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHAT_1buQBLJY?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FNetwork%20Examples%2FEthernet%20Examples%2FTCP%20Echo&extname=.txt",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/networkExamples/tiNetworkExamples/ethernetExamples/com_ti_rtsc_tirtostivac_example_264.dependency.tirex.json",
+    "parentID": "SrHgpfELINi1g0",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "tcpEcho_readme.txt",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Network%20Examples/Ethernet%20Examples/TCP%20Echo&package=c2000ware_software_package__1.00.01.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.40.00.10::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.2.1::cc3200sdk__1.1.0.0::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.40.01.00::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.40.01.00::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.60.00.10::sysbios__6.50.01.12",
+    "packageOrder": 73,
+    "offline": "true"
+  }
+]

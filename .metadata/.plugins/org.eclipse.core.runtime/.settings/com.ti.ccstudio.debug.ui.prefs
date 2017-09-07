@@ -1,3 +1,5 @@
-MODULES_MRU_PATH=C\:\\Users\\skelter_win\\Protegemed_tcc\\Matlab\\SignalGen4.out\#THREAD_IDS\#Texas Instruments XDS100v2 USB Debug Probe_0/C28xx
+MODULES_MRU_PATH=C\:\\Users\\skelter_win\\Protegemed_tcc\\Matlab\\SignalGen_rx.out\#THREAD_IDS\#Texas Instruments XDS100v2 USB Debug Probe_0/C28xx
+MODULES_MRU_PATH.1=C\:\\Users\\skelter_win\\Protegemed_tcc\\Matlab\\SignalGen4.out\#THREAD_IDS\#Texas Instruments XDS100v2 USB Debug Probe_0/C28xx
+MODULES_MRU_PATH.2=C\:\\Users\\skelter_win\\Protegemed_tcc\\TM4C_Protegemed\\Debug\\TM4C_Protegemed.out\#THREAD_IDS\#Stellaris In-Circuit Debug Interface_0/CORTEX_M4_0
 eclipse.preferences.version=1
 useAnnotationsPrefPage=true

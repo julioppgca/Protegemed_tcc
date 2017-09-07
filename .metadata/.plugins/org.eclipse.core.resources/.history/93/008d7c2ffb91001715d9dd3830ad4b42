@@ -1,0 +1,37 @@
+/*
+ * settings.h
+ *
+ *  Created on: 4 de set de 2017
+ *      Author: skelter_win
+ */
+
+#ifndef PROJECT_INCLUDES_SETTINGS_H_
+#define PROJECT_INCLUDES_SETTINGS_H_
+
+#include <stdint.h>
+#include <stdbool.h>
+
+/* XDCtools Header files */
+#include <xdc/std.h>
+#include <xdc/runtime/Error.h>
+#include <xdc/runtime/System.h>
+#include <xdc/runtime/Diags.h>
+#include <xdc/runtime/Log.h>   // to use Log_Info
+#include <xdc/cfg/global.h> // to get static definitions from RTOS.cfg file
+
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+//#include "inc/hw_gpio.h"
+#include "inc/hw_ints.h"
+//#include "driverlib/gpio.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/sysctl.h"
+//#include "driverlib/interrupt.h"
+#include "driverlib/eeprom.h"
+//#include "utils/uartstdio.h"
+
+
+
+void e2Test(void);
+
+#endif /* PROJECT_INCLUDES_SETTINGS_H_ */

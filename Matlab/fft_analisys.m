@@ -1,4 +1,4 @@
-function [ r_signal ] = fft_analisys( Fs, signal )
+function [ X ] = fft_analisys( Fs, signal )
 %% Apply fft transform and reconstruct the signal based on some harmonics
 % Input: 
 %   Fs: Sample frequency
@@ -37,14 +37,14 @@ ylabel('amplitude (v)');
 legend(strcat(num2str(rms(signal)),' Vrms'));
 grid;
 subplot(3,1,2);      % frequency vs amplitude
-bar(f(1:( Max_harmonic /(Fs/L))),A(1:( Max_harmonic /(Fs/L)))); 
-title('Freqency spectre');
+bar(f(1:( Max_harmonic /(Fs/L))),A(1:( Max_harmonic /(Fs/L))),'g'); 
+title('Frequency spectre');
 xlabel('frequency (Hz)');
 ylabel('amplitude (v)');
 grid;
 legend(strcat('Frequency resolution: ', num2str(Fs/L),'Hz'));
 subplot(3,1,3);
-plot(t,r_signal);   % reconstructed signal
+plot(t,r_signal,'r');   % reconstructed signal
 title('Reconstructed signal');
 xlabel('time (s)');
 ylabel('amplitude (v)');

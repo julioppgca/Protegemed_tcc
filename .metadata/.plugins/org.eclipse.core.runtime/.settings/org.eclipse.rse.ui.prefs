@@ -1,2 +1,3 @@
 eclipse.preferences.version=1
-org.eclipse.rse.preferences.order.connections=skelter_win-PC.Local
+org.eclipse.rse.preferences.order.connections=skelter_win-PC.Local;skelter_win-PC.192.168.2.106
+org.eclipse.rse.preferences.verify.connection=true

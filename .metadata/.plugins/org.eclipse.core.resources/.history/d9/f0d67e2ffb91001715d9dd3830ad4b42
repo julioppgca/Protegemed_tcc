@@ -1,0 +1,75 @@
+/*
+ * adc_sample.h
+ *
+ *  Created on: 24 de ago de 2017
+ *      Author: juliosantos
+ */
+
+#ifndef __SAMPLES_CONFIG_H__
+#define __SAMPLES_CONFIG_H__
+
+/* Standard variables definitions */
+#include <stdint.h>
+#include <stdbool.h>
+
+/* XDCtools Header files */
+#include <xdc/cfg/global.h>
+
+/* Tivaware Header files */
+#include "inc/hw_types.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_ints.h"
+#include "inc/hw_adc.h"
+#include "inc/hw_gpio.h"
+#include "driverlib/timer.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/adc.h"
+#include "driverlib/udma.h"
+#include "driverlib/gpio.h"
+#include "driverlib/rom_map.h"
+#include "driverlib/sysctl.h"
+
+/**
+ *
+ *      Data acquisition parameters
+ *
+ */
+#define DMA_BUFFER_SIZE             1024            // don't change!
+#define CLK_FREQ                    120000000       // TM4C clock frequency
+#define ADC_OVERSAMPLE_VALUE        16              // Over sample value 2..64 (power of 2 steps)
+#define SAMPLE_FRAME                256             // 256 points in 60Hz
+#define SAMPLE_FREQUENCY            60*SAMPLE_FRAME // Sample Frequency: 15360Hz -> 15,36kHz
+#define ADC_OFFSET                  2048.0
+#define ADC_SCALE                   3.3/4095
+
+/**
+ *
+ *      Local functions
+ *
+ */
+void adcPinConfig(void);    // Analog I/O pins configuration
+void ADC_Seq0_ISR(void);    // Interrupt service of ADC0 Sequencer 0
+void ADC_Seq1_ISR(void);    // Interrupt service of ADC1 Sequencer 0
+
+
+/**
+ *
+ *      Initializations functions
+ *
+ */
+void TIMER_ADC_init(uint32_t sample_freq);  // Sample frequency timer
+void ADC_init(void);                        // ADC0 and ADC1 initialization
+void DMA_init(void);                        // DMA initialization
+
+/**
+ *
+ *      DMA Buffers
+ *
+ */
+extern uint16_t g_uint16_adc0_ping[];
+extern uint16_t g_uint16_adc0_pong[];
+extern uint16_t g_uint16_adc1_ping[];
+extern uint16_t g_uint16_adc1_pong[];
+
+
+#endif // __SAMPLES_CONFIG_H__
