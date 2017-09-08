@@ -6,7 +6,7 @@
 #include "project_includes/eth_network.h"
 #include "project_includes/capture.h"
 
-char g_str_PostSend[POST_DATA_SIZE];
+//char g_str_PostSend[POST_DATA_SIZE];
 
 /*
  *  ======== printError ========
@@ -21,31 +21,30 @@ void printError(char *errString, int code)
 /*
  *
  *          HTTP Task - POST to the server
- *  This Task sends a POST method to the protegmed server
+ *  This Task is created dynamically, it sends the captured data through
+ *  a POST method to Protegmed server
  *  whenever is needed.
  *
  *  TODO: Treat errors on connections
  */
-void httpTask(UArg arg0, UArg arg1)
+void httpPOST_Task(UArg arg0, UArg arg1)
 {
     bool moreFlag = false;
-    char data[400];
+    char data[POST_DATA_SIZE];
     int ret;
     int len;
     char CONTENT_LENGTH[3];
     struct sockaddr_in addr;
 
+    /* copy task param to a local variable */
     Semaphore_pend(s_critical_section, BIOS_WAIT_FOREVER);
-        strcpy(data, g_str_PostSend);
+        strcpy(data,(char*)arg0);//strcpy(data, g_str_PostSend);
     Semaphore_post(s_critical_section);
 
+    /* Debug connection with a standard data string, uncomment below */
     //strcpy(data, PTGM_TEST_DATA);
     len = strlen(data);//len = sizeof(PTGM_TEST_DATA);
     sprintf(CONTENT_LENGTH, "%d", len);
-
-    //System_printf("\nData: %s\n", PTGM_TEST_DATA);
-    //System_printf("len(int): %d\n", len);
-    //System_printf("CONTENT_LENGTH: %s\n", CONTENT_LENGTH);
 
     HTTPCli_Struct cli;
     HTTPCli_Field fields[3] = {
@@ -54,68 +53,63 @@ void httpTask(UArg arg0, UArg arg1)
                               { NULL, NULL }
                               };
 
-    System_printf("Sending a HTTP POST request to '%s'\n", PTGM_HOSTNAME);
-    //System_flush();
-
+    /* construct client */
     HTTPCli_construct(&cli);
 
+    /* set fields to http POST */
     HTTPCli_setRequestFields(&cli, fields);
 
+    /* */
     ret = HTTPCli_initSockAddr((struct sockaddr *)&addr, PTGM_HOSTNAME, 0);
     if (ret < 0) {
-        printError("httpTask: address resolution failed", ret);
+        Log_info1("httpPOST_Task: address resolution failed", ret);
     }
+
 
     ret = HTTPCli_connect(&cli, (struct sockaddr *)&addr, 0, NULL);
     if (ret < 0) {
-        printError("httpTask: connect failed", ret);
+        Log_info1("%d: httpPOST_Task: connect failed", ret);
     }
 
     ret = HTTPCli_sendRequest(&cli, HTTPStd_POST, PTGM_URI, true);
     if (ret < 0) {
-        printError("httpTask: send failed", ret);
+        Log_info1("%d: httpPOST_Task: send failed", ret);
     }
 
     ret = HTTPCli_sendField(&cli, HTTPStd_FIELD_NAME_CONTENT_LENGTH, CONTENT_LENGTH, false);
     ret = HTTPCli_sendField(&cli, HTTPStd_FIELD_NAME_CONTENT_TYPE, PTGM_CONTENT_TYPE, true);
 
     if (ret < 0) {
-        printError("httpTask: send failed", ret);
+        Log_info1("%d: httpPOST_Task: send failed", ret);
     }
 
     ret = HTTPCli_sendRequestBody(&cli, data, strlen(data));
     if (ret < 0) {
-        printError("httpTask: Variable data couldn't be sent", ret);
+        Log_info1("%d: httpPOST_Task: Variable data couldn't be sent", ret);
     }
-
-   // System_printf("\nData sended, waitimg reply...\n");
-   // System_flush();
 
     ret = HTTPCli_getResponseStatus(&cli);
     if (ret != HTTPStd_OK) {
-        printError("httpTask: cannot get status", ret);
+        Log_info1("%d httpPOST_Task: cannot get status", ret);
     }
-
-    System_printf("HTTP Response Status Code: %d\n", ret);
 
     ret = HTTPCli_getResponseField(&cli, data, sizeof(data), &moreFlag);
 
     if (ret != HTTPCli_FIELD_ID_END) {
-        printError("httpTask: response field processing failed", ret);
+        Log_info1("%d: httpPOST_Task: response field processing failed", ret);
     }
 
     len = 0;
     do {
         ret = HTTPCli_readResponseBody(&cli, data, sizeof(data), &moreFlag);
         if (ret < 0) {
-            printError("httpTask: response body processing failed", ret);
+            Log_info1("%d: httpPOST_Task: response body processing failed", ret);
         }
 
         len += ret;
     } while (moreFlag);
 
-    System_printf("Received: %s", data);
-    //System_flush();
+    Log_info1("Received: %d characters", strlen(data));
 
     HTTPCli_disconnect(&cli);
     HTTPCli_destruct(&cli);
@@ -155,7 +149,7 @@ void tcpWorker(UArg arg0, UArg arg1)
                     Task_Params_init(&taskParams);
                     taskParams.stackSize = HTTPTASKSTACKSIZE;
                     taskParams.priority = 1;
-                    taskHandle = Task_create((Task_FuncPtr)httpTask, &taskParams, &eb);
+                    taskHandle = Task_create((Task_FuncPtr)httpPOST_Task, &taskParams, &eb);
                     if (taskHandle == NULL)
                         {
                             printError("netIPAddrHook: Failed to create HTTP Task\n", -1);

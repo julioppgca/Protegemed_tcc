@@ -7,14 +7,25 @@
 
 #include "project_includes/capture.h"
 
-enum analogChannelsADC0
+uint32_t eventCount=0; // debug purpose
+
+void getFFT(uint8_t outletNum, uint8_t outletPurpose);
+
+enum analogInputsADC0
 {
     AIN0, AIN1, AIN2, AIN3, AIN4, AIN5, AIN6, AIN7, AIN_OFFSET
 };
 
-enum analogChannelsADC1
+enum analogInputsADC1
 {
     AIN8, AIN9, AIN10, AIN11, AIN12, AIN13, AIN14, AIN15
+};
+
+enum analogChannels
+{
+    CH0, CH1, CH2,  CH3,  CH4,  CH5,  CH6,  CH7,
+    CH8, CH9, CH10, CH11, CH12, CH13, CH14, CH15,
+    CHANNELS_COUNTER
 };
 
 enum fftIndex
@@ -26,34 +37,17 @@ enum fftIndex
     H12_COS, H12_SIN, H13_COS, H13_SIN, H14_COS, H14_SIN
 };
 
+enum outletNumber
+{
+    OUTLET_1, OUTLET_2, OUTLET_3, OUTLET_4, OUTLET_5, OUTLET_6, OUTLET_COUNTER
+};
+Outlet outlet[OUTLET_COUNTER];
+float32_t ADCchannel[CHANNELS_COUNTER][SAMPLE_FRAME];
+
 /* global variables */
-float32_t outlet1PhaseWave[SAMPLE_FRAME];      // Connected to AIN0
-float32_t outlet1DiffWave[SAMPLE_FRAME];       // Connected to AIN1
-float32_t outlet1Phasefft[SAMPLE_FRAME]={};
-
-float32_t outlet2PhaseWave[SAMPLE_FRAME];      // Connected to AIN2
-float32_t outlet2DiffWave[SAMPLE_FRAME];       // Connected to AIN3
-
-float32_t outlet3PhaseWave[SAMPLE_FRAME];      // Connected to AIN4
-float32_t outlet3DiffWave[SAMPLE_FRAME];       // Connected to AIN5
-
-float32_t outlet4PhaseWave[SAMPLE_FRAME];      // Connected to AIN6
-float32_t outlet4DiffWave[SAMPLE_FRAME];       // Connected to AIN7
-
-float32_t outlet5PhaseWave[SAMPLE_FRAME];      // Connected to AIN8
-float32_t outlet5DiffWave[SAMPLE_FRAME];       // Connected to AIN9
-
-float32_t outlet6PhaseWave[SAMPLE_FRAME];      // Connected to AIN10
-float32_t outlet6DiffWave[SAMPLE_FRAME];       // Connected to AIN11
-
-float32_t outlet123VoltageWave[SAMPLE_FRAME];  // Connected to AIN12
-float32_t outlet456VoltageWave[SAMPLE_FRAME];  // Connected to AIN13
-
 float32_t debugOutlet1Phase[SAMPLE_FRAME];
 float32_t debugOutlet1Diff[SAMPLE_FRAME];
 float32_t debugOutlet1Voltage[SAMPLE_FRAME];
-
-float32_t harmonics[26];
 
 /**
  *              Calculate RMS value
@@ -66,94 +60,85 @@ void capture_Task(void)
 {
 
     uint16_t i, j;
-    float32_t Outlet1PhaseRMS, Outlet1DiffRMS;
-    float32_t Outlet2PhaseRMS, Outlet2DiffRMS;
-    float32_t Outlet3PhaseRMS, Outlet3DiffRMS;
-    float32_t Outlet4PhaseRMS, Outlet4DiffRMS;
-    float32_t Outlet5PhaseRMS, Outlet5DiffRMS;
-    float32_t Outlet6PhaseRMS, Outlet6DiffRMS;
-    float32_t Outlet123VoltageRMS, Outlet456VoltageRMS;
 
+    // set detect limits
+    for(i=0,j=0;i<OUTLET_COUNTER;i++)
+    {
+        outlet[i].limitPhase = ptgmSettings.channel[j].channel_limit;
+        outlet[i].limitDiff = ptgmSettings.channel[j+1].channel_limit;
+        outlet[i].limitCounterPhase=0;
+        outlet[i].limitCounterDiff=0;
+        j+=2;
+    }
     while (1)
     {
 
         // wait here until g_uint16_adc0_ping is being filled by DMA
         Semaphore_pend(s_adc0_ping_ready, BIOS_WAIT_FOREVER);
         GPIO_write(DEBUG_PIN_CAPTURE, 1);
+
         // process first part of AIN0...AIN7
         for (i = 0, j = 0; i < SAMPLE_FRAME / 2; i++)
         {
-            outlet1PhaseWave[i] = (float)g_uint16_adc0_ping[j + AIN0];
-            outlet1DiffWave[i] = (float)g_uint16_adc0_ping[j + AIN1];
-            outlet2PhaseWave[i] = (float)g_uint16_adc0_ping[j + AIN2];
-            outlet2DiffWave[i] = (float)g_uint16_adc0_ping[j + AIN3];
-            outlet3PhaseWave[i] = (float)g_uint16_adc0_ping[j + AIN4];
-            outlet3DiffWave[i] = (float)g_uint16_adc0_ping[j + AIN5];
-            outlet4PhaseWave[i] = (float)g_uint16_adc0_ping[j + AIN6];
-            outlet4DiffWave[i] = (float)g_uint16_adc0_ping[j + AIN7];
+            ADCchannel[CH0][i] = (float)g_uint16_adc0_ping[j + AIN0];
+            ADCchannel[CH1][i] = (float)g_uint16_adc0_ping[j + AIN1];
+            ADCchannel[CH2][i] = (float)g_uint16_adc0_ping[j + AIN2];
+            ADCchannel[CH3][i] = (float)g_uint16_adc0_ping[j + AIN3];
+            ADCchannel[CH4][i] = (float)g_uint16_adc0_ping[j + AIN4];
+            ADCchannel[CH5][i] = (float)g_uint16_adc0_ping[j + AIN5];
+            ADCchannel[CH6][i] = (float)g_uint16_adc0_ping[j + AIN6];
+            ADCchannel[CH7][i] = (float)g_uint16_adc0_ping[j + AIN7];
             j += AIN_OFFSET;
         }
         GPIO_write(DEBUG_PIN_CAPTURE, 0);
+
         // wait here until g_uint16_adc1_ping is being filled by DMA
         Semaphore_pend(s_adc1_ping_ready, BIOS_WAIT_FOREVER);
+
         GPIO_write(DEBUG_PIN_CAPTURE, 1);
         // process first part of AIN8...AIN12
         for (i = 0, j = 0; i < SAMPLE_FRAME / 2; i++)
         {
-            outlet5PhaseWave[i] = (float)g_uint16_adc1_ping[j + AIN8];
-            outlet5DiffWave[i] = (float)g_uint16_adc1_ping[j + AIN9];
-            outlet6PhaseWave[i] = (float)g_uint16_adc1_ping[j + AIN10];
-            outlet6DiffWave[i] = (float)g_uint16_adc1_ping[j + AIN11];
-            outlet123VoltageWave[i] = (float)g_uint16_adc1_ping[j + AIN12];
-            outlet456VoltageWave[i] = (float)g_uint16_adc1_ping[j + AIN13];
+            ADCchannel[CH8][i] = (float)g_uint16_adc1_ping[j + AIN8];
+            ADCchannel[CH9][i] = (float)g_uint16_adc1_ping[j + AIN9];
+            ADCchannel[CH10][i] = (float)g_uint16_adc1_ping[j + AIN10];
+            ADCchannel[CH11][i] = (float)g_uint16_adc1_ping[j + AIN11];
+            ADCchannel[CH12][i] = (float)g_uint16_adc1_ping[j + AIN12];
+            ADCchannel[CH13][i] = (float)g_uint16_adc1_ping[j + AIN13];
+            ADCchannel[CH14][i] = (float)g_uint16_adc1_ping[j + AIN14];
+            ADCchannel[CH15][i] = (float)g_uint16_adc1_ping[j + AIN15];
 
             j += AIN_OFFSET;
         }
         GPIO_write(DEBUG_PIN_CAPTURE, 0);
+
         // wait here until g_uint16_adc0_pong is being filled by DMA
         Semaphore_pend(s_adc0_pong_ready, BIOS_WAIT_FOREVER);
         GPIO_write(DEBUG_PIN_CAPTURE, 1);
+
         // process last part of AIN0...AIN7
         for (i = 128, j = 0; i < SAMPLE_FRAME; i++)
         {
-            outlet1PhaseWave[i] = (float)g_uint16_adc0_pong[j + AIN0];
-            outlet1DiffWave[i] = (float)g_uint16_adc0_pong[j + AIN1];
-            outlet2PhaseWave[i] = (float)g_uint16_adc0_pong[j + AIN2];
-            outlet2DiffWave[i] = (float)g_uint16_adc0_pong[j + AIN3];
-            outlet3PhaseWave[i] = (float)g_uint16_adc0_pong[j + AIN4];
-            outlet3DiffWave[i] = (float)g_uint16_adc0_pong[j + AIN5];
-            outlet4PhaseWave[i] = (float)g_uint16_adc0_pong[j + AIN6];
-            outlet4DiffWave[i] = (float)g_uint16_adc0_pong[j + AIN7];
+            ADCchannel[CH0][i] = (float)g_uint16_adc0_pong[j + AIN0];
+            ADCchannel[CH1][i] = (float)g_uint16_adc0_pong[j + AIN1];
+            ADCchannel[CH2][i] = (float)g_uint16_adc0_pong[j + AIN2];
+            ADCchannel[CH3][i] = (float)g_uint16_adc0_pong[j + AIN3];
+            ADCchannel[CH4][i] = (float)g_uint16_adc0_pong[j + AIN4];
+            ADCchannel[CH5][i] = (float)g_uint16_adc0_pong[j + AIN5];
+            ADCchannel[CH6][i] = (float)g_uint16_adc0_pong[j + AIN6];
+            ADCchannel[CH7][i] = (float)g_uint16_adc0_pong[j + AIN7];
             j += AIN_OFFSET;
         }
 
-        // apply ADC_OFFSET
-        arm_offset_f32(outlet1PhaseWave, -ADC_OFFSET, outlet1PhaseWave, SAMPLE_FRAME);
-        arm_offset_f32(outlet1DiffWave, -ADC_OFFSET, outlet1DiffWave,   SAMPLE_FRAME);
-        arm_offset_f32(outlet2PhaseWave, -ADC_OFFSET, outlet2PhaseWave, SAMPLE_FRAME);
-        arm_offset_f32(outlet2DiffWave, -ADC_OFFSET, outlet2DiffWave,   SAMPLE_FRAME);
-        arm_offset_f32(outlet3PhaseWave, -ADC_OFFSET, outlet3PhaseWave, SAMPLE_FRAME);
-        arm_offset_f32(outlet3DiffWave, -ADC_OFFSET, outlet3DiffWave,   SAMPLE_FRAME);
-        arm_offset_f32(outlet4PhaseWave, -ADC_OFFSET, outlet4PhaseWave, SAMPLE_FRAME);
-        arm_offset_f32(outlet4DiffWave, -ADC_OFFSET, outlet4DiffWave,   SAMPLE_FRAME);
-        // scale to ADC_SCALE value
-        arm_scale_f32(outlet1PhaseWave, ADC_SCALE, outlet1PhaseWave, SAMPLE_FRAME);
-        arm_scale_f32(outlet1DiffWave, ADC_SCALE, outlet1DiffWave,   SAMPLE_FRAME);
-        arm_scale_f32(outlet2PhaseWave, ADC_SCALE, outlet2PhaseWave, SAMPLE_FRAME);
-        arm_scale_f32(outlet2DiffWave, ADC_SCALE, outlet2DiffWave,   SAMPLE_FRAME);
-        arm_scale_f32(outlet3PhaseWave, ADC_SCALE, outlet3PhaseWave, SAMPLE_FRAME);
-        arm_scale_f32(outlet3DiffWave, ADC_SCALE, outlet3DiffWave,   SAMPLE_FRAME);
-        arm_scale_f32(outlet4PhaseWave, ADC_SCALE, outlet4PhaseWave, SAMPLE_FRAME);
-        arm_scale_f32(outlet4DiffWave, ADC_SCALE, outlet4DiffWave,   SAMPLE_FRAME);
-        // calculate rms value
-        arm_rms_f32(outlet1PhaseWave, SAMPLE_FRAME, &Outlet1PhaseRMS);
-        arm_rms_f32(outlet1DiffWave, SAMPLE_FRAME, &Outlet1DiffRMS);
-        arm_rms_f32(outlet2PhaseWave, SAMPLE_FRAME, &Outlet2PhaseRMS);
-        arm_rms_f32(outlet2DiffWave, SAMPLE_FRAME, &Outlet2DiffRMS);
-        arm_rms_f32(outlet3PhaseWave, SAMPLE_FRAME, &Outlet3PhaseRMS);
-        arm_rms_f32(outlet3DiffWave, SAMPLE_FRAME, &Outlet3DiffRMS);
-        arm_rms_f32(outlet4PhaseWave, SAMPLE_FRAME, &Outlet4PhaseRMS);
-        arm_rms_f32(outlet4DiffWave, SAMPLE_FRAME, &Outlet4DiffRMS);
+        arm_copy_f32(ADCchannel[CH0], outlet[OUTLET_1].phaseWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH1], outlet[OUTLET_1].diffWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH2], outlet[OUTLET_2].phaseWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH3], outlet[OUTLET_2].diffWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH4], outlet[OUTLET_3].phaseWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH5], outlet[OUTLET_3].diffWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH6], outlet[OUTLET_4].phaseWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH7], outlet[OUTLET_4].diffWave, SAMPLE_FRAME);
+
 
         GPIO_write(DEBUG_PIN_CAPTURE, 0);
         // wait here until g_uint16_adc1_ping is being filled by DMA
@@ -162,128 +147,211 @@ void capture_Task(void)
         // process first part of AIN8...AIN12
         for (i = 128, j = 0; i < SAMPLE_FRAME; i++)
         {
-            outlet5PhaseWave[i] = (float)g_uint16_adc1_pong[j + AIN8];
-            outlet5DiffWave[i] = (float)g_uint16_adc1_pong[j + AIN9];
-            outlet6PhaseWave[i] = (float)g_uint16_adc1_pong[j + AIN10];
-            outlet6DiffWave[i] = (float)g_uint16_adc1_pong[j + AIN11];
-            outlet123VoltageWave[i] = (float)g_uint16_adc1_pong[j + AIN12];
-            outlet456VoltageWave[i] = (float)g_uint16_adc1_pong[j + AIN13];
-
-            j += AIN_OFFSET;
+            ADCchannel[CH8][i] = (float)g_uint16_adc1_pong[j + AIN8];
+            ADCchannel[CH9][i] = (float)g_uint16_adc1_pong[j + AIN9];
+            ADCchannel[CH10][i] = (float)g_uint16_adc1_pong[j + AIN10];
+            ADCchannel[CH11][i] = (float)g_uint16_adc1_pong[j + AIN11];
+            ADCchannel[CH12][i] = (float)g_uint16_adc1_pong[j + AIN12];
+            ADCchannel[CH13][i] = (float)g_uint16_adc1_pong[j + AIN13];
+            ADCchannel[CH14][i] = (float)g_uint16_adc1_pong[j + AIN14];
+            ADCchannel[CH15][i] = (float)g_uint16_adc1_pong[j + AIN15];
         }
 
-        // apply ADC_OFFSET
-        arm_offset_f32(outlet5PhaseWave, -ADC_OFFSET, outlet5PhaseWave, SAMPLE_FRAME);
-        arm_offset_f32(outlet5DiffWave, -ADC_OFFSET, outlet5DiffWave,   SAMPLE_FRAME);
-        arm_offset_f32(outlet6PhaseWave, -ADC_OFFSET, outlet6PhaseWave, SAMPLE_FRAME);
-        arm_offset_f32(outlet6DiffWave, -ADC_OFFSET, outlet6DiffWave,   SAMPLE_FRAME);
-        arm_offset_f32(outlet123VoltageWave, -ADC_OFFSET, outlet123VoltageWave, SAMPLE_FRAME);
-        arm_offset_f32(outlet456VoltageWave, -ADC_OFFSET, outlet456VoltageWave,   SAMPLE_FRAME);
-        // scale to ADC_SCALE value
-        arm_scale_f32(outlet5PhaseWave, ADC_SCALE, outlet5PhaseWave, SAMPLE_FRAME);
-        arm_scale_f32(outlet5DiffWave, ADC_SCALE, outlet5DiffWave,   SAMPLE_FRAME);
-        arm_scale_f32(outlet6PhaseWave, ADC_SCALE, outlet6PhaseWave, SAMPLE_FRAME);
-        arm_scale_f32(outlet6DiffWave, ADC_SCALE, outlet6DiffWave,   SAMPLE_FRAME);
-        arm_scale_f32(outlet123VoltageWave, ADC_SCALE, outlet123VoltageWave, SAMPLE_FRAME);
-        arm_scale_f32(outlet456VoltageWave, ADC_SCALE, outlet456VoltageWave,   SAMPLE_FRAME);
-        // calculate rms value
-        arm_rms_f32(outlet5PhaseWave, SAMPLE_FRAME, &Outlet5PhaseRMS);
-        arm_rms_f32(outlet5DiffWave, SAMPLE_FRAME, &Outlet5DiffRMS);
-        arm_rms_f32(outlet6PhaseWave, SAMPLE_FRAME, &Outlet6PhaseRMS);
-        arm_rms_f32(outlet6DiffWave, SAMPLE_FRAME, &Outlet6DiffRMS);
-        arm_rms_f32(outlet123VoltageWave, SAMPLE_FRAME, &Outlet123VoltageRMS);
-        arm_rms_f32(outlet456VoltageWave, SAMPLE_FRAME, &Outlet456VoltageRMS);
+        arm_copy_f32(ADCchannel[CH8], outlet[OUTLET_5].phaseWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH9], outlet[OUTLET_5].diffWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH10], outlet[OUTLET_6].phaseWave, SAMPLE_FRAME);
+        arm_copy_f32(ADCchannel[CH11], outlet[OUTLET_6].diffWave, SAMPLE_FRAME);
 
-        // debug waves
-       arm_copy_f32(outlet1PhaseWave, debugOutlet1Phase, SAMPLE_FRAME);
-       arm_copy_f32(outlet1DiffWave, debugOutlet1Diff, SAMPLE_FRAME);
-       arm_copy_f32(outlet123VoltageWave, debugOutlet1Voltage, SAMPLE_FRAME);
+        /* process all outlets */
+        for(i=0;i<OUTLET_COUNTER;i++)
+        {
+            // ADC offset
+            arm_offset_f32(outlet[i].phaseWave, -ptgmSettings.channel[i].channel_offset , outlet[i].phaseWave, SAMPLE_FRAME);
+            arm_offset_f32(outlet[i].diffWave, -ptgmSettings.channel[i+1].channel_offset , outlet[i].diffWave, SAMPLE_FRAME);
+            // ADC scale
+            arm_scale_f32(outlet[i].phaseWave, ptgmSettings.channel[i].channel_gain , outlet[i].phaseWave, SAMPLE_FRAME);
+            arm_scale_f32(outlet[i].diffWave, ptgmSettings.channel[i+1].channel_gain , outlet[i].diffWave, SAMPLE_FRAME);
+            // calculate RMS
+            arm_rms_f32(outlet[i].phaseWave, SAMPLE_FRAME, &outlet[i].phaseRMS);
+            arm_rms_f32(outlet[i].diffWave, SAMPLE_FRAME, &outlet[i].diffRMS);
+        }
+
+
+//        // debug waves
+       arm_copy_f32(outlet[i].phaseWave, debugOutlet1Phase, SAMPLE_FRAME);
+       arm_copy_f32(outlet[i].diffWave, debugOutlet1Diff, SAMPLE_FRAME);
+       //arm_copy_f32(ADCchannel[2], debugOutlet1Voltage, SAMPLE_FRAME);
 
        // TODO: Create if condition to decide when fft needs to be calculated
        // create dynamic task to calculate fft
        GPIO_write(DEBUG_PIN_CAPTURE, 0);
-       static int x=0;
-       if (Outlet1PhaseRMS>0.5)
-       {
-           x++;
-           if(x==2){
-               x=2;
-           }
-       }
-       else
-       {
-           x=0;
-       }
-       if(x > 3)
-       {
-           arm_rfft_fast_instance_f32 s;
-           arm_rfft_fast_init_f32(&s, SAMPLE_FRAME);
-           arm_rfft_fast_f32(&s, outlet1PhaseWave, outlet1Phasefft, 0);
-           // outlet1Phasefft: [0]dc_cos, [1]dc_sin, [2]H1_cos, [3]H1_sin, [4]H2_cos, [4]H2_sin...
+       //static int x=0;
 
-           Semaphore_pend(s_critical_section, BIOS_WAIT_FOREVER);
-               for(i=0;i<(2 * ptgmSettingsRead.maxHarmonics)+2;i++)
+       float32_t rmsResult;
+       float32_t fftResult[SAMPLE_FRAME];
+
+       //for(i=0;i<OUTLET_COUNTER;i++)
+       for(i=0;i<4;i++)
+       {
+           if (outlet[i].phaseRMS > outlet[i].limitPhase)//(Outlet1PhaseRMS>0.5)
+           {
+               if(++outlet[i].limitCounterPhase > 3)
                {
-                   harmonics[i]=outlet1Phasefft[i];
+               arm_rfft_fast_instance_f32 s;
+
+                 arm_rfft_fast_init_f32(&s, SAMPLE_FRAME);
+                 arm_rfft_fast_f32(&s, outlet[i].phaseWave, fftResult, 0); // fftResult: [0]dc_cos, [1]dc_sin, [2]H1_cos, [3]H1_sin, [4]H2_cos, [4]H2_sin...
+                 rmsResult = outlet[i].phaseRMS;
+                 char g_str_PostSend[POST_DATA_SIZE];
+                    sprintf(g_str_PostSend,
+                                      "TYPE=04&"          // TODO: Possible values?
+                                      "OUTLET=02&"        // 1 to 6
+                                      "RFID=FFFF0001&"    // ID of connected equipment
+                                      "OFFSET=2228&"      // Channel specific ADC offset value, ideally 2048 (2^10/2)
+                                      "GAIN=4302B611&"    // Channel specific Gain
+                                      "RMS=%08X&"         // Channel actual rms value
+                                      "MV=00000000&"      // Channel mean value
+                                      "MV2=00000000&"     // TODO: ?
+                                      "UNDER=0000&"       // TODO: under Peak?
+                                      "OVER=0000&"        // TODO: over peak?
+                                      "DURATION=0000&"    // TODO: how is calculated
+                                      "SIN=%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X&"     // Imaginary part
+                                      "COS=%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X ",    // Real part
+                                      *(unsigned int*)&rmsResult,
+                                      *(unsigned int*)&fftResult[H1_SIN],
+                                      *(unsigned int*)&fftResult[H2_SIN],
+                                      *(unsigned int*)&fftResult[H3_SIN],
+                                      *(unsigned int*)&fftResult[H4_SIN],
+                                      *(unsigned int*)&fftResult[H5_SIN],
+                                      *(unsigned int*)&fftResult[H6_SIN],
+                                      *(unsigned int*)&fftResult[H7_SIN],
+                                      *(unsigned int*)&fftResult[H8_SIN],
+                                      *(unsigned int*)&fftResult[H9_SIN],
+                                      *(unsigned int*)&fftResult[H10_SIN],
+                                      *(unsigned int*)&fftResult[H11_SIN],
+                                      *(unsigned int*)&fftResult[H12_SIN],
+                                      *(unsigned int*)&fftResult[H1_COS],
+                                      *(unsigned int*)&fftResult[H2_COS],
+                                      *(unsigned int*)&fftResult[H3_COS],
+                                      *(unsigned int*)&fftResult[H4_COS],
+                                      *(unsigned int*)&fftResult[H5_COS],
+                                      *(unsigned int*)&fftResult[H6_COS],
+                                      *(unsigned int*)&fftResult[H7_COS],
+                                      *(unsigned int*)&fftResult[H8_COS],
+                                      *(unsigned int*)&fftResult[H9_COS],
+                                      *(unsigned int*)&fftResult[H10_COS],
+                                      *(unsigned int*)&fftResult[H11_COS],
+                                      *(unsigned int*)&fftResult[H12_COS]);
+
+                     static Task_Handle httpPOST_Handle;
+                     Task_Params httpPOST_Params;
+                     Error_Block httpPOST_eb;
+
+                     Error_init(&httpPOST_eb);
+                     Task_Params_init(&httpPOST_Params);
+                     httpPOST_Params.stackSize = HTTPTASKSTACKSIZE;
+                     httpPOST_Params.priority = 1;
+                     httpPOST_Params.arg0 = (xdc_UArg)g_str_PostSend;
+                     httpPOST_Handle = Task_create((Task_FuncPtr)httpPOST_Task, &httpPOST_Params, &httpPOST_eb);
+                     if (httpPOST_Handle == NULL)
+                         {
+                             Log_info0("captureTask: Failed to create HTTP POST Task\n");
+                         }
+
+                 eventCount++;
+                 Task_sleep(1000); // FIXME: remove this later
+                 outlet[i].limitCounterPhase=0;//x=0;
                }
+           }
+           else
+           {
+               outlet[i].limitCounterPhase=0;
+           }
 
-               sprintf(g_str_PostSend,
-                                "TYPE=04&"
-                                "OUTLET=02&"
-                                "RFID=FFFF0001&"
-                                "OFFSET=2228&"
-                                "GAIN=4302B611&"
-                                "RMS=%08X&"
-                                "MV=00000000&"
-                                "MV2=00000000&"
-                                "UNDER=0000&"
-                                "OVER=0000&"
-                                "DURATION=0000&"
-                                "SIN=%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X&"     // Imaginary part
-                                "COS=%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X ",    // Real part
-                                *(unsigned int*)&Outlet1PhaseRMS,
-                                *(unsigned int*)&harmonics[H1_SIN],
-                                *(unsigned int*)&harmonics[H2_SIN],
-                                *(unsigned int*)&harmonics[H3_SIN],
-                                *(unsigned int*)&harmonics[H4_SIN],
-                                *(unsigned int*)&harmonics[H5_SIN],
-                                *(unsigned int*)&harmonics[H6_SIN],
-                                *(unsigned int*)&harmonics[H7_SIN],
-                                *(unsigned int*)&harmonics[H8_SIN],
-                                *(unsigned int*)&harmonics[H9_SIN],
-                                *(unsigned int*)&harmonics[H10_SIN],
-                                *(unsigned int*)&harmonics[H11_SIN],
-                                *(unsigned int*)&harmonics[H12_SIN],
-                                *(unsigned int*)&harmonics[H1_COS],
-                                *(unsigned int*)&harmonics[H2_COS],
-                                *(unsigned int*)&harmonics[H3_COS],
-                                *(unsigned int*)&harmonics[H4_COS],
-                                *(unsigned int*)&harmonics[H5_COS],
-                                *(unsigned int*)&harmonics[H6_COS],
-                                *(unsigned int*)&harmonics[H7_COS],
-                                *(unsigned int*)&harmonics[H8_COS],
-                                *(unsigned int*)&harmonics[H9_COS],
-                                *(unsigned int*)&harmonics[H10_COS],
-                                *(unsigned int*)&harmonics[H11_COS],
-                                *(unsigned int*)&harmonics[H12_COS]);
+          if (outlet[i].diffRMS > outlet[i].limitDiff)//(Outlet1PhaseRMS>0.5)
+          {
+              if(++outlet[i].limitCounterDiff > 3)
+              {
+              arm_rfft_fast_instance_f32 s;
 
-               static Task_Handle taskHandle;
-               Task_Params taskParams;
-               Error_Block eb;
+                arm_rfft_fast_init_f32(&s, SAMPLE_FRAME);
+                arm_rfft_fast_f32(&s, outlet[i].diffWave, fftResult, 0); // fftResult: [0]dc_cos, [1]dc_sin, [2]H1_cos, [3]H1_sin, [4]H2_cos, [4]H2_sin...
+                rmsResult = outlet[i].diffRMS;
+                char g_str_PostSend[POST_DATA_SIZE];
+                   sprintf(g_str_PostSend,
+                                     "TYPE=04&"          // TODO: Possible values?
+                                     "OUTLET=%d&"        // 1 to 6
+                                     "RFID=FFFF0001&"    // ID of connected equipment
+                                     "OFFSET=2228&"      // Channel specific ADC offset value, ideally 2048 (2^10/2)
+                                     "GAIN=4302B611&"    // Channel specific Gain
+                                     "RMS=%08X&"         // Channel actual rms value
+                                     "MV=00000000&"      // Channel mean value
+                                     "MV2=00000000&"     // TODO: ?
+                                     "UNDER=0000&"       // TODO: under Peak?
+                                     "OVER=0000&"        // TODO: over peak?
+                                     "DURATION=0000&"    // TODO: how is calculated
+                                     "SIN=%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X&"     // Imaginary part
+                                     "COS=%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X;%08X ",    // Real part
+                                     (i+1),
+                                     *(unsigned int*)&rmsResult,
+                                     *(unsigned int*)&fftResult[H1_SIN],
+                                     *(unsigned int*)&fftResult[H2_SIN],
+                                     *(unsigned int*)&fftResult[H3_SIN],
+                                     *(unsigned int*)&fftResult[H4_SIN],
+                                     *(unsigned int*)&fftResult[H5_SIN],
+                                     *(unsigned int*)&fftResult[H6_SIN],
+                                     *(unsigned int*)&fftResult[H7_SIN],
+                                     *(unsigned int*)&fftResult[H8_SIN],
+                                     *(unsigned int*)&fftResult[H9_SIN],
+                                     *(unsigned int*)&fftResult[H10_SIN],
+                                     *(unsigned int*)&fftResult[H11_SIN],
+                                     *(unsigned int*)&fftResult[H12_SIN],
+                                     *(unsigned int*)&fftResult[H1_COS],
+                                     *(unsigned int*)&fftResult[H2_COS],
+                                     *(unsigned int*)&fftResult[H3_COS],
+                                     *(unsigned int*)&fftResult[H4_COS],
+                                     *(unsigned int*)&fftResult[H5_COS],
+                                     *(unsigned int*)&fftResult[H6_COS],
+                                     *(unsigned int*)&fftResult[H7_COS],
+                                     *(unsigned int*)&fftResult[H8_COS],
+                                     *(unsigned int*)&fftResult[H9_COS],
+                                     *(unsigned int*)&fftResult[H10_COS],
+                                     *(unsigned int*)&fftResult[H11_COS],
+                                     *(unsigned int*)&fftResult[H12_COS]);
 
-                   Error_init(&eb);
-                   Task_Params_init(&taskParams);
-                   taskParams.stackSize = HTTPTASKSTACKSIZE;
-                   taskParams.priority = 1;
-                   taskHandle = Task_create((Task_FuncPtr)httpTask, &taskParams, &eb);
-                   if (taskHandle == NULL)
-                       {
-                           Log_info0("netIPAddrHook: Failed to create HTTP Task\n");
-                       }
-           Task_sleep(100);
-           x=0;
-           Semaphore_post(s_critical_section);
+                    static Task_Handle httpPOST_Handle;
+                    Task_Params httpPOST_Params;
+                    Error_Block httpPOST_eb;
+
+                    Error_init(&httpPOST_eb);
+                    Task_Params_init(&httpPOST_Params);
+                    httpPOST_Params.stackSize = HTTPTASKSTACKSIZE;
+                    httpPOST_Params.priority = 1;
+                    httpPOST_Params.arg0 = (xdc_UArg)g_str_PostSend;
+                    httpPOST_Handle = Task_create((Task_FuncPtr)httpPOST_Task, &httpPOST_Params, &httpPOST_eb);
+                    if (httpPOST_Handle == NULL)
+                        {
+                            Log_info0("captureTask: Failed to create HTTP POST Task\n");
+                        }
+
+                eventCount++;
+                Task_sleep(1000); // FIXME: remove this later
+                outlet[i].limitCounterDiff=0;//x=0;
+              }
+          }
+          else
+          {
+              outlet[i].limitCounterDiff=0;
+          }
+
+
+
        }
      GPIO_write(DEBUG_PIN_CAPTURE, 0);
     }
+}
+
+void getFFT(uint8_t outletNum, uint8_t outletPurpose)
+{
+
 }

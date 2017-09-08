@@ -41,7 +41,7 @@ typedef struct
     uint8_t     channel_purpose;
 } channelSettings;
 
-struct ptgmSettings
+struct PtgmSettings
 {
     uint8_t channels;
     uint16_t samples;
@@ -73,8 +73,8 @@ struct ptgmSettings
 
 };
 
-extern struct ptgmSettings ptgmSettingsWrite;
-extern struct ptgmSettings ptgmSettingsRead;
+extern struct PtgmSettings ptgmSettingsWrite;
+extern struct PtgmSettings ptgmSettings;
 
 void readPtgmSettings(void);
 

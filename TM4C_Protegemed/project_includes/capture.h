@@ -45,6 +45,22 @@
 /* Project Header files */
 #include "project_includes/Board.h"
 
+typedef struct{
+    float32_t phaseWave[SAMPLE_FRAME];
+    float32_t diffWave[SAMPLE_FRAME];
+    uint32_t id;
+    float32_t phaseRMS;
+    float32_t diffRMS;
+    float32_t voltageRMS;
+    uint8_t limitCounterPhase;
+    uint8_t limitCounterDiff;
+    float32_t *phaseFFT;
+    float32_t *diffFFT;
+    float32_t *voltageFFT;
+    float32_t limitPhase;
+    float32_t limitDiff;
+}Outlet;
+
 extern float32_t harmonics[];
 
 #endif /* PROJECT_INCLUDES_CAPTURE_H_ */

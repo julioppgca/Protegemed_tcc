@@ -41,7 +41,7 @@ int main(void)
 
     System_printf("\n*--------------- Protegemed TM4C ----------------*\n");
     System_printf("\nPeripheral initiated..." "\nStarting BIOS...\n");
-    /* SysMin will only print to the console when you call flush or exit */
+    /* SysMin will only print to the console when you call flush or BIOS exit */
     System_flush();
 
     /* Start BIOS */

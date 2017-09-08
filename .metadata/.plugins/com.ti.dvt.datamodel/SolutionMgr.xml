@@ -16,6 +16,12 @@
   <void method="add">
    <string>C:\ti\ccsv7\ccs_base\dvt_4.1.0.201705251038\CodeGen\solutions\CodeGenCoverage</string>
   </void>
+  <void method="add">
+   <string>C:\Users\skelter_win\Protegemed_tcc\dvt\AnalysisSolutionsTemp\AnalysisSolution1504845773505\null</string>
+  </void>
+  <void method="add">
+   <string>C:\ti\ccsv7\ccs_base\dvt_4.1.0.201705251038\CodeGen\solutions\CodeGenCoverage</string>
+  </void>
  </void>
 </void>
 <void idref="ArrayList0"/>

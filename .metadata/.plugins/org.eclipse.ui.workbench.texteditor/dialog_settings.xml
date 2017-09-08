@@ -2,22 +2,25 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="UDMA_CH24_ADC1_0" key="selection"/>
+		<item value="limitCounter" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
-		<item value="true" key="wrap"/>
+		<item value="false" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="limitCounter"/>
+			<item value="peakCounter"/>
+			<item value="outlet[OUTLET_1].phaseFFT[H2_SIN]"/>
+			<item value="outlet[OUTLET_1].phaseFFT[H1_SIN]"/>
+			<item value="httpTask"/>
+			<item value="Outlet1PhaseRMS"/>
 			<item value="*_ADC1_1"/>
 			<item value="*_ADC1_0"/>
-			<item value="*ADC_"/>
-			<item value="ADC_"/>
-			<item value="Outlet1PhaseRMS"/>
-			<item value="E2PROM_TEST_ADRES"/>
-			<item value="%3B"/>
-			<item value="s"/>
 		</list>
 		<list key="replacehistory">
+			<item value="limitCounter"/>
+			<item value="outlet[OUTLET_1].fft[PHASE] "/>
+			<item value="httpPOST_Task"/>
 			<item value="EEPROM_START_ADR"/>
 			<item value=";"/>
 		</list>
