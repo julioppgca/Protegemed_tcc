@@ -107,10 +107,10 @@ http.createServer(function(request, response) {
     if(request.method == 'POST') {
         processPost(request, response, function() {
             console.log(request.post);
-			//console.log('Sin values: ' + getFloat32(request.post.RMS));
-			io.emit('TM4CAnswer', request.post.SIN );
+			console.log('RMS values: ' + toFloat('0x'+request.post.RMS));
+			io.emit('TM4CAnswer', request.post.SIN);
             // Use request.post here
-
+			
             response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
             response.end();
         });
@@ -120,3 +120,26 @@ http.createServer(function(request, response) {
     }
 
 }).listen(80);
+
+function toFloat (n) {
+  var sign = (n >> 31) * 2 + 1; // +1 or -1.
+  var exp = (n >>> 23) & 0xff;
+  var mantissa = n & 0x007fffff;
+  if (exp === 0xff) {
+    // NaN or Infinity
+    return mantissa ? NaN : sign * Infinity;
+
+  }
+  else if (exp) {
+    // Normalized value
+    exp -= 127;
+
+    // Add implicit bit in normal mode.
+    mantissa |= 0x00800000;
+  }
+  else {
+    // Subnormal number
+    exp = -126;
+  }
+  return sign * mantissa * Math.pow(2, exp - 23);
+}
