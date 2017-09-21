@@ -16,7 +16,7 @@ struct PtgmSettings ptgmSettingsWrite =
 {
     NUM_OF_ADC_CHANNELS,    // channels=6
     256,                    // samples=256
-    "192.168.2.106",        // networkServer=192.168.1.10
+    PTGM_HOSTNAME,        // networkServer=192.168.1.10
     "192.168.2.110",        // networkAddress=192.168.1.241
     "255.255.255.0",        // networkMask=255.255.255.0
     "192.168.2.1",          // networkGateway=192.168.1.1

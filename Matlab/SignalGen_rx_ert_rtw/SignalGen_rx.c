@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'SignalGen_rx'.
  *
- * Model version                  : 1.185
+ * Model version                  : 1.187
  * Simulink Coder version         : 8.10 (R2016a) 10-Feb-2016
- * C/C++ source code generated on : Tue Sep 05 18:15:23 2017
+ * C/C++ source code generated on : Sat Sep 16 18:25:43 2017
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Texas Instruments->C2000
@@ -78,10 +78,10 @@ void SignalGen_rx_step0(void)          /* Sample time: [3.2552083333333333E-5s, 
     rate_monotonic_scheduler();
   }
 
-  /* LookupNDDirect: '<Root>/Direct Lookup Table (n-D)1' incorporates:
+  /* LookupNDDirect: '<Root>/DAC1 Lookup Table' incorporates:
    *  UnitDelay: '<S2>/Output'
    *
-   * About '<Root>/Direct Lookup Table (n-D)1':
+   * About '<Root>/DAC1 Lookup Table':
    *  1-dimensional Direct Look-Up returning a Scalar
    */
   if (SignalGen_rx_DW.Output_DSTATE <= 511U) {
@@ -103,10 +103,10 @@ void SignalGen_rx_step0(void)          /* Sample time: [3.2552083333333333E-5s, 
 
   /* Sum: '<Root>/Sum' incorporates:
    *  Constant: '<Root>/Constant'
-   *  LookupNDDirect: '<Root>/Direct Lookup Table (n-D)1'
-   *  Product: '<Root>/Product'
+   *  LookupNDDirect: '<Root>/DAC1 Lookup Table'
+   *  Product: '<Root>/Gain1'
    *
-   * About '<Root>/Direct Lookup Table (n-D)1':
+   * About '<Root>/DAC1 Lookup Table':
    *  1-dimensional Direct Look-Up returning a Scalar
    */
   tmp_0 = floor((SignalGen_rx_P.DAC1[(int16_T)tmp] - SignalGen_rx_P.PWM_Offset) *
@@ -133,10 +133,10 @@ void SignalGen_rx_step0(void)          /* Sample time: [3.2552083333333333E-5s, 
 
   /* End of Switch: '<S1>/Switch1' */
 
-  /* LookupNDDirect: '<Root>/Direct Lookup Table (n-D)2' incorporates:
+  /* LookupNDDirect: '<Root>/DAC2 Lookup Table' incorporates:
    *  UnitDelay: '<S2>/Output'
    *
-   * About '<Root>/Direct Lookup Table (n-D)2':
+   * About '<Root>/DAC2 Lookup Table':
    *  1-dimensional Direct Look-Up returning a Scalar
    */
   if (SignalGen_rx_DW.Output_DSTATE <= 511U) {
@@ -147,10 +147,10 @@ void SignalGen_rx_step0(void)          /* Sample time: [3.2552083333333333E-5s, 
 
   /* Sum: '<Root>/Sum1' incorporates:
    *  Constant: '<Root>/Constant'
-   *  LookupNDDirect: '<Root>/Direct Lookup Table (n-D)2'
-   *  Product: '<Root>/Product1'
+   *  LookupNDDirect: '<Root>/DAC2 Lookup Table'
+   *  Product: '<Root>/Gain2'
    *
-   * About '<Root>/Direct Lookup Table (n-D)2':
+   * About '<Root>/DAC2 Lookup Table':
    *  1-dimensional Direct Look-Up returning a Scalar
    */
   tmp_0 = floor((SignalGen_rx_P.DAC2[(int16_T)tmp] - SignalGen_rx_P.PWM_Offset) *
@@ -178,10 +178,10 @@ void SignalGen_rx_step0(void)          /* Sample time: [3.2552083333333333E-5s, 
     EPwm7Regs.CMPB = (uint16_T)(rtb_FixPtSum1);
   }
 
-  /* LookupNDDirect: '<Root>/Direct Lookup Table (n-D)3' incorporates:
+  /* LookupNDDirect: '<Root>/DAC3 Lookup Table ' incorporates:
    *  UnitDelay: '<S2>/Output'
    *
-   * About '<Root>/Direct Lookup Table (n-D)3':
+   * About '<Root>/DAC3 Lookup Table ':
    *  1-dimensional Direct Look-Up returning a Scalar
    */
   if (SignalGen_rx_DW.Output_DSTATE <= 511U) {
@@ -203,10 +203,10 @@ void SignalGen_rx_step0(void)          /* Sample time: [3.2552083333333333E-5s, 
 
   /* Sum: '<Root>/Sum2' incorporates:
    *  Constant: '<Root>/Constant'
-   *  LookupNDDirect: '<Root>/Direct Lookup Table (n-D)3'
-   *  Product: '<Root>/Product2'
+   *  LookupNDDirect: '<Root>/DAC3 Lookup Table '
+   *  Product: '<Root>/Gain3'
    *
-   * About '<Root>/Direct Lookup Table (n-D)3':
+   * About '<Root>/DAC3 Lookup Table ':
    *  1-dimensional Direct Look-Up returning a Scalar
    */
   tmp_0 = floor((SignalGen_rx_P.DAC3[(int16_T)tmp] - SignalGen_rx_P.PWM_Offset) *
@@ -233,10 +233,10 @@ void SignalGen_rx_step0(void)          /* Sample time: [3.2552083333333333E-5s, 
 
   /* End of Switch: '<S1>/Switch4' */
 
-  /* LookupNDDirect: '<Root>/Direct Lookup Table (n-D)4' incorporates:
+  /* LookupNDDirect: '<Root>/DAC4 Lookup Table' incorporates:
    *  UnitDelay: '<S2>/Output'
    *
-   * About '<Root>/Direct Lookup Table (n-D)4':
+   * About '<Root>/DAC4 Lookup Table':
    *  1-dimensional Direct Look-Up returning a Scalar
    */
   if (SignalGen_rx_DW.Output_DSTATE <= 511U) {
@@ -247,10 +247,10 @@ void SignalGen_rx_step0(void)          /* Sample time: [3.2552083333333333E-5s, 
 
   /* Sum: '<Root>/Sum3' incorporates:
    *  Constant: '<Root>/Constant'
-   *  LookupNDDirect: '<Root>/Direct Lookup Table (n-D)4'
-   *  Product: '<Root>/Product3'
+   *  LookupNDDirect: '<Root>/DAC4 Lookup Table'
+   *  Product: '<Root>/Gain4'
    *
-   * About '<Root>/Direct Lookup Table (n-D)4':
+   * About '<Root>/DAC4 Lookup Table':
    *  1-dimensional Direct Look-Up returning a Scalar
    */
   tmp_0 = floor((SignalGen_rx_P.DAC4[(int16_T)tmp] - SignalGen_rx_P.PWM_Offset) *

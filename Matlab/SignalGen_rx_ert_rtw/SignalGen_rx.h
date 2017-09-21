@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'SignalGen_rx'.
  *
- * Model version                  : 1.185
+ * Model version                  : 1.187
  * Simulink Coder version         : 8.10 (R2016a) 10-Feb-2016
- * C/C++ source code generated on : Tue Sep 05 18:15:23 2017
+ * C/C++ source code generated on : Sat Sep 16 18:25:43 2017
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Texas Instruments->C2000
@@ -68,24 +68,24 @@ typedef struct {
 /* Parameters (auto storage) */
 struct P_SignalGen_rx_T_ {
   real_T DAC1[512];                    /* Variable: DAC1
-                                        * Referenced by: '<Root>/Direct Lookup Table (n-D)1'
+                                        * Referenced by: '<Root>/DAC1 Lookup Table'
                                         */
   real_T DAC2[512];                    /* Variable: DAC2
-                                        * Referenced by: '<Root>/Direct Lookup Table (n-D)2'
+                                        * Referenced by: '<Root>/DAC2 Lookup Table'
                                         */
   real_T DAC3[512];                    /* Variable: DAC3
-                                        * Referenced by: '<Root>/Direct Lookup Table (n-D)3'
+                                        * Referenced by: '<Root>/DAC3 Lookup Table '
                                         */
   real_T DAC4[512];                    /* Variable: DAC4
-                                        * Referenced by: '<Root>/Direct Lookup Table (n-D)4'
+                                        * Referenced by: '<Root>/DAC4 Lookup Table'
                                         */
   real_T PWM_Offset;                   /* Variable: PWM_Offset
                                         * Referenced by:
                                         *   '<Root>/Constant'
-                                        *   '<Root>/Direct Lookup Table (n-D)1'
-                                        *   '<Root>/Direct Lookup Table (n-D)2'
-                                        *   '<Root>/Direct Lookup Table (n-D)3'
-                                        *   '<Root>/Direct Lookup Table (n-D)4'
+                                        *   '<Root>/DAC1 Lookup Table'
+                                        *   '<Root>/DAC2 Lookup Table'
+                                        *   '<Root>/DAC3 Lookup Table '
+                                        *   '<Root>/DAC4 Lookup Table'
                                         */
   uint16_T CounterLimited_uplimit;     /* Mask Parameter: CounterLimited_uplimit
                                         * Referenced by: '<S5>/FixPt Switch'

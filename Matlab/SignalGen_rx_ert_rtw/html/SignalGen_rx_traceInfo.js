@@ -2,25 +2,22 @@ function RTW_Sid2UrlHash() {
 	this.urlHashMap = new Array();
 	/* <Root>/Constant */
 	this.urlHashMap["SignalGen_rx:221"] = "SignalGen_rx.c:105,149,205,249&SignalGen_rx.h:84&SignalGen_rx_data.c:221";
-	/* <Root>/Direct Lookup
-Table (n-D)1 */
+	/* <Root>/DAC1 Lookup Table */
 	this.urlHashMap["SignalGen_rx:139"] = "SignalGen_rx.c:81,84,106,109&SignalGen_rx.h:71,85&SignalGen_rx_data.c:22,222";
-	/* <Root>/Direct Lookup
-Table (n-D)2 */
+	/* <Root>/DAC2 Lookup Table */
 	this.urlHashMap["SignalGen_rx:144"] = "SignalGen_rx.c:136,139,150,153&SignalGen_rx.h:74,86&SignalGen_rx_data.c:72,223";
-	/* <Root>/Direct Lookup
-Table (n-D)3 */
+	/* <Root>/DAC3 Lookup Table
+ */
 	this.urlHashMap["SignalGen_rx:148"] = "SignalGen_rx.c:181,184,206,209&SignalGen_rx.h:77,87&SignalGen_rx_data.c:123,224";
-	/* <Root>/Direct Lookup
-Table (n-D)4 */
+	/* <Root>/DAC4 Lookup Table */
 	this.urlHashMap["SignalGen_rx:149"] = "SignalGen_rx.c:236,239,250,253&SignalGen_rx.h:80,88&SignalGen_rx_data.c:172,225";
-	/* <Root>/Product */
+	/* <Root>/Gain1 */
 	this.urlHashMap["SignalGen_rx:214"] = "SignalGen_rx.c:107";
-	/* <Root>/Product1 */
+	/* <Root>/Gain2 */
 	this.urlHashMap["SignalGen_rx:215"] = "SignalGen_rx.c:151";
-	/* <Root>/Product2 */
+	/* <Root>/Gain3 */
 	this.urlHashMap["SignalGen_rx:216"] = "SignalGen_rx.c:207";
-	/* <Root>/Product3 */
+	/* <Root>/Gain4 */
 	this.urlHashMap["SignalGen_rx:217"] = "SignalGen_rx.c:251";
 	/* <Root>/Sum */
 	this.urlHashMap["SignalGen_rx:220"] = "SignalGen_rx.c:104,123";
@@ -135,22 +132,22 @@ function RTW_rtwnameSIDMap() {
 	this.sidHashMap["SignalGen_rx:221"] = {rtwname: "<Root>/Constant"};
 	this.rtwnameHashMap["<Root>/Counter Limited"] = {sid: "SignalGen_rx:137"};
 	this.sidHashMap["SignalGen_rx:137"] = {rtwname: "<Root>/Counter Limited"};
-	this.rtwnameHashMap["<Root>/Direct Lookup Table (n-D)1"] = {sid: "SignalGen_rx:139"};
-	this.sidHashMap["SignalGen_rx:139"] = {rtwname: "<Root>/Direct Lookup Table (n-D)1"};
-	this.rtwnameHashMap["<Root>/Direct Lookup Table (n-D)2"] = {sid: "SignalGen_rx:144"};
-	this.sidHashMap["SignalGen_rx:144"] = {rtwname: "<Root>/Direct Lookup Table (n-D)2"};
-	this.rtwnameHashMap["<Root>/Direct Lookup Table (n-D)3"] = {sid: "SignalGen_rx:148"};
-	this.sidHashMap["SignalGen_rx:148"] = {rtwname: "<Root>/Direct Lookup Table (n-D)3"};
-	this.rtwnameHashMap["<Root>/Direct Lookup Table (n-D)4"] = {sid: "SignalGen_rx:149"};
-	this.sidHashMap["SignalGen_rx:149"] = {rtwname: "<Root>/Direct Lookup Table (n-D)4"};
-	this.rtwnameHashMap["<Root>/Product"] = {sid: "SignalGen_rx:214"};
-	this.sidHashMap["SignalGen_rx:214"] = {rtwname: "<Root>/Product"};
-	this.rtwnameHashMap["<Root>/Product1"] = {sid: "SignalGen_rx:215"};
-	this.sidHashMap["SignalGen_rx:215"] = {rtwname: "<Root>/Product1"};
-	this.rtwnameHashMap["<Root>/Product2"] = {sid: "SignalGen_rx:216"};
-	this.sidHashMap["SignalGen_rx:216"] = {rtwname: "<Root>/Product2"};
-	this.rtwnameHashMap["<Root>/Product3"] = {sid: "SignalGen_rx:217"};
-	this.sidHashMap["SignalGen_rx:217"] = {rtwname: "<Root>/Product3"};
+	this.rtwnameHashMap["<Root>/DAC1 Lookup Table"] = {sid: "SignalGen_rx:139"};
+	this.sidHashMap["SignalGen_rx:139"] = {rtwname: "<Root>/DAC1 Lookup Table"};
+	this.rtwnameHashMap["<Root>/DAC2 Lookup Table"] = {sid: "SignalGen_rx:144"};
+	this.sidHashMap["SignalGen_rx:144"] = {rtwname: "<Root>/DAC2 Lookup Table"};
+	this.rtwnameHashMap["<Root>/DAC3 Lookup Table "] = {sid: "SignalGen_rx:148"};
+	this.sidHashMap["SignalGen_rx:148"] = {rtwname: "<Root>/DAC3 Lookup Table "};
+	this.rtwnameHashMap["<Root>/DAC4 Lookup Table"] = {sid: "SignalGen_rx:149"};
+	this.sidHashMap["SignalGen_rx:149"] = {rtwname: "<Root>/DAC4 Lookup Table"};
+	this.rtwnameHashMap["<Root>/Gain1"] = {sid: "SignalGen_rx:214"};
+	this.sidHashMap["SignalGen_rx:214"] = {rtwname: "<Root>/Gain1"};
+	this.rtwnameHashMap["<Root>/Gain2"] = {sid: "SignalGen_rx:215"};
+	this.sidHashMap["SignalGen_rx:215"] = {rtwname: "<Root>/Gain2"};
+	this.rtwnameHashMap["<Root>/Gain3"] = {sid: "SignalGen_rx:216"};
+	this.sidHashMap["SignalGen_rx:216"] = {rtwname: "<Root>/Gain3"};
+	this.rtwnameHashMap["<Root>/Gain4"] = {sid: "SignalGen_rx:217"};
+	this.sidHashMap["SignalGen_rx:217"] = {rtwname: "<Root>/Gain4"};
 	this.rtwnameHashMap["<Root>/Simulation view"] = {sid: "SignalGen_rx:236"};
 	this.sidHashMap["SignalGen_rx:236"] = {rtwname: "<Root>/Simulation view"};
 	this.rtwnameHashMap["<Root>/Sum"] = {sid: "SignalGen_rx:220"};

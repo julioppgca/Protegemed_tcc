@@ -372,7 +372,7 @@ void ADC_Seq0_ISR(void)
                                g_uint16_adc0_ping,
                                DMA_BUFFER_SIZE);
         // free to process g_uint16_adc0_ping
-        Semaphore_post(s_adc0_ping_ready);
+        Swi_post(adc0Ping_Swi_Handle);//Semaphore_post(s_adc0_ping_ready);
 
     }
     else if ((modePrimary != UDMA_MODE_STOP) && (modeAlternate == UDMA_MODE_STOP))
@@ -384,7 +384,13 @@ void ADC_Seq0_ISR(void)
                                g_uint16_adc0_pong,
                                DMA_BUFFER_SIZE);
         // free to process g_uint16_adc0_pong
-        Semaphore_post(s_adc0_pong_ready);
+        Swi_post(adc0Pong_Swi_Handle);//Semaphore_post(s_adc0_pong_ready);
+    }
+    else
+    {
+        // Something is wrong, restart all DMA control set
+        DMA_init();
+        Log_info0("DMA transfer set restarted due an error - ADC0");
     }
     GPIO_write(DEBUG_PIN_ADC0, 0);
 }
@@ -419,7 +425,7 @@ void ADC_Seq1_ISR(void)
                                (void *) (ADC1_BASE + ADC_O_SSFIFO0),
                                g_uint16_adc1_ping,
                                DMA_BUFFER_SIZE);
-        Semaphore_post(s_adc1_ping_ready);
+        Swi_post(adc1Ping_Swi_Handle);//Semaphore_post(s_adc1_ping_ready);
     }
     else if ((modePrimary != UDMA_MODE_STOP) && (modeAlternate == UDMA_MODE_STOP))
     {
@@ -429,7 +435,13 @@ void ADC_Seq1_ISR(void)
                                (void *) (ADC1_BASE + ADC_O_SSFIFO0),
                                g_uint16_adc1_pong,
                                DMA_BUFFER_SIZE);
-        Semaphore_post(s_adc1_pong_ready);
+        Swi_post(adc1Pong_Swi_Handle);//Semaphore_post(s_adc1_pong_ready);
+    }
+    else
+    {
+        // Something is wrong, restart all DMA control set
+        DMA_init();
+        Log_info0("DMA transfer set restarted due an error - ADC1");
     }
     GPIO_write(DEBUG_PIN_ADC1, 0);
 }

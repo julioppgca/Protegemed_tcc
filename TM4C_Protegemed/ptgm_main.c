@@ -15,6 +15,7 @@
 #include <ti/sysbios/knl/Swi.h>
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/knl/Semaphore.h>
+#include <ti/sysbios/knl/Event.h>
 
 /* Project Header files */
 #include "project_includes/Board.h"

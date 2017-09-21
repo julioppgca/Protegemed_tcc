@@ -19,17 +19,16 @@
 #include <xdc/runtime/Log.h>   // to use Log_Info
 #include <xdc/cfg/global.h> // to get static definitions from RTOS.cfg file
 
+/* Driverlib Header files */
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
-//#include "inc/hw_gpio.h"
 #include "inc/hw_ints.h"
-//#include "driverlib/gpio.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
-//#include "driverlib/interrupt.h"
 #include "driverlib/eeprom.h"
-//#include "utils/uartstdio.h"
 
+/* Project Header files */
+#include "project_includes/eth_network.h"
 
 #define NUM_OF_ADC_CHANNELS     16
 

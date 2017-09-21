@@ -14,6 +14,14 @@
 
 /* XDCtools Header files */
 #include <xdc/cfg/global.h>
+#include <xdc/runtime/Log.h>   // to use Log_Info
+
+/* BIOS Header files */
+#include <ti/sysbios/BIOS.h>
+#include <ti/sysbios/knl/Swi.h>
+#include <ti/sysbios/knl/Task.h>
+#include <ti/sysbios/knl/Semaphore.h>
+#include <ti/sysbios/knl/Event.h>
 
 /* Tivaware Header files */
 #include "inc/hw_types.h"

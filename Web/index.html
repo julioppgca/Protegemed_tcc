@@ -23,15 +23,23 @@
 <script src="node_modules/chart.js/samples/utils.js"> </script>
 
 <script>
-const FREQUENCY_DATABASE_NAME = "frequencyDB";
-const CURRENT_DATABASE_NAME = "currentDB";
-const TEST_DAY_DATABASE_NAME = "testDayDB";
-const SENSOR_SETTINGS_DATABASE_NAME = "sensorSettingsDB";
-const FREQUENCY_DATA_TYPE = 1;
-const CURRENT_DATA_TYPE = 2;
-const SENSOR_SETTINGS_DATA_TYPE = 3;
-const TEST_DAY_DATA_TYPE = 4;
+
+const MAIN_MENU_ITEM1 = 'Menu1';
+const MAIN_MENU_ITEM2 = 'Menu2';
+const MAIN_MENU_ITEM3 = 'Menu3';
+const MAIN_MENU_ITEM4 = 'Menu4';
+
+const ACTIVE_PAGE1 = 'Page1';
+const ACTIVE_PAGE2 = 'Page2';
+const ACTIVE_PAGE3 = 'Page3';
+const ACTIVE_PAGE4 = 'Page4';
+
 const TIME_INTERVAL_TM4C_ALIVE_SIGNAL = 2000; // in miliseconds
+
+const BASE_FREQUENCY = 60;
+const SAMPLE_POINTS = 256;
+const SAMPLE_FREQUENCY = BASE_FREQUENCY*SAMPLE_POINTS;
+
 /**
 * 
 ******************* General Initialization 
@@ -39,111 +47,65 @@ const TIME_INTERVAL_TM4C_ALIVE_SIGNAL = 2000; // in miliseconds
 */
 $(document).ready(function() {
 	
-		menuHandler('Sample');
+		menuHandler(MAIN_MENU_ITEM1);
+		aliveSignalTM4C(); 
 		
-		aliveSignalTM4C(); // socket.emit('systemStatus', 'W');
+		//plot([],[],'graphDataSample','Reconstructed Wave Form', 'rgba(75,192,192,0.4)');
 		
-		searchDatabase(SENSOR_SETTINGS_DATABASE_NAME, 'all');
-		$('.sensorSelect').dropdown();
-	 	$(".sensorSelect").dropdown({
-		    onChange: function (optSelected) {    	
-		    	console.log('Dropbox: ' + optSelected);
-		    	searchDatabase(SENSOR_SETTINGS_DATABASE_NAME, {SensorType:optSelected});
-		    }
-		});
-		
-		//searchDatabase(TEST_DAY_DATABASE_NAME, 'all');
-			
-		createFrequencyTable();		
-		document.getElementById("frequencyTable").caption.innerHTML="Frequency Response of Sensor Id: ";
-		Row = document.getElementById("frequencyTable").rows[0].cells;
-		Row[0].innerHTML = "Timestamp";
-		Row[1].innerHTML = "Frequency (Hz)";
-		Row[2].innerHTML = "Iref (Arms)";
-		Row[3].innerHTML = "Isensor (Arms)";
-		Row[4].innerHTML = "Phase Shift (º)";
-		Row[5].innerHTML = "Amplitude Gain (Iref/Isensor)";
-		Row[6].innerHTML = "Temperature (ºC)";
-	
-		createCurrentTable();		
-		document.getElementById("currentTable").caption.innerHTML="Current Response of Sensor Id: ";
-		Row = document.getElementById("currentTable").rows[0].cells;
-		Row[0].innerHTML = "Timestamp";
-		Row[1].innerHTML = "Frequency (Hz)";
-		Row[2].innerHTML = "Iref (Arms)";
-		Row[3].innerHTML = "Isensor (Arms)";
-		Row[4].innerHTML = "Phase Shift (º)";
-		Row[5].innerHTML = "Amplitude Gain (Iref/Isensor)";
-		Row[6].innerHTML = "Temperature (ºC)";
-	
-		createSampleFrequencyTable();
-		Row = document.getElementById("sampleFrequencyTable").rows[0].cells;
-		Row[0].innerHTML = "Frequency (Hz)";
-		Row[1].innerHTML = "Phase Shift (º)";
-		Row[2].innerHTML = "Gain (Iref/Isensor)";
-	
-		createSampleCurrentTable();
-		Row = document.getElementById("sampleCurrentTable").rows[0].cells;
-		Row[0].innerHTML = "Frequency (Hz)";
-		Row[1].innerHTML = "Iref (Arms)";
-		Row[2].innerHTML = "Isensor (Arms)";
-		Row[3].innerHTML = "Iref/Isensor (%)"
-		
-		showGainGraph();
 	});
-	/*
+	
+	/**
 	*
 	*---------- Menu Handler
 	*
 	*/
 	function menuHandler(active)
 	{
+	console.log('Menu active: '+active);
 		switch(active)
 			{
-				case 'Sample':{
-					document.getElementById('menuSample').className='item active';
-					document.getElementById('pageSample').style.display='block';
-					document.getElementById('menuSettings').className='item';
-					document.getElementById('pageSettings').style.display='none';
-					document.getElementById('menuData').className='item';
-					document.getElementById('pageData').style.display='none';
-					document.getElementById('menuHelp').className='item';
-					document.getElementById('pageHelp').style.display='none';
-					searchDatabase(SENSOR_SETTINGS_DATABASE_NAME, 'all');
+				case MAIN_MENU_ITEM1:{
+					document.getElementById(MAIN_MENU_ITEM1).className='item active';
+					document.getElementById(ACTIVE_PAGE1).style.display='block';
+					document.getElementById(MAIN_MENU_ITEM2).className='item';
+					document.getElementById(ACTIVE_PAGE2).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM3).className='item';
+					document.getElementById(ACTIVE_PAGE3).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM4).className='item';
+					document.getElementById(ACTIVE_PAGE4).style.display='none';
 					break;
 			}
-					case 'Settings':{
-					document.getElementById('menuSample').className='item';
-					document.getElementById('pageSample').style.display='none';
-					document.getElementById('menuSettings').className='item active';
-					document.getElementById('pageSettings').style.display='block';
-					document.getElementById('menuData').className='item';
-					document.getElementById('pageData').style.display='none';
-					document.getElementById('menuHelp').className='item';
-					document.getElementById('pageHelp').style.display='none';
+					case MAIN_MENU_ITEM2:{
+					document.getElementById(MAIN_MENU_ITEM1).className='item';
+					document.getElementById(ACTIVE_PAGE1).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM2).className='item active';
+					document.getElementById(ACTIVE_PAGE2).style.display='block';
+					document.getElementById(MAIN_MENU_ITEM3).className='item';
+					document.getElementById(ACTIVE_PAGE3).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM4).className='item';
+					document.getElementById(ACTIVE_PAGE4).style.display='none';
 					break;
 					}
-					case 'Data':{
-					document.getElementById('menuSample').className='item';
-					document.getElementById('pageSample').style.display='none';
-					document.getElementById('menuSettings').className='item ';
-					document.getElementById('pageSettings').style.display='none';
-					document.getElementById('menuData').className='item active';
-					document.getElementById('pageData').style.display='block';
-					document.getElementById('menuHelp').className='item';
-					document.getElementById('pageHelp').style.display='none';
-					searchDatabase(TEST_DAY_DATABASE_NAME, 'all');
+					case MAIN_MENU_ITEM3:{
+					document.getElementById(MAIN_MENU_ITEM1).className='item';
+					document.getElementById(ACTIVE_PAGE1).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM2).className='item ';
+					document.getElementById(ACTIVE_PAGE2).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM3).className='item active';
+					document.getElementById(ACTIVE_PAGE3).style.display='block';
+					document.getElementById(MAIN_MENU_ITEM4).className='item';
+					document.getElementById(ACTIVE_PAGE4).style.display='none';
 					break;
 					}
-					case 'Help':{
-					document.getElementById('menuSample').className='item';
-					document.getElementById('pageSample').style.display='none';
-					document.getElementById('menuSettings').className='item';
-					document.getElementById('pageSettings').style.display='none';
-					document.getElementById('menuData').className='item';
-					document.getElementById('pageData').style.display='none';
-					document.getElementById('menuHelp').className='item active';
-					document.getElementById('pageHelp').style.display='block';
+					case MAIN_MENU_ITEM4:{
+					document.getElementById(MAIN_MENU_ITEM1).className='item';
+					document.getElementById(ACTIVE_PAGE1).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM2).className='item';
+					document.getElementById(ACTIVE_PAGE2).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM3).className='item';
+					document.getElementById(ACTIVE_PAGE3).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM4).className='item active';
+					document.getElementById(ACTIVE_PAGE4).style.display='block';
 					break;
 					}
 			}
@@ -155,69 +117,105 @@ $(document).ready(function() {
 	*
 	*/
 	var socket = io();
-	var tableFreqSampleIndex=1;
-	var tableCurSampleIndex=1;
-	var receivedDataCount=0;
-	var testMode=false; //false=frequency, true=current	
+	var num=0;
+	var index=0;
+	var receivedCount=0;
+	var sampledPhase=[];
+	var sampledDiff=[];
+	var sampledVoltage=[];
+	//sampledData[0]=0;
+	var totalTime=[];
+	//totalTime[0]=0;
+	sampledPhase[0]=0;
+	sampledDiff[0]=0;
+	sampledVoltage[0]=0;
 	socket.on("TM4CAnswer", function(data) {
-		console.log('TM4C Answered: ' + data);
-		if(data[0]=='{')
-			{			
-				var sample = JSON.parse(data);
-				if(sample.Id<=53)
-					{
-						
-						var status = document.getElementById("statusHeader");
-					    status.innerText= 	"<SampleId: " + sample.Id + " >" +
-					    						"<Freq.: " + sample.F + "Hz>" +
-											"<Iref: " + sample.R + "Arms>" +
-											"<Isensor: " + sample.S +  "Arms>" +
-											"<Phase: " + sample.P + "º>" +
-											"<Gain: " + sample.A + ">" +
-											"<Temp.:" + sample.T + "ºC>" ;
-						
-						$('#startProgressBar').progress('increment');
-						
-						if(sample.Id==53){
-							document.getElementById("btnStart").disabled = false;
-							//$('#startProgressBar').progress('reset');
-							tableFreqSampleIndex=1;
-							tableCurSampleIndex=1;
-							testMode=false;
-							receivedDataCount=0;
-							console.log('End of Sample Data! Test Type= ' + testMode);
-							aliveSignalTM4C();
-						}
-						else if(sample.Id<53)					
-							{
-								
-									
-								if(!testMode) //frequency
-									{
-										Row = document.getElementById("sampleFrequencyTable").rows[tableFreqSampleIndex++].cells;
-										Row[0].innerHTML = sample.F;
-										Row[1].innerHTML = sample.P;
-										Row[2].innerHTML = sample.A;
-									}
-								else{ //current
-										Row = document.getElementById("sampleCurrentTable").rows[tableCurSampleIndex++].cells;
-										Row[0].innerHTML = sample.F;
-										Row[1].innerHTML = sample.R;
-										Row[2].innerHTML = sample.S;
-										Row[3].innerHTML = parseFloat((1-(sample.R/sample.S))*100).toFixed(2);
-									}
-								if(tableFreqSampleIndex==27) testMode=true;
-							}	
-					}
-	
-						console.log(tableCurSampleIndex);
-						console.log('Test Type= ' + testMode);
-					
-			}
-		else
+		//console.log('TM4C Answered: ' + data);	
+		var res = JSON.parse(data);
+		var Phase_real = res.SIN_P.split(';');
+		var Phase_img = res.COS_P.split(';');
+		var Diff_real = res.SIN_D.split(';');
+		var Diff_img = res.COS_D.split(';');
+		var Voltage_real = res.SIN_V.split(';');
+		var Voltage_img = res.COS_V.split(';');
+		console.log('Real length: ' + Phase_real.length );
+		var signal=[],time=[];
+		receivedCount++;
+		for(var i=0; i<SAMPLE_POINTS; i++)
+		{
+			signal[i] = 0;
+			time[i] = i * (1/SAMPLE_FREQUENCY); 
+			totalTime[index]= index * (1/SAMPLE_FREQUENCY); 
+			sampledPhase[index]=0;
+			sampledDiff[index]=0;
+			sampledVoltage[index]=0;
+			for(var j=0; j<Phase_real.length; j++)
 			{
-			document.getElementById("statusHeader").innerText="TM4C Answer: " + data;
+				var amp = Math.sqrt(Math.pow(hex2float(Phase_real[j]),2)+Math.pow(hex2float(Phase_img[j]),2))/(SAMPLE_POINTS/2);
+				var ang = Math.atan2(hex2float(Phase_img[j]),hex2float(Phase_real[j]));	
+				sampledPhase[index] =  sampledPhase[index] + (amp * Math.cos(2*Math.PI*time[i]*(j+1)*BASE_FREQUENCY + ang));
+				//sampledPhase[index]=signal[i];
+				
+				var amp = Math.sqrt(Math.pow(hex2float(Diff_real[j]),2)+Math.pow(hex2float(Diff_img[j]),2))/(SAMPLE_POINTS/2);
+				var ang = Math.atan2(hex2float(Diff_img[j]),hex2float(Diff_real[j]));	
+				sampledDiff[index] =  sampledDiff[index] + (amp * Math.cos(2*Math.PI*time[i]*(j+1)*BASE_FREQUENCY + ang));
+				//sampledDiff[index]=signal[i];
+				
+				var amp = Math.sqrt(Math.pow(hex2float(Voltage_real[j]),2)+Math.pow(hex2float(Voltage_img[j]),2))/(SAMPLE_POINTS/2);
+				var ang = Math.atan2(hex2float(Voltage_img[j]),hex2float(Voltage_real[j]));	
+				sampledVoltage[index] =  sampledVoltage[index] + (amp * Math.cos(2*Math.PI*time[i]*(j+1)*BASE_FREQUENCY + ang));
+				//sampledVoltage[index]=signal[i];
 			}
+			index++;
+		}
+		console.log('\nReceived Count: '+ receivedCount);
+		/*for(var i=0; i<SAMPLE_POINTS; i++)
+		{
+			time[i] = time[i]*1000; 
+			time[i] = time[i].toFixed(2);
+		}*/
+		
+		//var graph = document.createElement('canvas');
+		//var graphId = 'graph' + num++;
+		//console.log('graph id: ' + graphId);
+		//graph.id=graphId;
+		//document.body.appendChild(graph);
+		//document.getElementById("graphPlace").appendChild(graph);
+		
+				
+		//plot(time,signal,graphId,'Reconstructed Wave Form', 'rgba(75,192,192,0.4)');		
+		//console.log('signal: '+ signal);
+		//document.getElementById("statusHeader").innerText="TM4C Answer: " + data;
+		console.log('num: ' + num);
+		console.log('\nReceived Count: '+ receivedCount);
+		if(++num>9)
+		{
+		
+		for(var i=0; i<totalTime.length; i++)
+		{
+			totalTime[i] = totalTime[i]*1000; 
+			totalTime[i] = totalTime[i].toFixed(2);
+		}
+			
+			//var graph = document.createElement('canvas');
+			//var graphId = 'graph' + num++;
+			//console.log('graph id: ' + graphId);
+			//graph.id=graphId;
+			//document.getElementById("graphPlace").remove(graph);
+			//document.body.appendChild(graph);
+			//document.getElementById("graphPlace").appendChild(graph);
+			plot2(totalTime,sampledPhase,sampledDiff,'graphDataSample','Reconstructed Wave Form');
+			//plot(totalTime,sampledDiff,'graphDataSample','Reconstructed Wave Form','red');
+			num=0;
+			index=0;
+			totalTime=[];
+			sampledPhase=[];
+			sampledDiff=[];
+			sampledPhase[0]=0;
+			sampledDiff[0]=0;
+			sampledVoltage[0]=0;
+			//console.log('total time: ' + totalTime);
+		}
 	});
 	
 	
@@ -239,333 +237,7 @@ $(document).ready(function() {
 			}
 	});
 		
-	/**
-	* 
-	******************* Socket process for database threads
-	*
-	*/
-	socket.on("dataBaseResponse", function(data) {
-		console.log('Data base response: ' + data);
-		//document.getElementById("statusHeader").innerText=data;
-		alert(data);
-	});
 	
-	
-	socket.on(SENSOR_SETTINGS_DATABASE_NAME, function(dbResponse) {
-		console.log('Search on ' + SENSOR_SETTINGS_DATABASE_NAME + ' result this: \n\t' + dbResponse);
-		var dbResponse = JSON.parse(dbResponse);
-		var query = dbResponse.dbQuery;
-		var response = dbResponse.dbResult;
-		console.log("Response: " + JSON.stringify(response));
-		//console.log("Query: " + JSON.stringify(query));
-		var sel = document.getElementById("sensorTypeSelect");
-		if (sel.options.length>0) 
-			{
-				var lastSelected = sel.selectedIndex;
-			}
-		else
-			{
-				var lastSelected = 0;
-			}
-		if(jQuery.isEmptyObject(query))
-			{
-				sel.options.length = 0;			
-				for(var i=0; i<response.length; i++)
-					{
-						var opt = document.createElement("option");
-						opt.text=response[i].SensorType;
-						sel.add(opt);	
-					}
-				sel.selectedIndex=lastSelected;
-				console.log('last selected all: ' + lastSelected);
-				document.getElementById("readMinCur").value=response[lastSelected].MinCurrent;
-				document.getElementById("readMaxCur").value=response[lastSelected].MaxCurrent;
-				document.getElementById("readLoadRes").value=response[lastSelected].LoadRes;
-				document.getElementById("readLoadMaxP").value=response[lastSelected].LoadMaxP;
-				document.getElementById("readSensorScale").value=response[lastSelected].SensorScale
-				document.getElementById("readShuntRes").value=response[lastSelected].ShuntRes;
-				document.getElementById("readFreqResAmp").value=response[lastSelected].FreqResAmp;
-				document.getElementById("readCurLinFreq").value=response[lastSelected].CurLinFreq;
-			}
-		else
-			{
-				if (sel.options.length==0) 
-					{
-						var opt = document.createElement("option");
-						opt.text=response.SensorType;
-						sel.add(opt);
-					}
-				console.log('last selected unitary: ' + lastSelected);
-				sel.selectedIndex=lastSelected;
-				document.getElementById("readMinCur").value=response[0].MinCurrent;
-				document.getElementById("readMaxCur").value=response[0].MaxCurrent;
-				document.getElementById("readLoadRes").value=response[0].LoadRes;
-				document.getElementById("readLoadMaxP").value=response[0].LoadMaxP;
-				document.getElementById("readSensorScale").value=response[0].SensorScale
-				document.getElementById("readShuntRes").value=response[0].ShuntRes;
-				document.getElementById("readFreqResAmp").value=response[0].FreqResAmp;
-				document.getElementById("readCurLinFreq").value=response[0].CurLinFreq;
-			}
-		//console.log('last selected: ' + lastSelected);
-/* 			{
-				// just in case that have only one sensor in database
-				//var sel = document.getElementById("sensorTypeSelect");
-				var opt = document.createElement("option");
-				if (sel.options.length==0) {
-					opt.text=response[0].SensorType;
-					sel.add(opt);
-				} 
-				// just fill text boxes with sensor data
-				document.getElementById("readMinCur").value=response[0].MinCurrent;
-				document.getElementById("readMaxCur").value=response[0].MaxCurrent;
-				document.getElementById("readLoadRes").value=response[0].LoadRes;
-				document.getElementById("readLoadMaxP").value=response[0].LoadMaxP;
-				document.getElementById("readSensorScale").value=response[0].SensorScale
-				document.getElementById("readShuntRes").value=response[0].ShuntRes;
-				document.getElementById("readFreqResAmp").value=response[0].FreqResAmp;
-				document.getElementById("readCurLinFreq").value=response[0].CurLinFreq;
-			}
-		else if(response.length>1)
-			{
-				//var sel = document.getElementById("sensorTypeSelect");
-				sel.options.length = 0;			
-				for(var i=0; i<response.length; i++)
-					{
-						var opt = document.createElement("option");
-						opt.text=response[i].SensorType;
-						sel.add(opt);	
-						//console.log('\n\tSensor Type: '+response[i].SensorType);
-/* 						if(i===0)
-							{
-							document.getElementById("readMinCur").value=response[0].MinCurrent;
-							document.getElementById("readMaxCur").value=response[0].MaxCurrent;
-							document.getElementById("readLoadRes").value=response[0].LoadRes;
-							document.getElementById("readLoadMaxP").value=response[0].LoadMaxP;
-							document.getElementById("readSensorScale").value=response[0].SensorScale
-							document.getElementById("readShuntRes").value=response[0].ShuntRes;
-							document.getElementById("readFreqResAmp").value=response[0].FreqResAmp;
-							document.getElementById("readCurLinFreq").value=response[0].CurLinFreq;
-							} */
-/* 					}	
-				sel.selectedIndex=lastSelected;
-				document.getElementById("readMinCur").value=response[0].MinCurrent;
-				document.getElementById("readMaxCur").value=response[0].MaxCurrent;
-				document.getElementById("readLoadRes").value=response[0].LoadRes;
-				document.getElementById("readLoadMaxP").value=response[0].LoadMaxP;
-				document.getElementById("readSensorScale").value=response[0].SensorScale
-				document.getElementById("readShuntRes").value=response[0].ShuntRes;
-				document.getElementById("readFreqResAmp").value=response[0].FreqResAmp;
-				document.getElementById("readCurLinFreq").value=response[0].CurLinFreq;
-			}   */
-	});
-	
-	
-	socket.on(TEST_DAY_DATABASE_NAME, function(dbResponse) {
-		console.log('Search on ' + TEST_DAY_DATABASE_NAME + ' result this: \n\t' + dbResponse);
-		var dbResponse = JSON.parse(dbResponse);
-		var query = dbResponse.dbQuery;
-		var response = dbResponse.dbResult;
-		
-		// if query is empty we are looking for all data
-		if(jQuery.isEmptyObject(query))
-			{
-				// fill test day select option
-				var sel = document.getElementById("dateSelect");
-				sel.options.length = 0;		
-				var actual='',last='';
-				for(var i=0; i<response.length; i++)
-				{
-					actual=response[i].date;
-					if(actual != last)
-					{
-						var opt = document.createElement("option");
-						opt.text=response[i].date;
-						sel.add(opt);
-						last=actual;
-					}				
-				}
-				// fill sensor ID select option
-				var sel = document.getElementById("sensorIdSelect");	
-				sel.options.length = 0;
-				var actual='',last='';
-				for(var i=0; i<response.length; i++)
-				{
-					actual=response[i].sensorID;
-					if(actual != last)
-					{
-						var opt = document.createElement("option");
-						opt.text=response[i].sensorID;
-						sel.add(opt);
-						last=actual;
-					}
-				}
-				sel.selectedIndex=sel.length-1; // move to last test made
-				searchSensorData(); // fill table data and plot graphs
-			}
-		else
-			{
-				// fill sensor ID select option
-				var sel = document.getElementById("sensorIdSelect");	
-				sel.options.length = 0;
-				var actual='',last='';
-				for(var i=0; i<response.length; i++)
-				{
-					actual=response[i].sensorID;
-					if(actual != last)
-					{
-						var opt = document.createElement("option");
-						opt.text=response[i].sensorID;
-						sel.add(opt);
-						last=actual;
-					}
-				}
-				sel.selectedIndex=sel.length-1; // move to last test made
-				searchSensorData(); // fill table data and plot graphs
-			}
-		
-	});
-	
-	
-	socket.on(FREQUENCY_DATABASE_NAME, function(dbResponse) {
-		console.log('Search on ' + FREQUENCY_DATABASE_NAME + ' result this: \n\t' + dbResponse);
-		var dbResponse = JSON.parse(dbResponse);
-		var query = dbResponse.dbQuery;
-		var response = dbResponse.dbResult;
-		
-		if(response.length>0)
-			{
-			document.getElementById("frequencyTable").caption.innerHTML="Frequency Response of Sensor Id: " + response[0].sensorId;
-			// fill with data
-			var freq60=[],phase60=[],gain60=[];
-			var freq50=[],phase50=[],gain50=[];
-			
-			for(var i = 1; i<response.length+1;i++)
-			{			
-				Row = document.getElementById("frequencyTable").rows[i].cells;
-				Row[0].innerHTML = response[i-1].TimeStamp;
-				Row[1].innerHTML = response[i-1].Frequency;
-				Row[2].innerHTML = response[i-1].Iref;
-				Row[3].innerHTML = response[i-1].Isensor;
-				Row[4].innerHTML = response[i-1].Phase;
-				Row[5].innerHTML = response[i-1].Amplitude;
-				Row[6].innerHTML = response[i-1].Temperature;
-				
-				if(i<=13){
-					freq60[i-1]=response[i-1].Frequency;
-					phase60[i-1]=response[i-1].Phase;
-					gain60[i-1]=response[i-1].Amplitude;
-				}else{
-					freq50[i-14]=response[i-1].Frequency;
-					phase50[i-14]=response[i-1].Phase;
-					gain50[i-14]=response[i-1].Amplitude;
-				}
-			}
-			plotFrequency(freq60,phase60,'graphFreq50', 'Frequency Response 60Hz Base', "rgba(75,192,192,1)" );	
-			plotFrequency(freq50,phase50,'graphFreq60', 'Frequency Response 50Hz Base', "rgba(175,12,192,1)");
-			plotFrequency(freq60,gain60,'graphGain50', 'Gain Response 60Hz Base', "rgba(75,192,45,1)" );	
-			plotFrequency(freq50,gain50,'graphGain60', 'Gain Response 50Hz Base', "rgba(255,12,50,1)");			
-			}
-	});
-	
-	socket.on(CURRENT_DATABASE_NAME, function(dbResponse) {
-		console.log('Search on ' + FREQUENCY_DATABASE_NAME + ' result this: \n\t' + dbResponse);
-		var dbResponse = JSON.parse(dbResponse);
-		var query = dbResponse.dbQuery;
-		var response = dbResponse.dbResult;
-		
-		if(response.length>0)
-			{
-			document.getElementById("currentTable").caption.innerHTML="Current Response of Sensor Id: " + response[0].sensorId;
-			var freq=[],iref=[],isensor=[];
-			console.log('valor da amostra:' + response.length);
-			for(var i = 1; i<response.length+1;i++)
-			{	
-				Row = document.getElementById("currentTable").rows[i].cells;
-				Row[0].innerHTML = response[i-1].TimeStamp;
-				Row[1].innerHTML = response[i-1].Frequency;
-				Row[2].innerHTML = response[i-1].Iref;
-				Row[3].innerHTML = response[i-1].Isensor;
-				Row[4].innerHTML = response[i-1].Phase;
-				Row[5].innerHTML = response[i-1].Amplitude;
-				Row[6].innerHTML = response[i-1].Temperature;
-				
-				freq[i]=i;
-				iref[i]=response[i-1].Iref;
-				isensor[i]=response[i-1].Isensor;
-				
-			}
-			plotCurrent(freq,iref,isensor,'graphCurrent', 'Current Linearity Response');
-					
-			}
-	});
-	/*
-	*
-	*---------- Database Funtcions
-	*
-	*/
-	function clearDataBase(dbDataType, dbName){
-		socket.emit('clearDataBase', {dbDataType:dbDataType, dbName:dbName});
-		console.log('Clear Data Base. \n\tType: ' + dbDataType + ' name: ' +  dbName);
-	}
-		
-	function createDataBase(dbDataType, dbName){
-		socket.emit('createDataBase', {dbDataType:dbDataType, dbName:dbName});
-		console.log('Create Data Base. \n\tType: ' + dbDataType + ' name: ' +  dbName);
-	}
-	function searchDatabase(dbTableName, dbQuery){
-		var dbObj={dbTableName:dbTableName, dbQuery:dbQuery};
-		socket.emit('searchDatabase',dbObj);	
-	}
-	
-	function saveSensorDataSettingsDB(dbTableName){
-		var dbObj = {
-					dbTableName:dbTableName,
-					dbData:{
-						SensorType:document.getElementById("saveSensorType").value, 
-						MinCurrent:document.getElementById("saveMinCur").value,
-						MaxCurrent:document.getElementById("saveMaxCur").value,
-						LoadRes:document.getElementById("saveLoadRes").value,
-						LoadMaxP:document.getElementById("saveLoadMaxP").value,
-						ShuntRes:document.getElementById("saveShuntRes").value,
-						FreqResAmp:document.getElementById("saveFreqResAmp").value,
-						CurLinFreq:document.getElementById("saveCurLinFreq").value,
-						SensorScale:document.getElementById("saveSensorScale").value
-						}
-					};
-		console.log(JSON.stringify(dbObj));
-		clearSensorSettingsTxt(); //clear text box
-		socket.emit('saveSensorDataSettingsDB', dbObj);
-	}
-	
-	function clearSensorSettingsTxt(){
-		document.getElementById("saveSensorType").value=""; 
-		document.getElementById("saveMinCur").value="";
-		document.getElementById("saveMaxCur").value="";
-		document.getElementById("saveLoadRes").value="";
-		document.getElementById("saveLoadMaxP").value="";
-		document.getElementById("saveShuntRes").value="";
-		document.getElementById("saveFreqResAmp").value="";
-		document.getElementById("saveCurLinFreq").value="";
-		document.getElementById("saveSensorScale").value="";
-	}
-	
-	/*
-	*
-	*---------- Select dropdown box funtcions
-	*
-	*/
-	// on select "Select a Sensor ID"
- 	function searchSensorData() {
-		var optSelected = document.getElementById("sensorIdSelect").value;
-		searchDatabase(FREQUENCY_DATABASE_NAME, {sensorId:optSelected});
-		searchDatabase(CURRENT_DATABASE_NAME, {sensorId:optSelected});
-	}
-	
-	// on select "Select a date test"
-	function searchDayData(){
-		var optSelected = document.getElementById("dateSelect").value;
-    		searchDatabase(TEST_DAY_DATABASE_NAME, {date:optSelected}); 
-	}
 	/*
 	*
 	*---------- Execution Time funtcions, create HTML objects
@@ -604,116 +276,13 @@ $(document).ready(function() {
 		
 	}
 	
-		function createSampleFrequencyTable(){
-				
-				var table = document.createElement('table');
-				table.setAttribute('id','sampleFrequencyTable');
-				table.setAttribute('class','ui striped blue table');	
-			for (var i = 1; i < 29; i++){
-				if(i==1){
-					var caption = document.createElement('caption'); 
-					table.appendChild(caption);
-				}
-				var tr = document.createElement('tr');   
-				var td = [];
-				var text = [];
-				for(var j=1; j<=3; j++){
-					if(i==1){
-					td[j] = document.createElement('th');
-					text[j] = document.createTextNode('');
-					td[j].appendChild(text[j]);
-					tr.appendChild(td[j]);	
-					}
-					else{
-					td[j] = document.createElement('td');
-					text[j] = document.createTextNode('');
-					td[j].appendChild(text[j]);
-					tr.appendChild(td[j]);
-					}
-				}	
-				table.appendChild(tr);
-			}
-			document.getElementById('frequencySampleTablePlace').appendChild(table);
-		
-	}
-	
-	function createSampleCurrentTable(){
-				
-				var table = document.createElement('table');
-				table.setAttribute('id','sampleCurrentTable');
-				table.setAttribute('class','ui striped red table');	
-			for (var i = 1; i < 29; i++){
-				if(i==1){
-					var caption = document.createElement('caption'); 
-					table.appendChild(caption);
-				}
-				var tr = document.createElement('tr');   
-				var td = [];
-				var text = [];
-				for(var j=1; j<=4; j++){
-					if(i==1){
-					td[j] = document.createElement('th');
-					text[j] = document.createTextNode('');
-					td[j].appendChild(text[j]);
-					tr.appendChild(td[j]);	
-					}
-					else{
-					td[j] = document.createElement('td');
-					text[j] = document.createTextNode('');
-					td[j].appendChild(text[j]);
-					tr.appendChild(td[j]);
-					}
-				}	
-				table.appendChild(tr);
-			}
-			document.getElementById('currentSampleTablePlace').appendChild(table);
-		
-	}
-	
-	function createCurrentTable(){
-		
-		var table = document.createElement('table');
-		table.setAttribute('id','currentTable');
-		table.setAttribute('class','ui striped red table');	
-	for (var i = 1; i < 29; i++){
-		if(i==1){
-			var caption = document.createElement('caption'); 
-			table.appendChild(caption);
-		}
-		var tr = document.createElement('tr');   
-		var td = [];
-		var text = [];
-		for(var j=1; j<=8; j++){
-			if(i==1){
-			td[j] = document.createElement('th');
-			text[j] = document.createTextNode('');
-			td[j].appendChild(text[j]);
-			tr.appendChild(td[j]);	
-			}
-			else{
-			td[j] = document.createElement('td');
-			text[j] = document.createTextNode('');
-			td[j].appendChild(text[j]);
-			tr.appendChild(td[j]);
-			}
-		}	
-		table.appendChild(tr);
-	}
-	document.getElementById('currentTablePlace').appendChild(table);
-}
-	function clearSampleTables(){
-		t1 = document.getElementById("sampleFrequencyTable").getElementsByTagName('td');
-		t2 =  document.getElementById("sampleCurrentTable").getElementsByTagName('td');
-	 	for(var i=0; (i < t1.length); i++) t1[i].innerHTML='';
-	 	for(var i=0; (i < t2.length); i++) t2[i].innerHTML='';
-	}
 	
 	/*
 	*
 	*---------- Plot functions
 	*
 	*/
-	function plotFrequency(x,y,graph,label,color){
+	function plot(x,y,graph,label,color){
 			var ctx = document.getElementById(graph).getContext('2d');
 			var myChart = new Chart(ctx, {
 				  type: 'line',
@@ -751,21 +320,21 @@ $(document).ready(function() {
 				}); 
 		
 		}	
-	function plotCurrent(x,y1,y2,graph,label){
+	function plot2(x,y1,y2,graph,label){
 		var ctx = document.getElementById(graph).getContext('2d');
 		var myChart = new Chart(ctx, {
 			  type: 'line',
 			  data:{
 				    labels: x,
 				     datasets: [{
-				         label: "Reference Current",
+				         label: "Phase Current",
 				         borderColor: window.chartColors.blue,
 				         backgroundColor: window.chartColors.blue,
 				         fill: false,
 				         data: y1
 				         //yAxisID: "y-axis-1",
 				     }, {
-				         label: "Sensor Current",
+				         label: "Voltage",
 				         borderColor: window.chartColors.red,
 				         backgroundColor: window.chartColors.red,
 				         fill: false,
@@ -777,6 +346,15 @@ $(document).ready(function() {
 		             responsive: true,
 		             hoverMode: 'index',
 		             stacked: false,
+					 lineTension: 1,
+					 pointRadius: 0,
+					 pointHitRadius: 0,
+					 cubicInterpolationMode: 'default',
+					 elements: {
+								point:{
+								radius: 0
+								}
+					},
 		             title:{
 		                 display: true,
 		                 text:label
@@ -790,9 +368,10 @@ $(document).ready(function() {
 		                     gridLines: {
 		                         drawOnChartArea: true, // only want the grid lines for one axis to show up
 		                     },
+							 pointRadius: 0,
 		                 }
  		                 ,
-/*		                 {
+		                 {
 		                     type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 		                     display: true,
 		                     position: "right",
@@ -801,22 +380,14 @@ $(document).ready(function() {
 		                     gridLines: {
 		                         drawOnChartArea: false, // only want the grid lines for one axis to show up
 		                     }, 
-		                 }*/
+							 pointRadius: 0,
+		                 }
 		                 ],
 		             }
 		         }
 			}); 
 	}	
 	
-	// Set sensor Id function
-	function setSensorId(){
-		var d = new Date();		
-		SensorId = $("#sensorTypeSelect").val() + '-' + d.getDate() + (d.getMonth()+1)  + '/' + Math.floor((Math.random() * 675113) + 1);
-		$("#txtSensorId").val(SensorId);
-		console.debug(SensorId);
-		clearSampleTables();
-		$('#startProgressBar').progress('reset');
-	}
 	
 	// Request signal of life from TM4C
 	var aliveTimer
@@ -826,57 +397,35 @@ $(document).ready(function() {
 		}, TIME_INTERVAL_TM4C_ALIVE_SIGNAL);
 	}
 	
-	var lastSensorIdSet='';
-	function startTest(){
-		var sensorId = $("#txtSensorId").val();
-		if(sensorId ==='') alert("Error! - Set a Sensor Id First!");
-		else if(lastSensorIdSet==$("#txtSensorId").val()) alert("Error! - Set a different Sensor Id!");
-		else{
-			lastSensorIdSet = $("#txtSensorId").val(); 
-			$('#startProgressBar').progress('reset');
-			var testSettings = [];
-				testSettings = {
-								sensorId:sensorId,
-								shuntRes:$("#readShuntRes").val(),
-								sensorScale:$("#readSensorScale").val(),
-								freqResAmp:$("#readFreqResAmp").val(),
-								curLinFreq:$("#readCurLinFreq").val(),
-								}	
-								
-			
-			/* data[0] = sensorId;
-			data[1] = $("#readShuntRes").val();
-			data[2] = $("#readFreqResAmp").val();
-			data[3] = $("#readCurLinFreq").val(); */
-			clearInterval(aliveTimer);
-			var con = document.getElementById("aliveLabel");
-			con.setAttribute('class','ui purple label');
-			con.text="TM4C running test";
-			
-			document.getElementById("btnStart").disabled = true;
-			socket.emit('startTestProcess', testSettings);
-			console.log('Auto mode active');
-			$('#startProgressBar').progress('reset');
-			clearSampleTables();
-		}
+	
+	function fcnGenerateFail()
+	{
+		socket.emit('GenerateFail');//alert("Hello"); 
 	}
 	
-	function showGainGraph(){
-		var check = document.getElementById("checkGainGraph")
-		if (check.checked)
-			{
-			//alert('Sim');
-			document.getElementById('graphGain60').style.display='block';
-			document.getElementById('graphGain50').style.display='block';
-			}
-		else
-			{
-			document.getElementById('graphGain60').style.display='none';
-			document.getElementById('graphGain50').style.display='none';
-			//alert('Nao');
-			}
+	function hex2float(n){
+	  n = '0x' + n;
+	  var sign = (n >> 31) * 2 + 1; // +1 or -1.
+	  var exp = (n >>> 23) & 0xff;
+	  var mantissa = n & 0x007fffff;
+	  if (exp === 0xff) {
+		// NaN or Infinity
+		return mantissa ? NaN : sign * Infinity;
+
+	  }
+	  else if (exp) {
+		// Normalized value
+		exp -= 127;
+
+		// Add implicit bit in normal mode.
+		mantissa |= 0x00800000;
+	  }
+	  else {
+		// Subnormal number
+		exp = -126;
+	  }
+	  return sign * mantissa * Math.pow(2, exp - 23);
 	}
-	
 	
 </script>
 
@@ -885,7 +434,7 @@ $(document).ready(function() {
 <body>
 
 <h2 class="ui center aligned header">
-	Protegemed - TM4C and Node.js Beta Version
+	Protegemed - TM4C and Node.js - Beta Version
 </h2>
 	<h3 id="statusHeader" class="ui green center aligned block header">
   				........ 
@@ -895,306 +444,42 @@ $(document).ready(function() {
 	<div class="two wide column">
 	<a class="ui red label" id="aliveLabel">TM4C offline</a>
 		<div id="mainMenu" class="ui vertical huge fluid tabular menu">
-		  <div id="menuSample" class="item active" onClick="menuHandler('Sample')">
-			Test Control
+		  <div id='Menu1' class="item active" onClick="menuHandler('Menu1')">
+			SoftKey1
 		  </div>
-		  <a id="menuSettings" class="item" onClick="menuHandler('Settings')">Test Settings </a>
-		  <a id="menuData" class="item" onClick="menuHandler('Data')">Data Analisys</a>
-		  <a id="menuHelp" class="item" onClick="menuHandler('Help')">Help</a>
+		  <a id='Menu2' class="item" onClick="menuHandler('Menu2')">SoftKey2 </a>
+		  <a id='Menu3' class="item" onClick="menuHandler('Menu3')">SoftKey3</a>
+		  <a id='Menu4' class="item" onClick="menuHandler('Menu4')">SoftKey4</a>
 		</div>
 		
 	</div>
 	
 	<div class="twelve wide stretched column">
 	
-<!--		Page Sample data place-->
-		<div id="pageSample" class="ui segment" >
-			
-		<div class="ui indicating progress" data-value="1" data-total="52" id="startProgressBar">
-		  <div class="bar">
-			<div class="progress"></div>
-		  </div>
+		<div id='Page1' class="ui segment" >
+			<div class="ui segment">
+				<button id="btnGenerateFail" class="ui primary button" onClick="fcnGenerateFail()">
+				  Generate Fail
+				</button>
+			</div>
+				
+			<div id="graphPlace" class="ui segment">	
+				<canvas id="graphDataSample"></canvas>
+			</div>
 		</div>
+
+		<div id='Page2' class="ui segment">
 			
-			<div class="ui blue segment" >
+		</div>
+		
+		<div id='Page3' class="ui segment">
 						
-				
-				<div class="ui equal width form">
-				  <div class="fields">
-					<div class="field">
-						<a class="ui pointing below green label">Sensor Type</a>
-						<select class="ui dropdown sensorSelect"  id="sensorTypeSelect" onClick="getSensorSettings('select')">
-							 <i class="dropdown icon"></i>
-						</select>
-					</div>
-					
-					<div class="field">
-					  <label>Min Current</label>
-					  <input id="readMinCur" type="text" >
-					</div>
-					<div class="field">
-					  <label>Max Current</label>
-					  <input id="readMaxCur" type="text" >
-					</div>
-				 
-					<div class="field">
-					  <label>Load Resistence</label>
-					  <input id="readLoadRes" type="text" >
-					</div>
-					<div class="field">
-					  <label>Load Max Power</label>
-					  <input id="readLoadMaxP" type="text" >
-					</div>
-					
-				  </div>
-				   <div class="fields">
-					   <div class="field">
-						  <label>Sensor Scale</label>
-						  <input id="readSensorScale" type="text" >
-						</div>
-					   <div class="field">
-						  <label>Shunt Resistence</label>
-						  <input id="readShuntRes" type="text" >
-						</div>
-						<div class="field">
-						  <label>Frequency Response Amplitude Value</label>
-						  <input id="readFreqResAmp" type="text" >
-						</div>
-						<div class="field">
-						  <label>Current Linearity Frequency Value</label>
-						  <input id="readCurLinFreq" type="text">
-						</div>
-				  </div>
-				</div>	
-				
-				<div class="fields">   	
-				   <div class="field">
-						<div class="ui action input">
-						  <input id="txtSensorId" type="text">
-						  <button class="ui button green" onClick="setSensorId()"> Set SensorID</button>
-						</div>
-					
-						<button id="btnStart" class="ui primary button" onClick="startTest()">
-							Start Test
-						</button>
-					</div>
-				</div>
-			</div>
-			<div class="ui horizontal segments">
-				<div id="frequencySampleTablePlace" class="ui purple segment" >
-
-				</div>
-				<div id="currentSampleTablePlace" class="ui purple segment" >
-
-				</div>
-			</div>
 		</div>
+	
+		<div id='Page4' class="ui segment">
 			
-<!--		Page settings data place-->
-		<div id="pageSettings" class="ui segment">
-			<div class="ui violet segment">
-			<h3 class="ui violet center aligned block header">
-  				Create new sensor data
-			</h3>
-				<div class="ui equal width form">
-				  <div class="fields">
-					<div class="field">
-					  <label>Sensor Type</label>
-					  <input id="saveSensorType" type="text" placeholder="Low or High Current">
-					</div>
-					<div class="field">
-					  <label>Min Current</label>
-					  <input id="saveMinCur" type="text" placeholder="Arms">
-					</div>
-					<div class="field">
-					  <label>Max Current</label>
-					  <input id="saveMaxCur" type="text" placeholder="Arms">
-					</div>
-				  </div>
-				  <div class="fields">
-					<div class="field">
-					  <label>Load Resistence</label>
-					  <input id="saveLoadRes" type="text" placeholder="Ohms">
-					</div>
-					<div class="field">
-					  <label>Load Max Power</label>
-					  <input id="saveLoadMaxP" type="text" placeholder="Watts">
-					</div>
-					<div class="field">
-					  <label>Shunt Resistence</label>
-					  <input id="saveShuntRes" type="text" placeholder="Ohms">
-					</div>
-				  </div>
-				   <div class="fields">
-					<div class="field">
-					  <label>Frequency Response Amplitude Value</label>
-					  <input id="saveFreqResAmp" type="text" placeholder="Duty Cycle 5...99%">
-					</div>
-					<div class="field">
-					  <label>Current Linearity Frequency Value</label>
-					  <input id="saveCurLinFreq" type="text" placeholder="60...780Hz">
-					</div>
-					<div class="field">
-					  <label>Sensor Scale</label>
-					  <input id="saveSensorScale" type="text" placeholder="Sensor Scale">
-					</div>
-				  </div>
-				  	<button class="ui violet button" onClick="saveSensorDataSettingsDB(SENSOR_SETTINGS_DATABASE_NAME)">Save to Data Base</button>
-				</div>			
-			</div>
-<!-- 			<div class="ui olive segment">
-			 <h3 class="ui olive center aligned block header">
-  				Create table data
-			</h3>
-				<div class="ui equal width form">
-				  <div class="fields">
-				  	<div class="field">
-						<button class="ui olive button" onClick="createDataBase(FREQUENCY_DATA_TYPE, FREQUENCY_DATABASE_NAME)">Create Frequency DB</button>
-					 </div>
-					 <div class="field">
-					<button class="ui olive button" onClick="createDataBase(CURRENT_DATA_TYPE, CURRENT_DATABASE_NAME)" >Create Current DB</button>
-					</div>
-					 <div class="field">
-					<button class="ui olive button" onClick="createDataBase(SENSOR_SETTINGS_DATA_TYPE, SENSOR_SETTINGS_DATABASE_NAME)" >Create Sensor DB</button>
-					</div>
-					 <div class="field">
-					<button class="ui olive button" onClick="createDataBase(TEST_DAY_DATA_TYPE, TEST_DAY_DATABASE_NAME)">Create Date DB</button>
-					  </div>
-				  </div>
-				</div>
-			</div> -->
-			<div class="ui red segment">
-			 <h3 class="ui red center aligned block header">
-  				Delete table data
-			</h3>
-				<div class="ui equal width form">
-				  <div class="fields">
-				  	<div class="field">
-						<button class="ui red button" onClick="clearDataBase(FREQUENCY_DATA_TYPE, FREQUENCY_DATABASE_NAME)">Clear Frequency DB</button>
-					 </div>
-					 <div class="field">
-					<button class="ui red button" onClick="clearDataBase(CURRENT_DATA_TYPE, CURRENT_DATABASE_NAME)" >Clear Current DB</button>
-					</div>
-					 <div class="field">
-					<button class="ui red button" onClick="clearDataBase(SENSOR_SETTINGS_DATA_TYPE, SENSOR_SETTINGS_DATABASE_NAME)" >Clear Sensor DB</button>
-					</div>
-					 <div class="field">
-					<button class="ui red button" onClick="clearDataBase(TEST_DAY_DATA_TYPE, TEST_DAY_DATABASE_NAME)">Clear Date DB</button>
-					  </div>
-				  </div>
-				</div>
-			</div>
 		</div>
-		
-
-		<div id="pageData" class="ui segment">
-		
-			<div class="ui compact menu">
-		 	 	<div class="ui teal large label">
-		  			Select a date test:
-		  		</div>
-			 	<select class="ui dropdown testDaySelect" id="dateSelect" onClick="searchDayData()">
-				  <i class="dropdown icon"></i>	
-			  	</select>
-			</div>
-			<div class="ui compact menu">
-		  		<div class="ui teal large label">
-		  			Select a Sensor Id:
-		  		</div>
-				  <select class="ui dropdown sensorIdDataSelect"  id="sensorIdSelect" onClick="searchSensorData()">
-					 <i class="dropdown icon"></i>
-				  </select>		
-			</div>
-			
-				<div class="ui toggle checkbox">
-			      <input type="checkbox" tabindex="0" id="checkGainGraph" onclick="showGainGraph()">
-			      <label>Show Gain Response Graph</label>
-			    </div>
-			
-			<div class="ui horizontal segments">
-				<div class="ui segment">	
-					<canvas id="graphFreq60"></canvas>
-				</div>
-				<div class="ui segment">	
-					<canvas id="graphFreq50"></canvas>
-				</div>
-			</div>
-				
-			<div class="ui horizontal segments" >
-				<div class="ui segment">	
-					<canvas id="graphGain60"></canvas>
-				</div>
-				<div class="ui segment">	
-					<canvas id="graphGain50"></canvas>
-				</div>
-			</div>
-
-				<div id="frequencyTablePlace" class="ui segment">	
-				</div>
-				
-				<div class="ui segment">	
-					<canvas id="graphCurrent"></canvas>
-				</div>
-				
-				<div id="currentTablePlace" class="ui segment">	
-				</div>
-				
-		</div>
-
-				
-		<div id="pageHelp" class="ui segment">
-			<div class="ui items">
-			  <div class="item">
-			  <div class="image">
-			      <img src="/images/wireframe/image.png">
-			    </div>
-			    <div class="content">
-			      <a class="header">How to use this software</a>
-			      <div class="meta">
-			        <span>Description</span>
-			      </div>
-			      <div class="description">
-			        <p></p>
-			      </div>
-			      <div class="extra">
-			        Additional Details
-			      </div>
-			    </div>
-			  </div>
-			  <div class="item">
-			    <iframe width="360" height="215" src="https://www.youtube.com/embed/D_BU73STTrA" frameborder="0"></iframe>
-			    <div class="content">
-			      <a class="header">Oscilloscope analisys</a>
-			      <div class="meta">
-			        <span>Description</span>
-			      </div>
-			      <div class="description">
-			        <p></p>
-			      </div>
-			      <div class="extra">
-			        Additional Details
-			      </div>
-			    </div>
-			  </div>
-			  <div class="item">
-			    <div class="image">
-			      <img src="/images/wireframe/image.png">
-			    </div>
-			    <div class="content">
-			      <a class="header">Hardware Setup</a>
-			      <div class="meta">
-			        <span>Description</span>
-			      </div>
-			      <div class="description">
-			        <p></p>
-			      </div>
-			      <div class="extra">
-			        Additional Details
-			      </div>
-			    </div>
-			  </div>
-			</div>
-		</div>
+	
 	</div>
 </div>
 

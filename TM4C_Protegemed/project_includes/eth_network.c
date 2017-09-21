@@ -68,7 +68,12 @@ void httpPOST_Task(UArg arg0, UArg arg1)
 
     ret = HTTPCli_connect(&cli, (struct sockaddr *)&addr, 0, NULL);
     if (ret < 0) {
-        Log_info1("%d: httpPOST_Task: connect failed", ret);
+        Log_info1("%d: httpPOST_Task: connect failed, retrying..", ret);
+        ret = HTTPCli_connect(&cli, (struct sockaddr *)&addr, 0, NULL);
+        if (ret < 0) {
+                Log_info1("%d: httpPOST_Task: connect failed, retrying..2", ret);
+                ret = HTTPCli_connect(&cli, (struct sockaddr *)&addr, 0, NULL);
+        }
     }
 
     ret = HTTPCli_sendRequest(&cli, HTTPStd_POST, PTGM_URI, true);
@@ -141,21 +146,9 @@ void tcpWorker(UArg arg0, UArg arg1)
             }
             case 'g': // Create HTML POST
             {
-                static Task_Handle taskHandle;
-                Task_Params taskParams;
-                Error_Block eb;
+                char temp[115]="POST / HTTP/1.1\nHost: 192.168.2.151\nContent-Length: 7\nContent-Type: application/x-www-form-urlencoded\nTYPE=04";
 
-                    Error_init(&eb);
-                    Task_Params_init(&taskParams);
-                    taskParams.stackSize = HTTPTASKSTACKSIZE;
-                    taskParams.priority = 1;
-                    taskHandle = Task_create((Task_FuncPtr)httpPOST_Task, &taskParams, &eb);
-                    if (taskHandle == NULL)
-                        {
-                            printError("netIPAddrHook: Failed to create HTTP Task\n", -1);
-                        }
-
-                send(clientfd, "http Post", 9, 0);
+                send(clientfd, temp, strlen(temp), 0);
                 break;
             }
             default:

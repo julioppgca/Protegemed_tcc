@@ -172,6 +172,9 @@ digraph configuration {
         ti_uia_events_DvtTypes [style=filled,fillcolor=lightgray, label="DvtTypes"];
         ti_uia_events__top -> ti_uia_events_DvtTypes[style=invis];
         ti_uia_events_DvtTypes -> ti_uia_events__bot[style=invis];
+        ti_uia_events_UIABenchmark [style=filled,fillcolor=lightgray, label="UIABenchmark"];
+        ti_uia_events__top -> ti_uia_events_UIABenchmark[style=invis];
+        ti_uia_events_UIABenchmark -> ti_uia_events__bot[style=invis];
         ti_uia_events_UIAErr [style=filled,fillcolor=lightgray, label="UIAErr"];
         ti_uia_events__top -> ti_uia_events_UIAErr[style=invis];
         ti_uia_events_UIAErr -> ti_uia_events__bot[style=invis];

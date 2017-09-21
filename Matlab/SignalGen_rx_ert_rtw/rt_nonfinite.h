@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'SignalGen_rx'.
  *
- * Model version                  : 1.185
+ * Model version                  : 1.187
  * Simulink Coder version         : 8.10 (R2016a) 10-Feb-2016
- * C/C++ source code generated on : Tue Sep 05 18:15:23 2017
+ * C/C++ source code generated on : Sat Sep 16 18:25:43 2017
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Texas Instruments->C2000
