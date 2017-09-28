@@ -97,7 +97,7 @@ io.on('connection', function(socket) {
 		setTimeout(function(){
 			for(var i=0;i<100;i++)
 				writeSerial(NO_FAIL_COMMAND);
-		},100);
+		},2000);
 		
 		
 	});
@@ -133,8 +133,8 @@ function TM4CDeadAlive()
 
 var SerialPort = require('serialport');
 var serialPort = new SerialPort('COM2', {baudRate: 115200});
-const FAIL_COMMAND =  new Buffer([0x53,200,100,100,100,0x45]); 
-const NO_FAIL_COMMAND =  new Buffer([0x53,100,100,100,100,0x45]);
+const FAIL_COMMAND =  new Buffer([0x53,200,20,230,20,0x45]); 
+const NO_FAIL_COMMAND =  new Buffer([0x53,1,20,230,20,0x45]);
 
 
 // sends data to the connected device via serial port
@@ -144,7 +144,7 @@ function writeSerial(data) {
 		if ( error ) {
 		console.log('Failed to write serial port. \n\t' + error + '\n\n');
 	}else{
-		console.log(data);
+		//console.log(data);
 	}
 	});
 	

@@ -1,0 +1,7 @@
+#Thu, 21 Sep 2017 13:53:38 -0300
+#Ant properties
+#Thu Sep 21 13:53:38 BRT 2017
+p.Version=1.0.0
+
+dvt.activity.name=RTOS Analyzer/Open File/Open CSV File
+dvt.factory.activity=${dvt.basepath}common/analysis/usecases/dvt/RTOS_Open_CSV_File.control.xml

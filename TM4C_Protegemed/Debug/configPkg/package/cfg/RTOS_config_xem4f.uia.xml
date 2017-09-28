@@ -1337,8 +1337,8 @@
          <EWIP_Events_Caption> </EWIP_Events_Caption>
          <Benchmarking>true</Benchmarking>
          <Benchmarking_Caption> </Benchmarking_Caption>
-         <Counting_and_Graphing>false</Counting_and_Graphing>
-         <Counting_and_Graphing_Caption>Enable &quot;Counting and Graphing&quot;</Counting_and_Graphing_Caption>
+         <Counting_and_Graphing>true</Counting_and_Graphing>
+         <Counting_and_Graphing_Caption> </Counting_and_Graphing_Caption>
          <Snapshot_Events>false</Snapshot_Events>
          <Snapshot_Events_Caption>Enable &quot;Snapshot Events&quot;</Snapshot_Events_Caption>
          <Multicore_Event_Correlation>false</Multicore_Event_Correlation>

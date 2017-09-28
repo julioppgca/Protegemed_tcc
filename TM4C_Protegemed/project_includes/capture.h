@@ -47,6 +47,11 @@
 /* Project Header files */
 #include "project_includes/Board.h"
 
+#define MAX_WAVE_LOG 10
+#define MAX_HARMONIC 12
+#define MSG_BUFFER 4800
+#define MAX_MSG_LOG_PER_OUTLET  2
+
 enum analogInputsADC0
 {
     AIN0, AIN1, AIN2, AIN3, AIN4, AIN5, AIN6, AIN7, AIN_OFFSET
@@ -64,27 +69,73 @@ enum analogChannels
     CHANNELS_COUNTER
 };
 
+enum events
+{
+   OFF, TURNS_ON, TURNS_OFF, ON, STAND_BY, OVER_VOLTAGE, UNDER_VOLTAGE, START_DIFF_LEAKAGE, STOP_DIFF_LEAKAGE, EVENT_COUNT
+};
+
 enum outletNumber
 {
     OUTLET_1, OUTLET_2, OUTLET_3, OUTLET_4, OUTLET_5, OUTLET_6, OUTLET_COUNTER
 };
 
 typedef struct{
-    float32_t phaseWave[SAMPLE_FRAME];
-    float32_t diffWave[SAMPLE_FRAME];
-    uint32_t id;
-    float32_t phaseRMS;
-    float32_t diffRMS;
-    float32_t voltageRMS;
-    uint8_t limitCounterPhase;
-    uint8_t limitCounterDiff;
+    uint8_t num;
+    uint8_t event;
+    uint8_t logCounter;
+    float32_t *phaseWave;
+    float32_t *diffWave;
+    float32_t *voltageWave;
     float32_t phaseFFT[SAMPLE_FRAME];
     float32_t diffFFT[SAMPLE_FRAME];
-    float32_t voltageFFT[SAMPLE_FRAME];
+    float32_t phaseRMS;
+    float32_t diffRMS;
+    float32_t *voltageFFT;
+    float32_t *voltageRMS;
     float32_t limitPhase;
     float32_t limitDiff;
+    float32_t limitVoltage;
 }Outlet;
 
-extern float32_t harmonics[];
+typedef struct{
+    float32_t *voltageWave1;
+    float32_t *voltageWave2;
+    float32_t *earthLeakageWave;
+    float32_t voltageFFT1[SAMPLE_FRAME];
+    float32_t voltageFFT2[SAMPLE_FRAME];
+    float32_t earthLeakageFFT[SAMPLE_FRAME];
+    float32_t voltage1RMS;
+    float32_t voltage2RMS;
+    float32_t eathLeakageRMS;
+}Panel;
 
+typedef struct{
+    uint8_t put;
+    uint8_t get;
+    uint16_t index;
+    char buffer[MSG_BUFFER];
+}Msg;
+
+//typedef struct{
+//    uint8_t outletNum;
+//    uint8_t outletEvent;
+//    uint8_t sendFlag;
+//    float32_t phaseRMS[MAX_WAVE_LOG];
+//    float32_t diffRMS[MAX_WAVE_LOG];
+//    float32_t voltageRMS[MAX_WAVE_LOG];
+//    float32_t phaseFFT[2*MAX_HARMONIC*MAX_WAVE_LOG];
+//    float32_t diffFFT[2*MAX_HARMONIC*MAX_WAVE_LOG];
+//    float32_t voltageFFT[2*MAX_HARMONIC*MAX_WAVE_LOG];
+//}OutletMsg;
+//
+//
+//typedef struct{
+//    uint16_t put;
+//    uint16_t get;
+//    OutletMsg buffer[MAX_MSG_BUFFER];
+//}MsgBuffer;
+
+extern char g_str_PostSend[];
+
+extern char temp[4800];
 #endif /* PROJECT_INCLUDES_CAPTURE_H_ */

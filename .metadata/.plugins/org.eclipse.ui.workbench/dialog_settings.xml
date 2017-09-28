@@ -13,8 +13,8 @@
 		</list>
 	</section>
 	<section name="MemoryDumperFillAction">
-		<item value="TIXDS100v2" key="com.ti.ccstudio.system.setup.ui.editors.connectionType"/>
-		<item value="Texas Instruments XDS100v2 USB Debug Probe" key="com.ti.ccstudio.system.setup.ui.editors.connectionName"/>
+		<item value="LM_ICDI" key="com.ti.ccstudio.system.setup.ui.editors.connectionType"/>
+		<item value="Stellaris In-Circuit Debug Interface" key="com.ti.ccstudio.system.setup.ui.editors.connectionName"/>
 	</section>
 	<section name="NewWizardAction">
 		<item value="org.eclipse.rse.ui.newWizards.connection" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>

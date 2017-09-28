@@ -68,7 +68,7 @@
   <modMap key="xdc.runtime.Main">
     <id>32777</id>
     <logger>Main Logger</logger>
-    <diagsMask>0000130033333333</diagsMask>
+    <diagsMask>0000110011111111</diagsMask>
   </modMap>
   <modMap key="xdc.runtime.Memory">
     <id>32778</id>

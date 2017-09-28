@@ -40,6 +40,7 @@ const BASE_FREQUENCY = 60;
 const SAMPLE_POINTS = 256;
 const SAMPLE_FREQUENCY = BASE_FREQUENCY*SAMPLE_POINTS;
 
+
 /**
 * 
 ******************* General Initialization 
@@ -129,46 +130,77 @@ $(document).ready(function() {
 	sampledPhase[0]=0;
 	sampledDiff[0]=0;
 	sampledVoltage[0]=0;
+	
+	var msgTimeoutTimer
+	function msgTimeout() {
+		msgTimeoutTimer = setInterval(function(){ 
+		num=0;
+		index=0;
+		totalTime=[];
+		sampledPhase=[];
+		sampledDiff=[];
+		sampledPhase[0]=0;
+		sampledDiff[0]=0;
+		sampledVoltage[0]=0;
+		myChart.destroy();
+		//socket.emit('TM4CDeadAlive');//alert("Hello"); 
+		}, 500);
+	}
+	
 	socket.on("TM4CAnswer", function(data) {
 		//console.log('TM4C Answered: ' + data);	
 		var res = JSON.parse(data);
-		var Phase_real = res.SIN_P.split(';');
-		var Phase_img = res.COS_P.split(';');
-		var Diff_real = res.SIN_D.split(';');
-		var Diff_img = res.COS_D.split(';');
-		var Voltage_real = res.SIN_V.split(';');
-		var Voltage_img = res.COS_V.split(';');
-		console.log('Real length: ' + Phase_real.length );
+		var FFT = res.FFT.split(';');
+		document.getElementById("txtPhaseRMS").value = hex2float(res.RMS_P).toFixed(3)*5.34;
+		document.getElementById("txtDiffRMS").value = hex2float(res.RMS_D).toFixed(3);
+		document.getElementById("txtVoltageRMS").value = hex2float(res.RMS_V).toFixed(3)*1157;
+		var event = '';
+		if(res.EV_ID==1) event = 'ON_EVENT';
+		else if(res.EV_ID==2) event = 'OFF_EVENT';
+		document.getElementById("txtEvent").value = event;
+		document.getElementById("txtOutlet").value = res.O;
+		//var Phase_FFT = res.FFT_P.split(';');
+		//var Phase_img = res.COS_P.split(';');
+		//var Diff_FFT = res.FFT_D.split(';');
+		//var Diff_img = res.COS_D.split(';');
+		//var Voltage_FFT = res.FFT_V.split(';');
+		//var Voltage_img = res.COS_V.split(';');
+		//console.log('FFT length: ' + Math.floor(FFT.length/6) );
+		//console.log('FFT: ' + FFT[0]);
 		var signal=[],time=[];
 		receivedCount++;
+		//myChart.destroy();
 		for(var i=0; i<SAMPLE_POINTS; i++)
 		{
+			
 			signal[i] = 0;
 			time[i] = i * (1/SAMPLE_FREQUENCY); 
 			totalTime[index]= index * (1/SAMPLE_FREQUENCY); 
 			sampledPhase[index]=0;
 			sampledDiff[index]=0;
 			sampledVoltage[index]=0;
-			for(var j=0; j<Phase_real.length; j++)
+			for(var j=0, k=0; j<Math.floor(FFT.length/6); j++)
 			{
-				var amp = Math.sqrt(Math.pow(hex2float(Phase_real[j]),2)+Math.pow(hex2float(Phase_img[j]),2))/(SAMPLE_POINTS/2);
-				var ang = Math.atan2(hex2float(Phase_img[j]),hex2float(Phase_real[j]));	
+				var amp = Math.sqrt(Math.pow(hex2float(FFT[k]),2)+Math.pow(hex2float(FFT[(k+1)]),2))/(SAMPLE_POINTS/2);
+				var ang = Math.atan2(hex2float(FFT[(k+1)]),hex2float(FFT[k]));	
 				sampledPhase[index] =  sampledPhase[index] + (amp * Math.cos(2*Math.PI*time[i]*(j+1)*BASE_FREQUENCY + ang));
 				//sampledPhase[index]=signal[i];
 				
-				var amp = Math.sqrt(Math.pow(hex2float(Diff_real[j]),2)+Math.pow(hex2float(Diff_img[j]),2))/(SAMPLE_POINTS/2);
-				var ang = Math.atan2(hex2float(Diff_img[j]),hex2float(Diff_real[j]));	
+				var amp = Math.sqrt(Math.pow(hex2float(FFT[(k+2)]),2)+Math.pow(hex2float(FFT[(k+3)]),2))/(SAMPLE_POINTS/2);
+				var ang = Math.atan2(hex2float(FFT[(k+3)]),hex2float(FFT[(k+2)]));	
 				sampledDiff[index] =  sampledDiff[index] + (amp * Math.cos(2*Math.PI*time[i]*(j+1)*BASE_FREQUENCY + ang));
 				//sampledDiff[index]=signal[i];
 				
-				var amp = Math.sqrt(Math.pow(hex2float(Voltage_real[j]),2)+Math.pow(hex2float(Voltage_img[j]),2))/(SAMPLE_POINTS/2);
-				var ang = Math.atan2(hex2float(Voltage_img[j]),hex2float(Voltage_real[j]));	
+				var amp = Math.sqrt(Math.pow(hex2float(FFT[(k+4)]),2)+Math.pow(hex2float(FFT[(k+5)]),2))/(SAMPLE_POINTS/2);
+				var ang = Math.atan2(hex2float(FFT[(k+5)]),hex2float(FFT[(k+4)]));	
 				sampledVoltage[index] =  sampledVoltage[index] + (amp * Math.cos(2*Math.PI*time[i]*(j+1)*BASE_FREQUENCY + ang));
 				//sampledVoltage[index]=signal[i];
+				k=k+6;			
 			}
 			index++;
 		}
-		console.log('\nReceived Count: '+ receivedCount);
+		//console.log('sampledPhase length: ' + sampledPhase.length);
+		//console.log('\nReceived Count: '+ receivedCount);
 		/*for(var i=0; i<SAMPLE_POINTS; i++)
 		{
 			time[i] = time[i]*1000; 
@@ -186,27 +218,15 @@ $(document).ready(function() {
 		//plot(time,signal,graphId,'Reconstructed Wave Form', 'rgba(75,192,192,0.4)');		
 		//console.log('signal: '+ signal);
 		//document.getElementById("statusHeader").innerText="TM4C Answer: " + data;
-		console.log('num: ' + num);
-		console.log('\nReceived Count: '+ receivedCount);
-		if(++num>9)
-		{
 		
-		for(var i=0; i<totalTime.length; i++)
+		
+		console.log('Phase RMS: ' + hex2float(res.RMS_P));
+		console.log('Sample Id: ' + res.SP_ID);
+		console.log('Num: ' + num);
+		console.log('Received Count: '+ receivedCount);
+/*		if(num!=res.SP_ID)
 		{
-			totalTime[i] = totalTime[i]*1000; 
-			totalTime[i] = totalTime[i].toFixed(2);
-		}
-			
-			//var graph = document.createElement('canvas');
-			//var graphId = 'graph' + num++;
-			//console.log('graph id: ' + graphId);
-			//graph.id=graphId;
-			//document.getElementById("graphPlace").remove(graph);
-			//document.body.appendChild(graph);
-			//document.getElementById("graphPlace").appendChild(graph);
-			plot2(totalTime,sampledPhase,sampledDiff,'graphDataSample','Reconstructed Wave Form');
-			//plot(totalTime,sampledDiff,'graphDataSample','Reconstructed Wave Form','red');
-			num=0;
+		num=0;
 			index=0;
 			totalTime=[];
 			sampledPhase=[];
@@ -214,7 +234,39 @@ $(document).ready(function() {
 			sampledPhase[0]=0;
 			sampledDiff[0]=0;
 			sampledVoltage[0]=0;
-			//console.log('total time: ' + totalTime);
+		 console.log('Error - wrong msg size!');
+		}
+		else */
+		{
+			if(++num>9)
+			{
+			
+			for(var i=0; i<totalTime.length; i++)
+			{
+				totalTime[i] = totalTime[i]*1000; 
+				totalTime[i] = totalTime[i].toFixed(2);
+			}
+				
+				//var graph = document.createElement('canvas');
+				//var graphId = 'graph' + num++;
+				//console.log('graph id: ' + graphId);
+				//graph.id=graphId;
+				//document.getElementById("graphPlace").remove(graph);
+				//document.body.appendChild(graph);
+				//document.getElementById("graphPlace").appendChild(graph);
+				//myChart.destroy();
+				plot3(totalTime,sampledPhase,sampledDiff,sampledVoltage,'graphDataSample','Reconstructed Wave Form');
+				//plot(totalTime,sampledDiff,'graphDataSample','Reconstructed Wave Form','red');
+				num=0;
+				index=0;
+				totalTime=[];
+				sampledPhase=[];
+				sampledDiff=[];
+				sampledPhase[0]=0;
+				sampledDiff[0]=0;
+				sampledVoltage[0]=0;
+				//console.log('total time: ' + totalTime);
+			}
 		}
 	});
 	
@@ -320,9 +372,13 @@ $(document).ready(function() {
 				}); 
 		
 		}	
-	function plot2(x,y1,y2,graph,label){
+	var myChart=null;
+	function plot3(x,y1,y2,y3,graph,label){
+		if(myChart!=null){
+			myChart.destroy();
+		}
 		var ctx = document.getElementById(graph).getContext('2d');
-		var myChart = new Chart(ctx, {
+		myChart = new Chart(ctx, {
 			  type: 'line',
 			  data:{
 				    labels: x,
@@ -334,11 +390,18 @@ $(document).ready(function() {
 				         data: y1
 				         //yAxisID: "y-axis-1",
 				     }, {
+				         label: "Differential Current",
+				         borderColor: window.chartColors.green,
+				         backgroundColor: window.chartColors.green,
+				         fill: false,
+				         data:y2
+				         //yAxisID: "y-axis-2"
+				     }, {
 				         label: "Voltage",
 				         borderColor: window.chartColors.red,
 				         backgroundColor: window.chartColors.red,
 				         fill: false,
-				         data:y2
+				         data:y3
 				         //yAxisID: "y-axis-2"
 				     }]
 			  },
@@ -374,8 +437,20 @@ $(document).ready(function() {
 		                 {
 		                     type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 		                     display: true,
-		                     position: "right",
+		                     position: "left",
 		                     id: "y-axis-2",
+		                     // grid line settings
+		                     gridLines: {
+		                         drawOnChartArea: false, // only want the grid lines for one axis to show up
+		                     }, 
+							 pointRadius: 0,
+		                 }
+						 ,
+						 {
+		                     type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+		                     display: true,
+		                     position: "right",
+		                     id: "y-axis-3",
 		                     // grid line settings
 		                     gridLines: {
 		                         drawOnChartArea: false, // only want the grid lines for one axis to show up
@@ -458,7 +533,37 @@ $(document).ready(function() {
 	
 		<div id='Page1' class="ui segment" >
 			<div class="ui segment">
-				<button id="btnGenerateFail" class="ui primary button" onClick="fcnGenerateFail()">
+			<div class="ui labeled input">
+				  <div class="ui label">
+					Event ID
+				  </div>
+				  <input id="txtEvent" placeholder="event" type="text">
+				</div>
+				<div class="ui labeled input">
+				  <div class="ui label">
+					Outlet Number
+				  </div>
+				  <input id="txtOutlet" placeholder="Outlet" type="text">
+				</div>
+				<div class="ui labeled input">
+				  <div class="ui label">
+					Phase RMS
+				  </div>
+				  <input id="txtPhaseRMS" placeholder="Arms" type="text">
+				</div>
+				<div class="ui labeled input">
+				  <div class="ui label">
+					Differential RMS
+				  </div>
+				  <input id="txtDiffRMS" placeholder="Arms" type="text">
+				</div>
+				<div class="ui labeled input">
+				  <div class="ui label">
+					Voltage RMS
+				  </div>
+				  <input id="txtVoltageRMS" placeholder="Vrms" type="text">
+				</div>
+								<button id="btnGenerateFail" class="ui primary button" onClick="fcnGenerateFail()">
 				  Generate Fail
 				</button>
 			</div>

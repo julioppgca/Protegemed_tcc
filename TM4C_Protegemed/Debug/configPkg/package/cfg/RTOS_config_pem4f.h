@@ -17,7 +17,7 @@ extern const ti_sysbios_family_arm_m3_Hwi_Handle ADC_Seq1_ISR_Handle;
 extern const ti_sysbios_knl_Task_Handle initSamplesTask_Handle;
 
 #include <ti/sysbios/knl/Task.h>
-extern const ti_sysbios_knl_Task_Handle capture_Task_Handle;
+extern const ti_sysbios_knl_Task_Handle dataProcess_Task_Handle;
 
 #include <ti/sysbios/knl/Event.h>
 extern const ti_sysbios_knl_Event_Handle e_adcData_Ready;
@@ -39,6 +39,21 @@ extern const ti_sysbios_knl_Swi_Handle adc1Ping_Swi_Handle;
 
 #include <ti/sysbios/knl/Swi.h>
 extern const ti_sysbios_knl_Swi_Handle adc1Pong_Swi_Handle;
+
+#include <ti/sysbios/knl/Task.h>
+extern const ti_sysbios_knl_Task_Handle eventAnalysis_Task_Handle;
+
+#include <ti/sysbios/knl/Semaphore.h>
+extern const ti_sysbios_knl_Semaphore_Handle s_doEventAnalysis;
+
+#include <ti/sysbios/knl/Task.h>
+extern const ti_sysbios_knl_Task_Handle dataSendTcpIp_Handle;
+
+#include <ti/sysbios/knl/Semaphore.h>
+extern const ti_sysbios_knl_Semaphore_Handle s_doDataSendTcpIp;
+
+#include <ti/sysbios/knl/Semaphore.h>
+extern const ti_sysbios_knl_Semaphore_Handle s_networkIsUp;
 
 extern int xdc_runtime_Startup__EXECFXN__C;
 

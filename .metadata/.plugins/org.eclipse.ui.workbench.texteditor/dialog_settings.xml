@@ -2,27 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="limitCounter" key="selection"/>
+		<item value="panel.voltageFFTOutlets2" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="panelVoltage.FFTOutlets_456"/>
+			<item value="panelVoltage.FFTOutlets_123"/>
+			<item value="panelVoltage.WaveOutlets_456"/>
+			<item value="panelVoltage.WaveOutlets_123"/>
+			<item value="        panelVoltage.WaveOutlets_123"/>
+			<item value="heap"/>
 			<item value="limitCounter"/>
 			<item value="peakCounter"/>
-			<item value="outlet[OUTLET_1].phaseFFT[H2_SIN]"/>
-			<item value="outlet[OUTLET_1].phaseFFT[H1_SIN]"/>
-			<item value="httpTask"/>
-			<item value="Outlet1PhaseRMS"/>
-			<item value="*_ADC1_1"/>
-			<item value="*_ADC1_0"/>
 		</list>
 		<list key="replacehistory">
+			<item value="panel.voltageFFTOutlets2"/>
+			<item value="panel.voltageFFTOutlets1"/>
+			<item value="voltageFFTOutlets2"/>
+			<item value="panel.voltageWaveOutlets1"/>
 			<item value="limitCounter"/>
 			<item value="outlet[OUTLET_1].fft[PHASE] "/>
 			<item value="httpPOST_Task"/>
 			<item value="EEPROM_START_ADR"/>
-			<item value=";"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
