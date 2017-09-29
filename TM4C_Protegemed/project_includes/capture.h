@@ -86,8 +86,8 @@ typedef struct{
     float32_t *phaseWave;
     float32_t *diffWave;
     float32_t *voltageWave;
-    float32_t phaseFFT[SAMPLE_FRAME];
-    float32_t diffFFT[SAMPLE_FRAME];
+    //float32_t phaseFFT[SAMPLE_FRAME];
+    //float32_t diffFFT[SAMPLE_FRAME];
     float32_t phaseRMS;
     float32_t diffRMS;
     float32_t *voltageFFT;
@@ -101,9 +101,9 @@ typedef struct{
     float32_t *voltageWave1;
     float32_t *voltageWave2;
     float32_t *earthLeakageWave;
-    float32_t voltageFFT1[SAMPLE_FRAME];
-    float32_t voltageFFT2[SAMPLE_FRAME];
-    float32_t earthLeakageFFT[SAMPLE_FRAME];
+    //float32_t voltageFFT1[SAMPLE_FRAME];
+    //float32_t voltageFFT2[SAMPLE_FRAME];
+    //float32_t earthLeakageFFT[SAMPLE_FRAME];
     float32_t voltage1RMS;
     float32_t voltage2RMS;
     float32_t eathLeakageRMS;

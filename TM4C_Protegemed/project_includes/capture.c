@@ -34,7 +34,7 @@ char temp[4800];
 
 char setOn=0;
 
-float32_t ADCchannel[CHANNELS_COUNTER][SAMPLE_FRAME]__attribute__((aligned(CHANNELS_COUNTER*SAMPLE_FRAME)));
+uint16_t ADCchannel[CHANNELS_COUNTER][SAMPLE_FRAME];
 
 void doSprintfPOST_ON(uint8_t outletNum);
 uint8_t doLogOffEvent(uint8_t outletNum);
@@ -52,14 +52,14 @@ void adc0Ping_Swi(void)
     // process first part of AIN0...AIN7
     for (i = 0, j = 0; i < SAMPLE_FRAME / 2; i++)
     {
-        ADCchannel[CH0][i] = (float) g_uint16_adc0_ping[j + AIN0];
-        ADCchannel[CH1][i] = (float) g_uint16_adc0_ping[j + AIN1];
-        ADCchannel[CH2][i] = (float) g_uint16_adc0_ping[j + AIN2];
-        ADCchannel[CH3][i] = (float) g_uint16_adc0_ping[j + AIN3];
-        ADCchannel[CH4][i] = (float) g_uint16_adc0_ping[j + AIN4];
-        ADCchannel[CH5][i] = (float) g_uint16_adc0_ping[j + AIN5];
-        ADCchannel[CH6][i] = (float) g_uint16_adc0_ping[j + AIN6];
-        ADCchannel[CH7][i] = (float) g_uint16_adc0_ping[j + AIN7];
+        ADCchannel[CH0][i] =  g_uint16_adc0_ping[j + AIN0];
+        ADCchannel[CH1][i] = g_uint16_adc0_ping[j + AIN1];
+        ADCchannel[CH2][i] =  g_uint16_adc0_ping[j + AIN2];
+        ADCchannel[CH3][i] = g_uint16_adc0_ping[j + AIN3];
+        ADCchannel[CH4][i] =  g_uint16_adc0_ping[j + AIN4];
+        ADCchannel[CH5][i] =  g_uint16_adc0_ping[j + AIN5];
+        ADCchannel[CH6][i] = g_uint16_adc0_ping[j + AIN6];
+        ADCchannel[CH7][i] =  g_uint16_adc0_ping[j + AIN7];
         j += AIN_OFFSET;
     }
 }
@@ -70,14 +70,14 @@ void adc0Pong_Swi(void)
     // process last part of AIN0...AIN7
     for (i = 128, j = 0; i < SAMPLE_FRAME; i++)
     {
-        ADCchannel[CH0][i] = (float) g_uint16_adc0_pong[j + AIN0];
-        ADCchannel[CH1][i] = (float) g_uint16_adc0_pong[j + AIN1];
-        ADCchannel[CH2][i] = (float) g_uint16_adc0_pong[j + AIN2];
-        ADCchannel[CH3][i] = (float) g_uint16_adc0_pong[j + AIN3];
-        ADCchannel[CH4][i] = (float) g_uint16_adc0_pong[j + AIN4];
-        ADCchannel[CH5][i] = (float) g_uint16_adc0_pong[j + AIN5];
-        ADCchannel[CH6][i] = (float) g_uint16_adc0_pong[j + AIN6];
-        ADCchannel[CH7][i] = (float) g_uint16_adc0_pong[j + AIN7];
+        ADCchannel[CH0][i] =  g_uint16_adc0_pong[j + AIN0];
+        ADCchannel[CH1][i] =  g_uint16_adc0_pong[j + AIN1];
+        ADCchannel[CH2][i] =  g_uint16_adc0_pong[j + AIN2];
+        ADCchannel[CH3][i] =  g_uint16_adc0_pong[j + AIN3];
+        ADCchannel[CH4][i] =  g_uint16_adc0_pong[j + AIN4];
+        ADCchannel[CH5][i] =  g_uint16_adc0_pong[j + AIN5];
+        ADCchannel[CH6][i] =  g_uint16_adc0_pong[j + AIN6];
+        ADCchannel[CH7][i] =  g_uint16_adc0_pong[j + AIN7];
         j += AIN_OFFSET;
     }
     // post event ADC0 data ready
@@ -95,14 +95,14 @@ void adc1Ping_Swi(void)
     // process first part of AIN8...AIN12
     for (i = 0, j = 0; i < SAMPLE_FRAME / 2; i++)
     {
-        ADCchannel[CH8][i] = (float) g_uint16_adc1_ping[j + AIN8];
-        ADCchannel[CH9][i] = (float) g_uint16_adc1_ping[j + AIN9];
-        ADCchannel[CH10][i] = (float) g_uint16_adc1_ping[j + AIN10];
-        ADCchannel[CH11][i] = (float) g_uint16_adc1_ping[j + AIN11];
-        ADCchannel[CH12][i] = (float) g_uint16_adc1_ping[j + AIN12];
-        ADCchannel[CH13][i] = (float) g_uint16_adc1_ping[j + AIN13];
-        ADCchannel[CH14][i] = (float) g_uint16_adc1_ping[j + AIN14];
-        ADCchannel[CH15][i] = (float) g_uint16_adc1_ping[j + AIN15];
+        ADCchannel[CH8][i] =  g_uint16_adc1_ping[j + AIN8];
+        ADCchannel[CH9][i] =  g_uint16_adc1_ping[j + AIN9];
+        ADCchannel[CH10][i] =  g_uint16_adc1_ping[j + AIN10];
+        ADCchannel[CH11][i] =  g_uint16_adc1_ping[j + AIN11];
+        ADCchannel[CH12][i] = g_uint16_adc1_ping[j + AIN12];
+        ADCchannel[CH13][i] =  g_uint16_adc1_ping[j + AIN13];
+        ADCchannel[CH14][i] =  g_uint16_adc1_ping[j + AIN14];
+        ADCchannel[CH15][i] =  g_uint16_adc1_ping[j + AIN15];
 
         j += AIN_OFFSET;
     }
@@ -114,14 +114,14 @@ void adc1Pong_Swi(void)
     // process first part of AIN8...AIN12
     for (i = 128, j = 0; i < SAMPLE_FRAME; i++)
     {
-        ADCchannel[CH8][i] = (float) g_uint16_adc1_pong[j + AIN8];
-        ADCchannel[CH9][i] = (float) g_uint16_adc1_pong[j + AIN9];
-        ADCchannel[CH10][i] = (float) g_uint16_adc1_pong[j + AIN10];
-        ADCchannel[CH11][i] = (float) g_uint16_adc1_pong[j + AIN11];
-        ADCchannel[CH12][i] = (float) g_uint16_adc1_pong[j + AIN12];
-        ADCchannel[CH13][i] = (float) g_uint16_adc1_pong[j + AIN13];
-        ADCchannel[CH14][i] = (float) g_uint16_adc1_pong[j + AIN14];
-        ADCchannel[CH15][i] = (float) g_uint16_adc1_pong[j + AIN15];
+        ADCchannel[CH8][i] =  g_uint16_adc1_pong[j + AIN8];
+        ADCchannel[CH9][i] =  g_uint16_adc1_pong[j + AIN9];
+        ADCchannel[CH10][i] =  g_uint16_adc1_pong[j + AIN10];
+        ADCchannel[CH11][i] =  g_uint16_adc1_pong[j + AIN11];
+        ADCchannel[CH12][i] =  g_uint16_adc1_pong[j + AIN12];
+        ADCchannel[CH13][i] = g_uint16_adc1_pong[j + AIN13];
+        ADCchannel[CH14][i] =  g_uint16_adc1_pong[j + AIN14];
+        ADCchannel[CH15][i] =  g_uint16_adc1_pong[j + AIN15];
 
         j += AIN_OFFSET;
     }
@@ -142,14 +142,14 @@ void dataProcess_Task(void)
 {
 
     uint16_t i, j;
-    float32_t meanPhase;
-    float32_t meanDiff;
+    //float32_t meanPhase;
+    //float32_t meanDiff;
     float32_t meanVoltage1;
     float32_t meanVoltage2;
     float32_t meanEarthLeakage;
-    arm_rfft_fast_instance_f32 s;
-
-    arm_rfft_fast_init_f32(&s, SAMPLE_FRAME);
+//    arm_rfft_fast_instance_f32 s;
+//
+//    arm_rfft_fast_init_f32(&s, SAMPLE_FRAME);
 
     while (1)
     {
@@ -172,22 +172,22 @@ void dataProcess_Task(void)
         /* process all outlets */
         for(i=0;i<OUTLET_COUNTER;i++)
         {
-            // Get mean value
-            arm_mean_f32(outlet[i].phaseWave, SAMPLE_FRAME, &meanPhase);
-            arm_mean_f32(outlet[i].diffWave, SAMPLE_FRAME, &meanDiff);
-            // ADC offset
-            arm_offset_f32(outlet[i].phaseWave, -meanPhase , outlet[i].phaseWave, SAMPLE_FRAME);
-            arm_offset_f32(outlet[i].diffWave, -meanDiff , outlet[i].diffWave, SAMPLE_FRAME);
-            // ADC scale
-            arm_scale_f32(outlet[i].phaseWave, ptgmSettings.channel[i].channel_gain , outlet[i].phaseWave, SAMPLE_FRAME);
-            arm_scale_f32(outlet[i].diffWave, ptgmSettings.channel[i+1].channel_gain , outlet[i].diffWave, SAMPLE_FRAME);
-            // calculate RMS
-            arm_rms_f32(outlet[i].phaseWave, SAMPLE_FRAME, &outlet[i].phaseRMS);
-            arm_rms_f32(outlet[i].diffWave, SAMPLE_FRAME, &outlet[i].diffRMS);
+//            // Get mean value
+//            arm_mean_f32(outlet[i].phaseWave, SAMPLE_FRAME, &meanPhase);
+//            arm_mean_f32(outlet[i].diffWave, SAMPLE_FRAME, &meanDiff);
+//            // ADC offset
+//            arm_offset_f32(outlet[i].phaseWave, -meanPhase , outlet[i].phaseWave, SAMPLE_FRAME);
+//            arm_offset_f32(outlet[i].diffWave, -meanDiff , outlet[i].diffWave, SAMPLE_FRAME);
+//            // ADC scale
+//            arm_scale_f32(outlet[i].phaseWave, ptgmSettings.channel[i].channel_gain , outlet[i].phaseWave, SAMPLE_FRAME);
+//            arm_scale_f32(outlet[i].diffWave, ptgmSettings.channel[i+1].channel_gain , outlet[i].diffWave, SAMPLE_FRAME);
+//            // calculate RMS
+//            arm_rms_f32(outlet[i].phaseWave, SAMPLE_FRAME, &outlet[i].phaseRMS);
+//            arm_rms_f32(outlet[i].diffWave, SAMPLE_FRAME, &outlet[i].diffRMS);
 
             // Calculate fft - Benchmark result: 3.209ms, 12 fft calculation
-            arm_rfft_fast_f32(&s, outlet[i].phaseWave, outlet[i].phaseFFT, 0);
-            arm_rfft_fast_f32(&s, outlet[i].diffWave, outlet[i].diffFFT, 0);
+            //arm_rfft_fast_f32(&s, outlet[i].phaseWave, outlet[i].phaseFFT, 0);
+            //arm_rfft_fast_f32(&s, outlet[i].diffWave, outlet[i].diffFFT, 0);
         }
 
         /* process Panel  */
@@ -208,16 +208,16 @@ void dataProcess_Task(void)
         arm_rms_f32(panel.voltageWave2, SAMPLE_FRAME, &panel.voltage2RMS);
         arm_rms_f32(panel.earthLeakageWave, SAMPLE_FRAME, &panel.eathLeakageRMS);
         // Calculate fft
-        arm_rfft_fast_f32(&s,panel.voltageWave1, panel.voltageFFT1,0);
-        arm_rfft_fast_f32(&s,panel.voltageWave2, panel.voltageFFT2,0);
-        arm_rfft_fast_f32(&s,panel.earthLeakageWave, panel.earthLeakageFFT,0);
+        //arm_rfft_fast_f32(&s,panel.voltageWave1, panel.voltageFFT1,0);
+        //arm_rfft_fast_f32(&s,panel.voltageWave2, panel.voltageFFT2,0);
+        //arm_rfft_fast_f32(&s,panel.earthLeakageWave, panel.earthLeakageFFT,0);
         // Assign Voltage FFT and RMS values to their respective outlets
-        outlet[OUTLET_1].voltageFFT = panel.voltageFFT1;
-        outlet[OUTLET_2].voltageFFT = panel.voltageFFT1;
-        outlet[OUTLET_3].voltageFFT = panel.voltageFFT1;
-        outlet[OUTLET_4].voltageFFT = panel.voltageFFT2;
-        outlet[OUTLET_5].voltageFFT = panel.voltageFFT2;
-        outlet[OUTLET_6].voltageFFT = panel.voltageFFT2;
+//        outlet[OUTLET_1].voltageFFT = panel.voltageFFT1;
+//        outlet[OUTLET_2].voltageFFT = panel.voltageFFT1;
+//        outlet[OUTLET_3].voltageFFT = panel.voltageFFT1;
+//        outlet[OUTLET_4].voltageFFT = panel.voltageFFT2;
+//        outlet[OUTLET_5].voltageFFT = panel.voltageFFT2;
+//        outlet[OUTLET_6].voltageFFT = panel.voltageFFT2;
         outlet[OUTLET_1].voltageRMS = &panel.voltage1RMS;
         outlet[OUTLET_2].voltageRMS = &panel.voltage1RMS;
         outlet[OUTLET_3].voltageRMS = &panel.voltage1RMS;
@@ -295,12 +295,39 @@ void eventAnalysis_Task(void)
                 }
               }
 
+            Log_write1(UIABenchmark_start,(xdc_IArg)"Pack");
+            uint16_t i,k;
+            for(i=0,k=0;i<SAMPLE_FRAME/2;i++,k+=12)
+            {
+                temp[k]=*(uint16_t *)&ADCchannel[CH0][i];
+                temp[k+1]=*(uint16_t *)&ADCchannel[CH0][i]>>4 & 0xf0;
+                temp[k+1]|=*(uint16_t *)&ADCchannel[CH0][i+1] >>8  & 0x0f;
+                temp[k+2]=*(uint16_t *)&ADCchannel[CH0][i+1];
+
+                temp[k+3]=*(uint16_t *)&ADCchannel[CH1][i];
+                temp[k+4]=*(uint16_t *)&ADCchannel[CH1][i]>>4 & 0xf0;
+                temp[k+4]|=*(uint16_t *)&ADCchannel[CH1][i+1] >>8  & 0x0f;
+                temp[k+5]=*(uint16_t *)&ADCchannel[CH1][i+1];
+
+                temp[k+6]=*(uint16_t *)&ADCchannel[CH2][i];
+                temp[k+7]=*(uint16_t *)&ADCchannel[CH2][i]>>4 & 0xf0;
+                temp[k+7]|=*(uint16_t *)&ADCchannel[CH2][i+1] >>8  & 0x0f;
+                temp[k+8]=*(uint16_t *)&ADCchannel[CH2][i+1];
+
+                temp[k+9]=*(uint16_t *)&ADCchannel[CH3][i];
+                temp[k+10]=*(uint16_t *)&ADCchannel[CH3][i]>>4 & 0xf0;
+                temp[k+10]|=*(uint16_t *)&ADCchannel[CH3][i+1] >>8  & 0x0f;
+                temp[k+11]=*(uint16_t *)&ADCchannel[CH3][i+1];
+            }
+
+            Log_write1(UIABenchmark_stop,(xdc_IArg)"Pack");
+
             // processes ON and OFF events
-            if(setOn)//if (outlet[outletNum].event == TURNS_ON)
+            if(setOn) // if(outletNum==1) // if(setOn)//if (outlet[outletNum].event == TURNS_ON)
             {
                 //doSprintfPOST_ON(outletNum);
-                Semaphore_post(s_doDataSendTcpIp);
-                sendCount++;
+                //Semaphore_post(s_doDataSendTcpIp);
+                //sendCount++;
                 //serializeMsg(outletNum);
                 outlet[outletNum].logCounter++; // increment log counter
             }
@@ -322,9 +349,20 @@ void eventAnalysis_Task(void)
                                 outlet[outletNum].event = OFF;
                 outlet[outletNum].logCounter = 0;   //reset log counter
 
-                //sendCount++;
-                //Semaphore_post(s_doDataSendTcpIp);
+                sendCount++;
+                Semaphore_post(s_doDataSendTcpIp);
 
+                if (sendCount>100)
+                {
+                    sendCount=100;
+                }
+
+            }
+
+            // end of debug
+            if (sendCount==120)
+            {
+                sendCount=120;
             }
 
           }
@@ -337,95 +375,95 @@ void eventAnalysis_Task(void)
 
 void doSprintfPOST_ON(uint8_t outletNum)
 {
-    uint8_t i,j,k;
-
-    memset(g_str_PostSend, ' ', POST_DATA_SIZE);
-    i=outletNum;
-
-    sprintf(g_str_PostSend,
-            "O=%d&EV_ID=%d&SP_ID=%d&RMS_P=%08X&RMS_D=%08X&RMS_V=%08X&FFT=",
-            outlet[i].num, outlet[i].event,
-            outlet[i].logCounter,
-            *(unsigned int*) &outlet[i].phaseRMS,
-            *(unsigned int*) &outlet[i].diffRMS,
-            *(unsigned int*) &outlet[i].voltageRMS);
-
-    for (k = 0, j = 0; k < ptgmSettings.maxHarmonics; k++)
-    {
-        j += 2;
-        sprintf(g_str_PostSend + strlen(g_str_PostSend),
-                "%08X;%08X;%08X;%08X;%08X;%08X;",
-                *(unsigned int*) &outlet[i].phaseFFT[j],
-                *(unsigned int*) &outlet[i].phaseFFT[j + 1],
-                *(unsigned int*) &outlet[i].diffFFT[j],
-                *(unsigned int*) &outlet[i].diffFFT[j + 1],
-                *(unsigned int*) &outlet[i].voltageFFT[j],
-                *(unsigned int*) &outlet[i].voltageFFT[j + 1]);
-    }
-
-
-    /* create http task dynamically */
-    static Task_Handle httpPOST_Handle;
-    Task_Params httpPOST_Params;
-    Error_Block httpPOST_eb;
-
-    Error_init(&httpPOST_eb);
-    Task_Params_init(&httpPOST_Params);
-    httpPOST_Params.stackSize = HTTPTASKSTACKSIZE;
-    httpPOST_Params.priority = 1;
-    //httpPOST_Params.arg0 = (xdc_UArg) g_str_PostSend;
-    httpPOST_Handle = Task_create((Task_FuncPtr) httpPOST_Task,
-                                  &httpPOST_Params, &httpPOST_eb);
-    if (httpPOST_Handle == NULL)
-    {
-        Log_info0("captureTask: Failed to create HTTP POST Task");
-        httpPOST_Handle = Task_create((Task_FuncPtr) httpPOST_Task,
-                                      &httpPOST_Params,
-                                      &httpPOST_eb);
-        if (httpPOST_Handle == NULL)
-        {
-            Log_info1("captureTask: Failed to create HTTP POST Task %d Times.", ++httpTaskCreatFailed);
-        }
-    }
+//    uint8_t i,j,k;
+//
+//    memset(g_str_PostSend, ' ', POST_DATA_SIZE);
+//    i=outletNum;
+//
+//    sprintf(g_str_PostSend,
+//            "O=%d&EV_ID=%d&SP_ID=%d&RMS_P=%08X&RMS_D=%08X&RMS_V=%08X&FFT=",
+//            outlet[i].num, outlet[i].event,
+//            outlet[i].logCounter,
+//            *(unsigned int*) &outlet[i].phaseRMS,
+//            *(unsigned int*) &outlet[i].diffRMS,
+//            *(unsigned int*) &outlet[i].voltageRMS);
+//
+//    for (k = 0, j = 0; k < ptgmSettings.maxHarmonics; k++)
+//    {
+//        j += 2;
+//        sprintf(g_str_PostSend + strlen(g_str_PostSend),
+//                "%08X;%08X;%08X;%08X;%08X;%08X;",
+//                *(unsigned int*) &outlet[i].phaseFFT[j],
+//                *(unsigned int*) &outlet[i].phaseFFT[j + 1],
+//                *(unsigned int*) &outlet[i].diffFFT[j],
+//                *(unsigned int*) &outlet[i].diffFFT[j + 1],
+//                *(unsigned int*) &outlet[i].voltageFFT[j],
+//                *(unsigned int*) &outlet[i].voltageFFT[j + 1]);
+//    }
+//
+//
+//    /* create http task dynamically */
+//    static Task_Handle httpPOST_Handle;
+//    Task_Params httpPOST_Params;
+//    Error_Block httpPOST_eb;
+//
+//    Error_init(&httpPOST_eb);
+//    Task_Params_init(&httpPOST_Params);
+//    httpPOST_Params.stackSize = HTTPTASKSTACKSIZE;
+//    httpPOST_Params.priority = 1;
+//    //httpPOST_Params.arg0 = (xdc_UArg) g_str_PostSend;
+//    httpPOST_Handle = Task_create((Task_FuncPtr) httpPOST_Task,
+//                                  &httpPOST_Params, &httpPOST_eb);
+//    if (httpPOST_Handle == NULL)
+//    {
+//        Log_info0("captureTask: Failed to create HTTP POST Task");
+//        httpPOST_Handle = Task_create((Task_FuncPtr) httpPOST_Task,
+//                                      &httpPOST_Params,
+//                                      &httpPOST_eb);
+//        if (httpPOST_Handle == NULL)
+//        {
+//            Log_info1("captureTask: Failed to create HTTP POST Task %d Times.", ++httpTaskCreatFailed);
+//        }
+//    }
 
 }
 
 uint8_t doLogOffEvent(uint8_t outletNum)
 {
     static uint8_t c=0;
-    uint8_t i,j,k;
-
-    memset(g_str_PostSend, ' ', POST_DATA_SIZE);
-    i=outletNum;
-
-    sprintf(g_str_PostSend,
-            "O=%d&EV_ID=%d&SP_ID=%d&RMS_P=%08X&RMS_D=%08X&RMS_V=%08X&FFT=",
-            outlet[i].num, TURNS_OFF,//outlet[i].event,
-            count,//outlet[i].logCounter,
-            *(unsigned int*) &outlet[i].phaseRMS,
-            *(unsigned int*) &outlet[i].diffRMS,
-            *(unsigned int*) &outlet[i].voltageRMS);
-
-    for (k = 0, j = 0; k < ptgmSettings.maxHarmonics; k++)
-    {
-        j += 2;
-        sprintf(g_str_PostSend + strlen(g_str_PostSend),
-                "%08X;%08X;%08X;%08X;%08X;%08X;",
-                *(unsigned int*) &outlet[i].phaseFFT[j],
-                *(unsigned int*) &outlet[i].phaseFFT[j + 1],
-                *(unsigned int*) &outlet[i].diffFFT[j],
-                *(unsigned int*) &outlet[i].diffFFT[j + 1],
-                *(unsigned int*) &outlet[i].voltageFFT[j],
-                *(unsigned int*) &outlet[i].voltageFFT[j + 1]);
-    }
-
-
-
-    strcpy(g_str_LogOff[c],g_str_PostSend);
-    c++;
-    if(c>=MAX_WAVE_LOG)
-        c=0;
-
+//    uint8_t i,j,k;
+//
+//    memset(g_str_PostSend, ' ', POST_DATA_SIZE);
+//    i=outletNum;
+//
+//    sprintf(g_str_PostSend,
+//            "O=%d&EV_ID=%d&SP_ID=%d&RMS_P=%08X&RMS_D=%08X&RMS_V=%08X&FFT=",
+//            outlet[i].num, TURNS_OFF,//outlet[i].event,
+//            count,//outlet[i].logCounter,
+//            *(unsigned int*) &outlet[i].phaseRMS,
+//            *(unsigned int*) &outlet[i].diffRMS,
+//            *(unsigned int*) &outlet[i].voltageRMS);
+//
+//    for (k = 0, j = 0; k < ptgmSettings.maxHarmonics; k++)
+//    {
+//        j += 2;
+//        sprintf(g_str_PostSend + strlen(g_str_PostSend),
+//                "%08X;%08X;%08X;%08X;%08X;%08X;",
+//                *(unsigned int*) &outlet[i].phaseFFT[j],
+//                *(unsigned int*) &outlet[i].phaseFFT[j + 1],
+//                *(unsigned int*) &outlet[i].diffFFT[j],
+//                *(unsigned int*) &outlet[i].diffFFT[j + 1],
+//                *(unsigned int*) &outlet[i].voltageFFT[j],
+//                *(unsigned int*) &outlet[i].voltageFFT[j + 1]);
+//    }
+//
+//
+//
+//    strcpy(g_str_LogOff[c],g_str_PostSend);
+//    c++;
+//    if(c>=MAX_WAVE_LOG)
+//        c=0;
+//
     return c;
 }
 

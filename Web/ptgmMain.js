@@ -86,7 +86,7 @@ io.on('connection', function(socket) {
 	
 	socket.on('TM4CDeadAlive', function(){
     	//console.log('Html Request: TM4CDeadAlive ');
-    	TM4CDeadAlive();
+    	// TM4CDeadAlive();
 	});
 	
 	socket.on('GenerateFail', function(){

@@ -6,8 +6,8 @@
 #include "project_includes/eth_network.h"
 #include "project_includes/capture.h"
 
-#define _LEN 4200
-     char lixo[_LEN];
+#define _LEN 15360  // 15370 - 4 wave forms + 10 bytes
+     char lixo[6][_LEN];
 
 //void client(void);
 
@@ -150,7 +150,7 @@ void httpPOST_Task(UArg arg0, UArg arg1)
 void dataSendTcpIp(void)
 {
 
-    memset(lixo, 'A', _LEN);
+    memset(lixo[0], 'A', _LEN);
     int client;
     int status;
     struct sockaddr_in serverAddr;
@@ -194,7 +194,7 @@ void dataSendTcpIp(void)
             goto shutdown;
         }
 
-        send(client, lixo, _LEN, 0);
+        send(client, lixo[0], _LEN, 0);
         tcpCount++;
         //recv(client, lixo, _LEN, 0);
 

@@ -11,6 +11,8 @@ console.log(`Server started at: ${ADDRESS}:${PORT}`);
 var msgCount=1;
 var tmpMsg=0;
 
+const pktLength = 15360;
+
 function onClientConnected(socket) {
 
   // Giving a name to this client
@@ -30,13 +32,13 @@ function onClientConnected(socket) {
     // console.log(`${clientName} said: ${m}`);
 	// console.log('Msg size: ' + m.length + ' Msg Id: ' + msgCount++ );
 
-	if(m.length == 4200) console.log(' Msg Id: ' + msgCount++ );
-	if(m.length < 4200)
+	if(m.length == pktLength) console.log( timeStamp() + ' Msg Id: ' + msgCount++ );
+	if(m.length < pktLength)
 	{
 		tmpMsg = tmpMsg + m.length;
-		if(tmpMsg == 4200) 
+		if(tmpMsg == pktLength) 
 		{
-			console.log(' Msg Id (S): ' + msgCount++ );
+			console.log(timeStamp() + ' Msg Id (S): ' + msgCount++ );
 			tmpMsg = 0;
 		}
 	}
@@ -52,4 +54,28 @@ function onClientConnected(socket) {
     // console.log(`${clientName} disconnected.`);
 	//msgCount=0;
   });
+}
+
+function timeStamp() {
+    var str = "";
+
+    var currentTime = new Date()
+    var hours = currentTime.getHours()
+    var minutes = currentTime.getMinutes()
+    var seconds = currentTime.getSeconds()
+	var miliseconds = currentTime.getMilliseconds()
+
+    if (minutes < 10) {
+        minutes = "0" + minutes
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds
+    }
+    str += hours + ":" + minutes + ":" + seconds + ":" + miliseconds + " ";
+    if(hours > 11){
+        str += "PM"
+    } else {
+        str += "AM"
+    }
+    return str;
 }

@@ -16,7 +16,11 @@
 %   DAC3 = Phase Voltage        (DAC3 is PWM8_A)
 %   DAC4 = Pure 60Hz sine wave  (DAC4 is PWM8_B)
 %
-%
+% ADC simulation, 12 bits
+%   AN0 = DAC1; 
+%   AN1 = DAC2;
+%   AN2 = DAC3;
+%   AN3 = DAC4;
 
 %% Clear workspace
 clear
@@ -39,6 +43,10 @@ PWM_Offset = PWM_Counter/2; % Middle point of PWM counter
 PWM_Max_Voltage = 3.3; %Volts
 PWM_Scale = PWM_Max_Voltage/PWM_Counter;
 
+%% ADC Parameters
+ADC_Resolution = 4095; % 12 bits
+ADC_Offset = (ADC_Resolution + 1)/2;
+
 %% DAC1: Phase Current wave
 DAC1_H1 = 0.25 * cos(t);
 DAC1_H2 = 0.15 * cos(3 * t + pi/4);
@@ -47,6 +55,9 @@ DAC1_A  = 1;
 DAC1 = ceil( DAC1_A  * PWM_Counter * ...
            ( DAC1_H1 + DAC1_H2 + DAC1_H3) + ...
              PWM_Offset );
+AN0 = ceil( DAC1_A  * ADC_Resolution * ...
+           ( DAC1_H1 + DAC1_H2 + DAC1_H3) + ...
+             ADC_Offset );
    
 %% DAC2: Differential Current Wave
 DAC2_H1 = 0.1 * cos(t);
@@ -57,6 +68,10 @@ DAC2_A  = 1;
 DAC2 = ceil( DAC2_A  * PWM_Counter * ...
            ( DAC2_H1 + DAC2_H2 + DAC2_H3 + DAC2_H3) + ...
              PWM_Offset );
+         
+AN1 = ceil( DAC2_A  * ADC_Resolution * ...
+           ( DAC2_H1 + DAC2_H2 + DAC2_H3 + DAC2_H3) + ...
+            ADC_Offset );
 
 %% DAC3: Phase Voltage, pure sine 60HZ wave
 DAC3_H1 = 0.8 * cos(t);
@@ -65,6 +80,10 @@ DAC3 = ceil( DAC3_A  * PWM_Counter * ...
              DAC3_H1 + ...
              PWM_Offset );
          
+AN2 = ceil( DAC3_A  * ADC_Resolution * ...
+             DAC3_H1 + ...
+             ADC_Offset );
+         
 %% DAC4:  60Hz sine wave with gaussian noise
 DAC4_H1 = 0.5 * cos(t);
 DAC4_noise = 0.05*wgn(SampleNumber,1,0)';
@@ -72,6 +91,10 @@ DAC4_A  = 0.8;
 DAC4 = ceil( DAC4_A  * PWM_Counter * ...
            ( DAC4_H1 + DAC4_noise ) + ...
              PWM_Offset );
+
+AN3 = ceil( DAC4_A  * ADC_Resolution * ...
+           ( DAC4_H1 + DAC4_noise ) + ...
+             ADC_Offset );
          
 %% Uncomment bellow to see wave forms and rms values scaled to 3.3V
 % %% DAC1: expected osciloscope wave (AC coupled)
