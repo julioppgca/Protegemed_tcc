@@ -8,6 +8,10 @@
 #ifndef PROJECT_INCLUDES_CAPTURE_H_
 #define PROJECT_INCLUDES_CAPTURE_H_
 
+/* Inline force functions */
+#pragma FUNC_ALWAYS_INLINE(copy_int16_f32)
+#pragma FUNC_ALWAYS_INLINE(logOutlet)
+
 /* Standard variables definitions */
 #include <stdint.h>
 #include <stdbool.h>
@@ -50,6 +54,7 @@
 #define MAX_WAVE_LOG 10
 #define MAX_HARMONIC 12
 #define MSG_BUFFER 4800
+#define LOG_BUFFER_SIZE 2560 //10*256 or to bytes: 3840 with merge, 5120 without merge
 #define MAX_MSG_LOG_PER_OUTLET  2
 
 enum analogInputsADC0
@@ -82,60 +87,38 @@ enum outletNumber
 typedef struct{
     uint8_t num;
     uint8_t event;
-    uint8_t logCounter;
-    float32_t *phaseWave;
-    float32_t *diffWave;
-    float32_t *voltageWave;
-    //float32_t phaseFFT[SAMPLE_FRAME];
-    //float32_t diffFFT[SAMPLE_FRAME];
-    float32_t phaseRMS;
-    float32_t diffRMS;
-    float32_t *voltageFFT;
-    float32_t *voltageRMS;
+    float32_t phaseRms;
+    float32_t diffRms;
     float32_t limitPhase;
     float32_t limitDiff;
-    float32_t limitVoltage;
+    int16_t logPhase[LOG_BUFFER_SIZE];
+    int16_t logDiff[LOG_BUFFER_SIZE];
+//    int16_t logVoltage[LOG_BUFFER_SIZE];
+//    int16_t logEarthLeakage[LOG_BUFFER_SIZE];
+    uint8_t logCounter;
+    int16_t *logPutPhase;
+    int16_t *logPutDiff;
+//    int16_t *logPutVoltage;
+//    int16_t *logPutLeakage;
+    int16_t *logGetPhase;
+    int16_t *logGetDiff;
+    int16_t *logGetVoltage;
+    int16_t *logGetLeakage;
 }Outlet;
 
 typedef struct{
-    float32_t *voltageWave1;
-    float32_t *voltageWave2;
-    float32_t *earthLeakageWave;
-    //float32_t voltageFFT1[SAMPLE_FRAME];
-    //float32_t voltageFFT2[SAMPLE_FRAME];
-    //float32_t earthLeakageFFT[SAMPLE_FRAME];
-    float32_t voltage1RMS;
-    float32_t voltage2RMS;
-    float32_t eathLeakageRMS;
+    float32_t voltage1Rms;
+    float32_t voltage2Rms;
+    float32_t eathLeakageRms;
+    int16_t logVoltage1[LOG_BUFFER_SIZE];
+    int16_t logVoltage2[LOG_BUFFER_SIZE];
+    int16_t logEarthLeakage[LOG_BUFFER_SIZE];
+    int16_t *logPutVoltage1;
+    int16_t *logPutVoltage2;
+    int16_t *logPutLeakage;
 }Panel;
 
-typedef struct{
-    uint8_t put;
-    uint8_t get;
-    uint16_t index;
-    char buffer[MSG_BUFFER];
-}Msg;
+static inline void copy_int16_f32( int16_t * pSrc, float32_t * pDst, uint32_t blockSize);
+static inline void logOutlet(int16_t outletNum);
 
-//typedef struct{
-//    uint8_t outletNum;
-//    uint8_t outletEvent;
-//    uint8_t sendFlag;
-//    float32_t phaseRMS[MAX_WAVE_LOG];
-//    float32_t diffRMS[MAX_WAVE_LOG];
-//    float32_t voltageRMS[MAX_WAVE_LOG];
-//    float32_t phaseFFT[2*MAX_HARMONIC*MAX_WAVE_LOG];
-//    float32_t diffFFT[2*MAX_HARMONIC*MAX_WAVE_LOG];
-//    float32_t voltageFFT[2*MAX_HARMONIC*MAX_WAVE_LOG];
-//}OutletMsg;
-//
-//
-//typedef struct{
-//    uint16_t put;
-//    uint16_t get;
-//    OutletMsg buffer[MAX_MSG_BUFFER];
-//}MsgBuffer;
-
-extern char g_str_PostSend[];
-
-extern char temp[4800];
 #endif /* PROJECT_INCLUDES_CAPTURE_H_ */

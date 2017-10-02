@@ -6,8 +6,8 @@
 #include "project_includes/eth_network.h"
 #include "project_includes/capture.h"
 
-#define _LEN 15360  // 15370 - 4 wave forms + 10 bytes
-     char lixo[6][_LEN];
+#define _LEN 7694  // 15370 - 4 wave forms + 10 bytes
+char lixo[_LEN];
 
 //void client(void);
 
@@ -27,130 +27,11 @@ void printError(char *errString, int code)
     BIOS_exit(code);
 }
 
-/*
- *
- *          HTTP Task - POST to the server
- *  This Task is created dynamically, it sends the captured data through
- *  a POST method to Protegmed server
- *  whenever is needed.
- *
- *  TODO: Treat errors on connections
- */
-void httpPOST_Task(UArg arg0, UArg arg1)
-{
-
-    bool moreFlag = false;
-    char *data;//data[POST_DATA_SIZE];
-    int ret;
-    int len;
-    char CONTENT_LENGTH[3];
-    struct sockaddr_in addr;
-
-    //while(1)
-    {
-      //Semaphore_pend(s_doHttpPost, BIOS_WAIT_FOREVER);
-        Log_write1(UIABenchmark_start,(xdc_IArg)"http POST Task");
-    /* copy task param to a local variable */
-    //Semaphore_pend(s_critical_section, BIOS_WAIT_FOREVER);
-        data=g_str_PostSend;//strcpy(data, g_str_PostSend);//strcpy(data,(char*)arg0);//strcpy(data, g_str_PostSend);
-    //Semaphore_post(s_critical_section);
-
-    /* Debug connection with a standard data string, uncomment below */
-    //strcpy(data, PTGM_TEST_DATA);
-    len = strlen(data);//len = sizeof(PTGM_TEST_DATA);
-    sprintf(CONTENT_LENGTH, "%d", len);
-
-    HTTPCli_Struct cli;
-    HTTPCli_Field fields[3] = {
-                              { HTTPStd_FIELD_NAME_HOST, PTGM_HOSTNAME },
-                              { HTTPStd_FIELD_NAME_USER_AGENT, USER_AGENT },
-                              { NULL, NULL }
-                              };
-
-    /* construct client */
-    HTTPCli_construct(&cli);
-
-    /* set fields to http POST */
-    HTTPCli_setRequestFields(&cli, fields);
-
-    /* */
-    ret = HTTPCli_initSockAddr((struct sockaddr *)&addr, PTGM_HOSTNAME, 0);
-    if (ret < 0) {
-        Log_info1("httpPOST_Task: address resolution failed", ret);
-    }
-
-
-    ret = HTTPCli_connect(&cli, (struct sockaddr *)&addr, 0, NULL);
-    if (ret < 0) {
-        Log_info1("%d: httpPOST_Task: connect failed, retrying..", ret);
-        ret = HTTPCli_connect(&cli, (struct sockaddr *)&addr, 0, NULL);
-        if (ret < 0) {
-                //sendError++;
-                Log_info1("%d: httpPOST_Task: connect failed, retrying..2", ret);
-                ret = HTTPCli_connect(&cli, (struct sockaddr *)&addr, 0, NULL);
-        }
-    }
-
-    ret = HTTPCli_sendRequest(&cli, HTTPStd_POST, PTGM_URI, true);
-    if (ret < 0) {
-        //sendError++;
-        Log_info1("%d: httpPOST_Task: send failed", ret);
-    }
-
-    ret = HTTPCli_sendField(&cli, HTTPStd_FIELD_NAME_CONTENT_LENGTH, CONTENT_LENGTH, false);
-    ret = HTTPCli_sendField(&cli, HTTPStd_FIELD_NAME_CONTENT_TYPE, PTGM_CONTENT_TYPE, true);
-
-    if (ret < 0) {
-        sendError++;
-        Log_info1("%d: httpPOST_Task: send failed", ret);
-    }
-
-    ret = HTTPCli_sendRequestBody(&cli, data, strlen(data));
-    if (ret < 0) {
-        //sendError++;
-        Log_info1("%d: httpPOST_Task: Variable data couldn't be sent", ret);
-    }
-
-    ret = HTTPCli_getResponseStatus(&cli);
-    if (ret != HTTPStd_OK) {
-        //sendError++;
-        Log_info1("%d httpPOST_Task: cannot get status", ret);
-    }
-
-    ret = HTTPCli_getResponseField(&cli, data, sizeof(data), &moreFlag);
-
-    if (ret != HTTPCli_FIELD_ID_END) {
-        //sendError++;
-        Log_info1("%d: httpPOST_Task: response field processing failed", ret);
-    }
-
-    len = 0;
-    do {
-        ret = HTTPCli_readResponseBody(&cli, data, sizeof(data), &moreFlag);
-        if (ret < 0) {
-            //sendError++;
-            Log_info1("%d: httpPOST_Task: response body processing failed", ret);
-        }
-
-        len += ret;
-    } while (moreFlag);
-
-    Log_info1("Received: %d characters", strlen(data));
-
-    HTTPCli_disconnect(&cli);
-    HTTPCli_destruct(&cli);
-
-    Log_write1(UIABenchmark_stop,(xdc_IArg)"http POST Task");
-    }
-    moreFlag=0;
-}
-
-
 /* TCP/IP client */
 void dataSendTcpIp(void)
 {
 
-    memset(lixo[0], 'A', _LEN);
+    memset(lixo, 0xc8 , _LEN);
     int client;
     int status;
     struct sockaddr_in serverAddr;
@@ -194,8 +75,9 @@ void dataSendTcpIp(void)
             goto shutdown;
         }
 
-        send(client, lixo[0], _LEN, 0);
+        send(client, lixo, _LEN, 0);
         tcpCount++;
+
         //recv(client, lixo, _LEN, 0);
 
         close(client);
@@ -241,33 +123,7 @@ void tcpWorker(UArg arg0, UArg arg1)
             }
             case 'g': // test
             {
-                //char temp[115]="POST / HTTP/1.1\nHost: 192.168.2.151\nContent-Length: 7\nContent-Type: application/x-www-form-urlencoded\nTYPE=04";
-                //float32_t value = 3.2;
-
-//                char i;
-//                Log_write1(UIABenchmark_start,(xdc_IArg)"Serialize");
-//                for (i = 0, j=0; i < 240; i++)
-//                {
-//                    temp[j] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 24;
-//                    temp[j + 1] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 16;
-//                    temp[j + 2] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 8;
-//                    temp[j + 3] = *(uint32_t *) &msgBuffer[0].phaseFFT[i];
-//                    temp[j + 4] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 24;
-//                    temp[j + 5] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 16;
-//                    temp[j + 6] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 8;
-//                    temp[j + 7] = *(uint32_t *) &msgBuffer[0].phaseFFT[i];
-//                    temp[j + 8] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 24;
-//                    temp[j + 9] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 16;
-//                    temp[j + 10] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 8;
-//                    temp[j + 11] = *(uint32_t *) &msgBuffer[0].phaseFFT[i];
-//                    temp[j + 12] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 24;
-//                    temp[j + 13] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 16;
-//                    temp[j + 14] = *(uint32_t *) &msgBuffer[0].phaseFFT[i] >> 8;
-//                    temp[j + 15] = *(uint32_t *) &msgBuffer[0].phaseFFT[i];
-//                    j=j+16;
-//                }
-//                Log_write1(UIABenchmark_stop,(xdc_IArg)"Serialize");
-                send(clientfd, temp, sizeof(temp), 0);
+                //send(clientfd, temp, sizeof(temp), 0);
                 break;
             }
             default:

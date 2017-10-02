@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<UIA_Summary Date="Mon Oct 02 16:48:20 BRT 2017">
+  <Endpoint ID="0" Name="CORTEX_M4_0" OutFile="C:\Users\skelter_win\Protegemed_tcc\TM4C_Protegemed\Debug\TM4C_Protegemed.out">
+    <BytesReceived>2876</BytesReceived>
+    <PacketsReceived>3</PacketsReceived>
+    <PacketsLost>1238</PacketsLost>
+    <Total>109</Total>
+    <SeqNumGaps>0</SeqNumGaps>
+    <Lost>0</Lost>
+    <PercentProcessed>100</PercentProcessed>
+    <Logger Description="Load Logger Events Buffer" ID="1" Name="Load Logger" Type="ti.uia.loggers.LoggerStopMode">
+      <BytesReceived>976</BytesReceived>
+      <BytesOutstanding>0</BytesOutstanding>
+      <BytesDiscarded>0</BytesDiscarded>
+      <PacketsReceived>1</PacketsReceived>
+      <PacketsLost>0</PacketsLost>
+      <PacketsDiscarded>0</PacketsDiscarded>
+      <Total>32</Total>
+      <Processed>32</Processed>
+      <SeqNumGaps>0</SeqNumGaps>
+      <Lost>0</Lost>
+      <PercentProcessed>100</PercentProcessed>
+    </Logger>
+    <Logger Description="Main Logger Events Buffer" ID="2" Name="Main Logger" Type="ti.uia.loggers.LoggerStopMode">
+      <BytesReceived>940</BytesReceived>
+      <BytesOutstanding>0</BytesOutstanding>
+      <BytesDiscarded>0</BytesDiscarded>
+      <PacketsReceived>1</PacketsReceived>
+      <PacketsLost>0</PacketsLost>
+      <PacketsDiscarded>0</PacketsDiscarded>
+      <Total>47</Total>
+      <Processed>47</Processed>
+      <SeqNumGaps>0</SeqNumGaps>
+      <Lost>0</Lost>
+      <PercentProcessed>100</PercentProcessed>
+    </Logger>
+    <Logger Description="SYSBIOS System Logger Events Buffer" ID="3" Name="SYSBIOS System Logger" Type="ti.uia.loggers.LoggerStopMode">
+      <BytesReceived>960</BytesReceived>
+      <BytesOutstanding>0</BytesOutstanding>
+      <BytesDiscarded>0</BytesDiscarded>
+      <PacketsReceived>1</PacketsReceived>
+      <PacketsLost>0</PacketsLost>
+      <PacketsDiscarded>0</PacketsDiscarded>
+      <Total>30</Total>
+      <Processed>30</Processed>
+      <SeqNumGaps>0</SeqNumGaps>
+      <Lost>0</Lost>
+      <PercentProcessed>100</PercentProcessed>
+    </Logger>
+  </Endpoint>
+</UIA_Summary>

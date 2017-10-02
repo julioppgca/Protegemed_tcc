@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="lixo" key="selection"/>
+		<item value="ADCchannel[CH14]" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
-		<item value="false" key="wrap"/>
-		<item value="false" key="wholeword"/>
+		<item value="true" key="wrap"/>
+		<item value="true" key="wholeword"/>
 		<list key="findhistory">
+			<item value="ADCchannel[CH14]"/>
+			<item value="logPutLeakage"/>
+			<item value="temp"/>
+			<item value="inline"/>
+			<item value="g_str_LogOff"/>
+			<item value="count"/>
+			<item value="doLogOffEvent"/>
 			<item value="lixo"/>
-			<item value="panelVoltage.FFTOutlets_456"/>
-			<item value="panelVoltage.FFTOutlets_123"/>
-			<item value="panelVoltage.WaveOutlets_456"/>
-			<item value="panelVoltage.WaveOutlets_123"/>
-			<item value="        panelVoltage.WaveOutlets_123"/>
-			<item value="heap"/>
-			<item value="limitCounter"/>
 		</list>
 		<list key="replacehistory">
 			<item value="panel.voltageFFTOutlets2"/>
