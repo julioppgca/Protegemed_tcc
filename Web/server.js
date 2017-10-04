@@ -11,7 +11,7 @@ console.log(`Server started at: ${ADDRESS}:${PORT}`);
 var msgCount=1;
 var tmpMsg=0;
 
-const pktLength = 15375;
+const pktLength = 15380;
 
 function onClientConnected(socket) {
 

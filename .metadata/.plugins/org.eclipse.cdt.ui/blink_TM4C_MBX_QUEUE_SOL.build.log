@@ -1,0 +1,35 @@
+
+**** Build of configuration Debug for project blink_TM4C_MBX_QUEUE_SOL ****
+
+"C:\\ti\\ccsv7\\utils\\bin\\gmake" -k all 
+'Building file: ../main.c'
+'Invoking: ARM Compiler'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --include_path="C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include" --include_path="C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.0.12573c" --define=ccs --define=TIVAWARE --define=ccs="ccs" --define=PART_TM4C1294NCPDT -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --preproc_with_compile --preproc_dependency="main.d" --cmd_file="configPkg/compiler.opt" "../main.c"
+
+>> Compilation failure
+subdir_rules.mk:23: recipe for target 'main.obj' failed
+"C:/ti/xdctools_3_50_02_20_core/packages/xdc/cfg/global.h", line 39: fatal error #1965: cannot open source file "C:/Users/skelter_win/Protegemed_tcc/blink_TM4C_MBX_QUEUE_SOL/Debug/configPkg/package/cfg/empty_pem4f.h"
+1 catastrophic error detected in the compilation of "../main.c".
+Compilation terminated.
+gmake: *** [main.obj] Error 1
+gmake[1]: Entering directory 'C:/Users/skelter_win/Protegemed_tcc/blink_TM4C_MBX_QUEUE_SOL/Debug'
+'Building file: ../empty.cfg'
+'Invoking: XDCtools'
+"C:/ti/xdctools_3_50_02_20_core/xs" --xdcpath="C:/ti/ccsv7/ccs_base;C:/ti/tirtos_tivac_2_16_00_08/packages;C:/ti/tirtos_tivac_2_16_00_08/products/tidrivers_tivac_2_16_00_08/packages;C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages;C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages;C:/ti/tirtos_tivac_2_16_00_08/products/uia_2_00_05_50/packages;C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages;C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_41_00_26/packages;C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_24_01_18/packages;C:/ti/tirtos_tivac_2_16_00_08/products/uia_2_00_02_39/packages;" xdc.tools.configuro -o configPkg -t ti.targets.arm.elf.M4F -p ti.platforms.tiva:TM4C123GH6PM -r release -c "C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS" "../empty.cfg"
+configuring empty.xem4f from package/cfg/empty_pem4f.cfg ...
+subdir_rules.mk:12: recipe for target 'build-1907103647-inproc' failed
+warning: ti.tirtos.TIRTOS: "C:/ti/tirtos_tivac_2_16_00_08/packages/ti/tirtos/TIRTOS.xs", line 49: ti.tirtos.TIRTOS : ti.tirtos.TIRTOS module is no longer required to configure driver instrumentation.  Please use the ti.drivers.Config and ti.mw.Config modules instead.
+error: xdc.cfg.Program: "C:/ti/xdctools_3_50_02_20_core/packages/xdc/cfg/Program.xs", line 71: xdc.cfg.Program : The package 'ti.sysbios.knl' is not compatible with XDCtools used in this build. Please either use XDCtools compatible with that package, or update the product containing that package, or rebuild the package with XDCtools 3.50 or later.
+js: "C:/ti/xdctools_3_50_02_20_core/packages/xdc/cfg/Main.xs", line 160: Error: Configuration failed!
+xdctools_3_50_02_20_core\gmake.exe: *** [package/cfg/empty_pem4f.xdl] Error 1
+Warning: directory "C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_41_00_26/packages" on package path does not exist
+Warning: directory "C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_24_01_18/packages" on package path does not exist
+Warning: directory "C:/ti/tirtos_tivac_2_16_00_08/products/uia_2_00_02_39/packages" on package path does not exist
+js: "C:/ti/xdctools_3_50_02_20_core/packages/xdc/tools/Cmdr.xs", line 52: Error: xdc.tools.configuro: configuration failed due to earlier errors (status = 2); 'linker.cmd' deleted.
+gmake[1]: *** [build-1907103647-inproc] Error 1
+gmake: *** [build-1907103647] Error 2
+gmake[1]: Leaving directory 'C:/Users/skelter_win/Protegemed_tcc/blink_TM4C_MBX_QUEUE_SOL/Debug'
+subdir_rules.mk:9: recipe for target 'build-1907103647' failed
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****

@@ -1,0 +1,74 @@
+/*
+ * eth_network.h
+ *
+ *  Created on: 24 de ago de 2017
+ *      Author: juliosantos
+ */
+
+#ifndef PROJECT_INCLUDES_ETH_NETWORK_H_
+#define PROJECT_INCLUDES_ETH_NETWORK_H_
+
+/* Standard variables definitions */
+#include <stdint.h>
+#include <stdbool.h>
+
+/* XDCtools Header files */
+#include <xdc/std.h>
+#include <xdc/runtime/Error.h>
+#include <xdc/runtime/System.h>
+#include <xdc/runtime/Diags.h>
+#include <xdc/runtime/Log.h>   // to use Log_Info
+#include <xdc/cfg/global.h>
+
+/* BIOS Header files */
+#include <ti/sysbios/BIOS.h>
+#include <ti/sysbios/knl/Task.h>
+#include <ti/sysbios/knl/Semaphore.h>
+
+/* TM4C tivaware lib */
+#include <ti/drivers/GPIO.h>
+
+/* NDK BSD support */
+#include <sys/socket.h>
+//#include <ti/ndk/inc/socketndk.h>
+
+//#include <ti/ndk/inc/_stack.h>  // test
+
+/* Strings functions */
+#include <string.h>
+#include <stdio.h>
+
+/* Project Header files */
+#include "project_includes/settings.h"
+#include "project_includes/capture.h"
+
+
+/**
+ *
+ *      Network parameters
+ *
+ */
+// http protocol
+#define PTGM_URI            "/"//"/Ptgm-Scripts/capture.php"         // Protegemed request URI
+#define PTGM_HOSTNAME       "192.168.2.151"                     // Protegemed Server IP
+#define PTGM_CONTENT_TYPE   "application/x-www-form-urlencoded"//"application/octet-stream" //"application/x-www-form-urlencoded" // Protegemed content type
+#define PTGM_TEST_DATA      "TYPE=04&OUTLET=01&RFID=FFFF0001&OFFSET=2228&GAIN=4302B611&RMS=3ED36D93&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=4292CF1D%3BC017B7BC%3BBECFCC14%3BBF8634A0%3BBF576C4A%3BBEC518EA%3BBE7B2DAE%3BBE7586A8%3BBF30B264%3BBF075AEE%3BBF080748%3BBE27BBF6&COS=41A4DB52%3BBE4EBD48%3B3F4A0DC7%3BBDD97BE8%3BBE4AFD96%3BBD237492%3B3D7BB817%3B3EC9AD66%3BBE8DFB00%3BBD607EF0%3BBE0E5FDA%3B3D1FF56F "
+#define USER_AGENT          "Protegmed Client"//"HTTPCli (ARM; TI-RTOS)"
+#define HTTPTASKSTACKSIZE   4096
+#define POST_DATA_SIZE      11522
+// TCP/IP server
+#define TCPPORT             1000
+#define TCPHANDLERSTACK     1024
+#define TCPPACKETSIZE       256
+#define NUMTCPWORKERS       3
+
+typedef struct{
+    char Buffer[POST_DATA_SIZE];
+    int8_t outletNum;
+    int16_t *put;
+    int16_t *get;
+}Msg;
+
+extern Msg msg[];
+
+#endif /* PROJECT_INCLUDES_ETH_NETWORK_H_ */

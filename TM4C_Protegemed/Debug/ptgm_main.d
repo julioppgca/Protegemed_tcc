@@ -1,11 +1,11 @@
 # FIXED
 
 ptgm_main.obj: ../ptgm_main.c
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdint.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdbool.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdint.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdbool.h
 ptgm_main.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/std.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdarg.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stddef.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdarg.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stddef.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/std.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/M4F.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/std.h
@@ -238,24 +238,17 @@ ptgm_main.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Log.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/BIOS.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/knl/Task.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/knl/Semaphore.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/http/httpcli.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/ssock.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/socket.h
+ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/tidrivers_tivac_2_16_00_08/packages/ti/drivers/GPIO.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/sys/socket.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stddef.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stddef.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/socketndk.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/bits/sockaddr.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/serrno.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/netinet/in.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/netdb.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/arpa/inet.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/tls.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/http/httpstd.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/tidrivers_tivac_2_16_00_08/packages/ti/drivers/GPIO.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/string.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/linkage.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdio.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdarg.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/string.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/linkage.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdio.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdarg.h
 ptgm_main.obj: C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/settings.h
 ptgm_main.obj: C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/capture.h
 ptgm_main.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h
@@ -301,18 +294,18 @@ ptgm_main.obj: C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/core_cmInstr.h
 ptgm_main.obj: C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/cmsis_ccs.h
 ptgm_main.obj: C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/core_cmFunc.h
 ptgm_main.obj: C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/core_cmSimd.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/string.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/math.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/_defs.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/string.h
-ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdio.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/string.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/math.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/_defs.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/string.h
+ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdio.h
 
 ../ptgm_main.c: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdint.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdbool.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdint.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdbool.h: 
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/std.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdarg.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stddef.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdarg.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stddef.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/std.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/M4F.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/std.h: 
@@ -545,24 +538,17 @@ C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Log.h:
 C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/BIOS.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/knl/Task.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/knl/Semaphore.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/http/httpcli.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/ssock.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/socket.h: 
+C:/ti/tirtos_tivac_2_16_00_08/products/tidrivers_tivac_2_16_00_08/packages/ti/drivers/GPIO.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/sys/socket.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stddef.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stddef.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/socketndk.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/bits/sockaddr.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/serrno.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/netinet/in.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/netdb.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages/ti/ndk/inc/bsd/arpa/inet.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/tls.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages/ti/net/http/httpstd.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/tidrivers_tivac_2_16_00_08/packages/ti/drivers/GPIO.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/string.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/linkage.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdio.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdarg.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/string.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/linkage.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdio.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdarg.h: 
 C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/settings.h: 
 C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/capture.h: 
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h: 
@@ -608,8 +594,8 @@ C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/core_cmInstr.h:
 C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/cmsis_ccs.h: 
 C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/core_cmFunc.h: 
 C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/core_cmSimd.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/string.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/math.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/_defs.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/string.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.3.LTS/include/stdio.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/string.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/math.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/_defs.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/string.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdio.h: 

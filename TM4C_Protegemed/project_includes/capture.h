@@ -54,7 +54,11 @@
 #define MAX_WAVE_LOG 10
 #define MAX_HARMONIC 12
 #define MSG_BUFFER 4800
-#define LOG_BUFFER_SIZE 2560 //10*256 or to bytes: 3840 with merge, 5120 without merge
+#define LOG_BUFFER_SIZE 5760 //10*256 or to bytes: 3840 with merge, 5120 without merge
+#define LOG_BUFFER_OUTLET_BLOCKS    15
+#define LOG_BUFFER_PANELS_BLOCKS    20
+#define LOG_BUFFER_SIZE_PANEL 7680
+#define MERGE_LOG_BLOCK 384
 #define MAX_MSG_LOG_PER_OUTLET  2
 
 enum analogInputsADC0
@@ -76,7 +80,7 @@ enum analogChannels
 
 enum events
 {
-   OFF, TURNS_ON, TURNS_OFF, ON, STAND_BY, OVER_VOLTAGE, UNDER_VOLTAGE, START_DIFF_LEAKAGE, STOP_DIFF_LEAKAGE, EVENT_COUNT
+   UNKNOWN, OFF, TURNS_ON, TURNS_OFF, ON, BEGIN_DIFF_LEAKAGE, END_DIFF_LEAKAGE, STAND_BY, OVER_VOLTAGE, UNDER_VOLTAGE, EVENT_COUNT
 };
 
 enum outletNumber
@@ -91,34 +95,43 @@ typedef struct{
     float32_t diffRms;
     float32_t limitPhase;
     float32_t limitDiff;
-    int16_t logPhase[LOG_BUFFER_SIZE];
-    int16_t logDiff[LOG_BUFFER_SIZE];
-//    int16_t logVoltage[LOG_BUFFER_SIZE];
-//    int16_t logEarthLeakage[LOG_BUFFER_SIZE];
     uint8_t logCounter;
-    int16_t *logPutPhase;
-    int16_t *logPutDiff;
-//    int16_t *logPutVoltage;
-//    int16_t *logPutLeakage;
-    int16_t *logGetPhase;
-    int16_t *logGetDiff;
-    int16_t *logGetVoltage;
-    int16_t *logGetLeakage;
+    int8_t logPhase[LOG_BUFFER_SIZE];
+    int8_t logDiff[LOG_BUFFER_SIZE];
+    int8_t *logPutPhase;
+    int8_t *logPutDiff;
+    int8_t *logGetPhase;
+    int8_t *logGetDiff;
+    int8_t *logGetVoltage1;
+    int8_t *logGetVoltage2;
+    int8_t *logGetLeakage;
 }Outlet;
 
 typedef struct{
     float32_t voltage1Rms;
     float32_t voltage2Rms;
     float32_t eathLeakageRms;
-    int16_t logVoltage1[LOG_BUFFER_SIZE];
-    int16_t logVoltage2[LOG_BUFFER_SIZE];
-    int16_t logEarthLeakage[LOG_BUFFER_SIZE];
-    int16_t *logPutVoltage1;
-    int16_t *logPutVoltage2;
-    int16_t *logPutLeakage;
+    int8_t logVoltage1[LOG_BUFFER_SIZE_PANEL];
+    int8_t logVoltage2[LOG_BUFFER_SIZE_PANEL];
+    int8_t logEarthLeakage[LOG_BUFFER_SIZE_PANEL];
+    int8_t *logPutVoltage1;
+    int8_t *logPutVoltage2;
+    int8_t *logPutLeakage;
 }Panel;
+
+
+typedef struct{
+    char header[20];
+    int8_t *phase;
+    int8_t *diff;
+    int8_t *voltage;
+    int8_t *leakage;
+}Msg;
+
 
 static inline void copy_int16_f32( int16_t * pSrc, float32_t * pDst, uint32_t blockSize);
 static inline void logOutlet(int16_t outletNum);
+
+extern Msg *gMsg;
 
 #endif /* PROJECT_INCLUDES_CAPTURE_H_ */

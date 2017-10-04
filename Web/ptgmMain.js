@@ -86,7 +86,7 @@ io.on('connection', function(socket) {
 	
 	socket.on('TM4CDeadAlive', function(){
     	//console.log('Html Request: TM4CDeadAlive ');
-    	// TM4CDeadAlive();
+    	TM4CDeadAlive();
 	});
 	
 	socket.on('GenerateFail', function(){
@@ -133,8 +133,8 @@ function TM4CDeadAlive()
 
 var SerialPort = require('serialport');
 var serialPort = new SerialPort('COM2', {baudRate: 115200});
-const FAIL_COMMAND =  new Buffer([0x53,200,20,230,20,0x45]); 
-const NO_FAIL_COMMAND =  new Buffer([0x53,1,20,230,20,0x45]);
+const FAIL_COMMAND =  new Buffer([0x53,200,20,230,230,0x45]); 
+const NO_FAIL_COMMAND =  new Buffer([0x53,1,20,230,230,0x45]);
 
 
 // sends data to the connected device via serial port
