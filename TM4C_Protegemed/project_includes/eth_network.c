@@ -30,12 +30,13 @@ void printError(char *errString, int code)
 ///* TCP/IP client */
 void dataSendTcpIp(void)
 {
-
-    //memset(lixo, 0xc8 , _LEN);
     int client;
     int status;
     struct sockaddr_in serverAddr;
 
+    int8_t i;           // index increment
+    int8_t *pStrPost;   // pointer to g_str_PostSend
+    int8_t *pHeader;    // pointer to extract header from the msg struct
 
     Semaphore_pend(s_networkIsUp, BIOS_WAIT_FOREVER);
 
@@ -43,17 +44,63 @@ void dataSendTcpIp(void)
     {
         Semaphore_pend(s_doDataSendTcpIp, BIOS_WAIT_FOREVER);
         Log_write1(UIABenchmark_start,(xdc_IArg)"TCP Send");
+        GPIO_write(DEBUG_PIN_SEND, 1); // hardware debug pin on
+
         fdOpenSession(dataSendTcpIp_Handle);
 
-        // get a message
-        //strcpy(g_str_PostSend, gMsg->header);
+        memset(g_str_PostSend,' ',sizeof(g_str_PostSend));
 
 
+        pStrPost = (int8_t *)&g_str_PostSend[0];
+        pHeader = (int8_t *)&gMsg->header[0];
 
-        /*---- Create the socket. The three arguments are: ----*/
-        /* 1) Internet domain 2) Stream socket 3) Default protocol (TCP in this case) */
-        //clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-        do{
+        // get a message header
+        for(i=0;i<HEADER_SIZE;i++)
+        {
+            *pStrPost++ = *pHeader++;
+        }
+
+        // get message data
+        for(i=0;i<MAX_WAVE_LOG;i++)
+        {
+            arm_copy_q7(gMsg->phase, pStrPost, MERGE_LOG_BLOCK);
+            pStrPost += MERGE_LOG_BLOCK;
+            gMsg->phase += MERGE_LOG_BLOCK;
+            if(gMsg->phase >= &outlet[gMsg->header[0]].logPhase[LOG_BUFFER_SIZE])
+                gMsg->phase = &outlet[gMsg->header[0]].logPhase[0];
+
+        }
+        for(i=0;i<MAX_WAVE_LOG;i++)
+        {
+            arm_copy_q7(gMsg->diff, pStrPost, MERGE_LOG_BLOCK);
+            pStrPost += MERGE_LOG_BLOCK;
+            gMsg->diff += MERGE_LOG_BLOCK;
+            if(gMsg->diff >= &outlet[gMsg->header[0]].logDiff[LOG_BUFFER_SIZE])
+                gMsg->diff = &outlet[gMsg->header[0]].logDiff[0];
+        }
+        for(i=0;i<MAX_WAVE_LOG;i++)
+        {
+            arm_copy_q7(gMsg->voltage, pStrPost, MERGE_LOG_BLOCK);
+            pStrPost += MERGE_LOG_BLOCK;
+            gMsg->voltage += MERGE_LOG_BLOCK;
+            if(gMsg->voltage >= &panel.logVoltage1[LOG_BUFFER_SIZE_PANEL])
+                gMsg->voltage = &panel.logVoltage1[0];
+        }
+        for(i=0;i<MAX_WAVE_LOG;i++)
+        {
+            arm_copy_q7(gMsg->leakage, pStrPost, MERGE_LOG_BLOCK);
+            pStrPost += MERGE_LOG_BLOCK;
+            gMsg->leakage += MERGE_LOG_BLOCK;
+            if(gMsg->leakage >= &panel.logEarthLeakage[LOG_BUFFER_SIZE_PANEL])
+                gMsg->leakage = &panel.logEarthLeakage[0];
+        }
+
+        // get next queued message or reset circular buffer
+        if(++gMsg > &msg[OUTLET_COUNTER])
+            gMsg=&msg[0];
+
+
+        do{ // TODO: error log...
             client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
             if(client==-1) socketErro++;
         }while(client < 0);
@@ -66,11 +113,10 @@ void dataSendTcpIp(void)
 
         memset(&serverAddr, 0, sizeof(serverAddr));
         serverAddr.sin_family = AF_INET;
-        serverAddr.sin_addr.s_addr = htonl(3232236183); //inet_addr(PTGM_HOSTNAME);
+        serverAddr.sin_addr.s_addr = htonl(3232236183); //TODO: use like this: inet_addr(PTGM_HOSTNAME);
         serverAddr.sin_port = htons(7891); // TcpIp server listen Port = 7891
         memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
 
-        /*---- Connect the socket to the server using the address struct ----*/
         status = connect(client, (struct sockaddr *) &serverAddr,sizeof(serverAddr));
         if (status == -1)
         {
@@ -82,10 +128,10 @@ void dataSendTcpIp(void)
         send(client, g_str_PostSend, POST_DATA_SIZE, 0);
         tcpCount++;
 
+        //TODO: confirm receive?
         //recv(client, lixo, _LEN, 0);
 
         close(client);
-
 
         shutdown:
             if (client > 0) {
@@ -93,7 +139,9 @@ void dataSendTcpIp(void)
             }
 
         fdCloseSession(dataSendTcpIp_Handle);
-        Log_write1(UIABenchmark_stop,(xdc_IArg)"TCP Send");
+
+        GPIO_write(DEBUG_PIN_SEND, 0); // hardware debug pin off
+    Log_write1(UIABenchmark_stop,(xdc_IArg)"TCP Send");
     }
 
 }

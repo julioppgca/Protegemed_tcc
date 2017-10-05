@@ -11,13 +11,14 @@ int16_t ADCchannel[CHANNELS_COUNTER][SAMPLE_FRAME];     // ADC channels stored v
 Outlet outlet[OUTLET_COUNTER];                          // Outlet structure values
 Panel panel;                                            // Panel structure values
 Msg msg[OUTLET_COUNTER];
-//Msg *pMsg;
-//Msg *gMsg;
+Msg *pMsg;
+Msg *gMsg;
 
 // debug global variables
 uint32_t eventCount=0;
 uint32_t sendCount=0;
-
+uint32_t endLog=0;
+bool setOn=0;
 // Prototypes
 static inline void copy_int16_f32(int16_t * pSrc, float32_t * pDst, uint32_t blockSize);
 static inline void logOutlet(int16_t outletNum);
@@ -209,7 +210,7 @@ void eventAnalysis_Task(void)
     // set detect limits
     for (outletNum = 0, j = 0; outletNum < OUTLET_COUNTER; outletNum++, j += 2)
     {
-        outlet[outletNum].num = outletNum + 1;
+        outlet[outletNum].num = outletNum;
         outlet[outletNum].limitPhase = ptgmSettings.channel[j].channel_limit;
         outlet[outletNum].limitDiff = ptgmSettings.channel[j + 1].channel_limit;
         outlet[outletNum].logCounter = 0;
@@ -221,6 +222,7 @@ void eventAnalysis_Task(void)
         outlet[outletNum].logGetVoltage1 = &panel.logVoltage1[11*MERGE_LOG_BLOCK];
         outlet[outletNum].logGetVoltage2 = &panel.logVoltage2[11*MERGE_LOG_BLOCK];
         outlet[outletNum].logGetLeakage = &panel.logEarthLeakage[11*MERGE_LOG_BLOCK];
+
     }
 
     // Panel init
@@ -228,18 +230,28 @@ void eventAnalysis_Task(void)
     panel.logPutVoltage2 = &panel.logVoltage2[0];
     panel.logPutLeakage = &panel.logEarthLeakage[0];
 
+    // Circular log buffer pre filling
+    for(j=0;j<2*MAX_WAVE_LOG;j++)
+    {
+        logPanel();
+        for (outletNum = 0; outletNum < OUTLET_COUNTER; outletNum++)
+            {
+                logOutlet(outletNum);
+            }
+    }
+
+
 
     // message init
-//    pMsg = &msg[0];
-//    gMsg = pMsg;
+    pMsg = &msg[0];
+    gMsg = pMsg;
 
     while (1)
     {
         // wait until data is being processed, unblocked by dataProcess_Task
         Semaphore_pend(s_doEventAnalysis, BIOS_WAIT_FOREVER);
         Log_write1(UIABenchmark_start,(xdc_IArg)"Event Analisys Task");
-        //log panel values
-        logPanel();
+
         // scan all outlets
         for (outletNum = 0; outletNum < OUTLET_COUNTER; outletNum++)
         {
@@ -252,6 +264,9 @@ void eventAnalysis_Task(void)
                 {
                     // change actual state to turns on
                     outlet[outletNum].event = TURNS_ON;
+                    // set get voltage pointer
+                    outlet[outletNum].logGetVoltage1 = panel.logPutVoltage1;
+                    outlet[outletNum].logGetLeakage = panel.logPutLeakage;
                 }
                 break;
             }
@@ -261,6 +276,11 @@ void eventAnalysis_Task(void)
                 {
                     // change actual state to turns off
                     outlet[outletNum].event = TURNS_OFF;
+                    pMsg->phase = outlet[outletNum].logGetPhase;
+                    pMsg->diff = outlet[outletNum].logGetDiff;
+                    pMsg->voltage = outlet[outletNum].logGetVoltage1;
+                    pMsg->leakage = outlet[outletNum].logGetLeakage;
+                    logOutlet(outletNum);
                 }
                 else
                     logOutlet(outletNum); // keep logging until turns off
@@ -279,7 +299,17 @@ void eventAnalysis_Task(void)
             else if (outlet[outletNum].event == TURNS_OFF)
             {
                 //Send data TURNS_OFF event
+                outlet[outletNum].event = OFF;
+                //Send data TURNS_ON event
+                pMsg->header[0]=outlet[outletNum].num;
+                pMsg->header[1]=0;
+                pMsg->header[2]=outlet[outletNum].event;
 
+                if(++pMsg > &msg[OUTLET_COUNTER])
+                    pMsg = &msg[0];
+                Semaphore_post(s_doDataSendTcpIp);
+                sendCount++;
+                outlet[outletNum].logCounter=11;
             }
 
             // finalize log process
@@ -290,24 +320,17 @@ void eventAnalysis_Task(void)
                 {
                     // change state to ON
                     outlet[outletNum].event = ON;
-                    //Send data TURNS_OFF event
-//                    msg[outletNum].header[0]=0x00;
-//                    msg[outletNum].header[1]=outlet[outletNum].num;
-//                    msg[outletNum].header[2]=outlet[outletNum].event;
-//                    msg[outletNum].phase = outlet[outletNum].logGetPhase;
-//                    msg[outletNum].diff = outlet[outletNum].logGetDiff;
-//                    msg[outletNum].voltage = outlet[outletNum].logGetVoltage1;
-//                    msg[outletNum].leakage = outlet[outletNum].logGetLeakage;
-//                    pMsg->header[0]=0x00;
-//                    pMsg->header[0]=outlet[outletNum].num;
-//                    pMsg->header[2]=outlet[outletNum].event;
-//                    pMsg->phase = outlet[outletNum].logGetPhase;
-//                    pMsg->diff = outlet[outletNum].logGetDiff;
-//                    pMsg->voltage = outlet[outletNum].logGetVoltage1;
-//                    pMsg->leakage = outlet[outletNum].logGetLeakage;
-//                    if(++pMsg > (void *)OUTLET_COUNTER)
-//                        pMsg = &msg[0];
-//                    Semaphore_post(s_doDataSendTcpIp);
+                    //Send data TURNS_ON event
+                    pMsg->header[0]=outlet[outletNum].num;
+                    pMsg->header[1]=0;
+                    pMsg->header[2]=outlet[outletNum].event;
+                    pMsg->phase = outlet[outletNum].logGetPhase;
+                    pMsg->diff = outlet[outletNum].logGetDiff;
+                    pMsg->voltage = outlet[outletNum].logGetVoltage1;
+                    pMsg->leakage = outlet[outletNum].logGetLeakage;
+                    if(++pMsg > &msg[OUTLET_COUNTER])
+                        pMsg = &msg[0];
+                    Semaphore_post(s_doDataSendTcpIp);
                     sendCount++;
                 }
                 else
@@ -319,6 +342,9 @@ void eventAnalysis_Task(void)
             }
 
         }
+        //log panel values
+        logPanel();
+
         Log_write1(UIABenchmark_stop,(xdc_IArg)"Event Analisys Task");
     }
 
@@ -347,58 +373,43 @@ static inline void logOutlet(int16_t outletNum)
         *outlet[outletNum].logPutDiff++ = ADCchannel[(outletNum * 2)+1][j+1];
 
     }
-    // increment or reset circular phase buffer
+    /*   Outlet specifics  */
+    // Reset circular phase buffer
     if (outlet[outletNum].logPutPhase >= &outlet[outletNum].logPhase[LOG_BUFFER_SIZE])
     {
         outlet[outletNum].logPutPhase = &outlet[outletNum].logPhase[0];
-        outlet[outletNum].logGetPhase = &outlet[outletNum].logPhase[6*MERGE_LOG_BLOCK];
     }
-    else
-    {
-        outlet[outletNum].logGetPhase += MERGE_LOG_BLOCK;
-    }
+    // Increment or reset phase log get pointer
+    outlet[outletNum].logGetPhase += MERGE_LOG_BLOCK;
+    if(outlet[outletNum].logGetPhase >= &outlet[outletNum].logPhase[LOG_BUFFER_SIZE])
+        outlet[outletNum].logGetPhase = &outlet[outletNum].logPhase[0];
 
     // increment or reset circular diff buffer
     if (outlet[outletNum].logPutDiff >= &outlet[outletNum].logDiff[LOG_BUFFER_SIZE])
     {
         outlet[outletNum].logPutDiff = &outlet[outletNum].logDiff[0];
-        outlet[outletNum].logGetDiff = &outlet[outletNum].logDiff[6*MERGE_LOG_BLOCK];
     }
-    else
-    {
-        //*outlet[outletNum].logPutDiff += MERGE_LOG_BLOCK;
-        outlet[outletNum].logGetDiff += MERGE_LOG_BLOCK;
-    }
+    // Increment or reset diff get get pointer
+    outlet[outletNum].logGetDiff += MERGE_LOG_BLOCK;
+    if(outlet[outletNum].logGetDiff >= &outlet[outletNum].logDiff[LOG_BUFFER_SIZE])
+        outlet[outletNum].logGetDiff = &outlet[outletNum].logDiff[0];
 
-    // increment or reset circular voltage 1 buffer
-    if (panel.logPutVoltage1 >= &panel.logVoltage1[LOG_BUFFER_SIZE_PANEL ])
-    {
-       outlet[outletNum].logGetVoltage1 = &panel.logVoltage1[11*MERGE_LOG_BLOCK];
-    }
-    else
-    {
-       outlet[outletNum].logGetVoltage1 += MERGE_LOG_BLOCK;
-    }
+    /*   Panel specifics  */
+    // Increment or reset voltage1 get get pointer
+    outlet[outletNum].logGetVoltage1 += MERGE_LOG_BLOCK;
+    if(outlet[outletNum].logGetVoltage1 >= &panel.logVoltage1[LOG_BUFFER_SIZE_PANEL])
+        outlet[outletNum].logGetVoltage1 = &panel.logVoltage1[0];
 
-    // increment or reset circular voltage 2 buffer
-    if (panel.logPutVoltage2 >= &panel.logVoltage2[LOG_BUFFER_SIZE_PANEL ])
-    {
-       outlet[outletNum].logGetVoltage2 = &panel.logVoltage2[11*MERGE_LOG_BLOCK];
-    }
-    else
-    {
-       outlet[outletNum].logGetVoltage2 += MERGE_LOG_BLOCK;
-    }
+    // Increment or reset voltage2 get get pointer
+    outlet[outletNum].logGetVoltage2 += MERGE_LOG_BLOCK;
+    if(outlet[outletNum].logGetVoltage2 >= &panel.logVoltage2[LOG_BUFFER_SIZE_PANEL])
+        outlet[outletNum].logGetVoltage2 = &panel.logVoltage2[0];
 
-    // increment or reset circular earth leakage buffer
-    if (panel.logPutLeakage >= &panel.logEarthLeakage[LOG_BUFFER_SIZE_PANEL ])
-    {
-       outlet[outletNum].logGetLeakage = &panel.logEarthLeakage[11*MERGE_LOG_BLOCK];
-    }
-    else
-    {
-       outlet[outletNum].logGetLeakage += MERGE_LOG_BLOCK;
-    }
+    // Increment or reset earth leakage get get pointer
+    outlet[outletNum].logGetLeakage += MERGE_LOG_BLOCK;
+    if(outlet[outletNum].logGetLeakage >=  &panel.logEarthLeakage[LOG_BUFFER_SIZE_PANEL])
+        outlet[outletNum].logGetLeakage = &panel.logEarthLeakage[0];
+
 }
 
 /**
@@ -431,19 +442,19 @@ static inline void logPanel(void)
     }
 
     // reset circular voltage 1 buffer
-    if (panel.logPutVoltage1 >= &panel.logVoltage1[LOG_BUFFER_SIZE_PANEL ])
+    if (panel.logPutVoltage1 >= &panel.logVoltage1[LOG_BUFFER_SIZE_PANEL])
     {
        panel.logPutVoltage1 = &panel.logVoltage1[0];
     }
 
     // reset circular voltage 2 buffer
-    if (panel.logPutVoltage2 >= &panel.logVoltage2[LOG_BUFFER_SIZE_PANEL ])
+    if (panel.logPutVoltage2 >= &panel.logVoltage2[LOG_BUFFER_SIZE_PANEL])
     {
        panel.logPutVoltage2 = &panel.logVoltage2[0];
     }
 
     // reset circular earth leakage buffer
-    if (panel.logPutLeakage >= &panel.logEarthLeakage[LOG_BUFFER_SIZE_PANEL ])
+    if (panel.logPutLeakage >= &panel.logEarthLeakage[LOG_BUFFER_SIZE_PANEL])
     {
        panel.logPutLeakage = &panel.logEarthLeakage[0];
     }

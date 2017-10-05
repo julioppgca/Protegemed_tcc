@@ -132,6 +132,9 @@ typedef struct{
 static inline void copy_int16_f32( int16_t * pSrc, float32_t * pDst, uint32_t blockSize);
 static inline void logOutlet(int16_t outletNum);
 
+extern Msg msg[];
 extern Msg *gMsg;
+extern Outlet outlet[];
+extern Panel panel;
 
 #endif /* PROJECT_INCLUDES_CAPTURE_H_ */
