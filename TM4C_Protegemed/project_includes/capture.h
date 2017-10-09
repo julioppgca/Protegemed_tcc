@@ -11,6 +11,9 @@
 /* Inline force functions */
 #pragma FUNC_ALWAYS_INLINE(copy_int16_f32)
 #pragma FUNC_ALWAYS_INLINE(logOutlet)
+#pragma FUNC_ALWAYS_INLINE(logPanel)
+#pragma FUNC_ALWAYS_INLINE(sendMsg)
+
 
 /* Standard variables definitions */
 #include <stdint.h>
@@ -51,15 +54,16 @@
 /* Project Header files */
 #include "project_includes/Board.h"
 
-#define MAX_WAVE_LOG 10
-#define MAX_HARMONIC 12
-#define MSG_BUFFER 4800
-#define LOG_BUFFER_SIZE 5760 //10*256 or to bytes: 3840 with merge, 5120 without merge
+#define MAX_WAVE_LOG                10
+#define NUM_OF_BACK_WAVES           1
+#define LOG_BUFFER_BLOCK_SIZE       384                                                 //bytes in each block
 #define LOG_BUFFER_OUTLET_BLOCKS    15
 #define LOG_BUFFER_PANELS_BLOCKS    20
-#define LOG_BUFFER_SIZE_PANEL 7680
-#define MERGE_LOG_BLOCK 384
-#define MAX_MSG_LOG_PER_OUTLET  2
+#define LOG_BUFFER_SIZE             (LOG_BUFFER_BLOCK_SIZE*LOG_BUFFER_OUTLET_BLOCKS)    //10*256 or to bytes: 3840 with merge, 5120 without merge
+#define LOG_BUFFER_SIZE_PANEL       (LOG_BUFFER_BLOCK_SIZE*LOG_BUFFER_PANELS_BLOCKS)
+#define MERGE_LOG_BLOCK             384
+#define LOG_GET_OFFSET_OUTLET       6  // 6 for 15 blocks or 7 to 16 blocks
+#define LOG_GET_OFFSET_PANEL        11
 
 enum analogInputsADC0
 {
@@ -88,8 +92,13 @@ enum outletNumber
     OUTLET_1, OUTLET_2, OUTLET_3, OUTLET_4, OUTLET_5, OUTLET_6, OUTLET_COUNTER
 };
 
+enum panelChannels
+{
+    VOLTAGE1=CH12, VOLTAGE2=CH13, LEAKAGE=CH14
+};
+
 typedef struct{
-    uint8_t num;
+    uint16_t num;
     uint8_t event;
     float32_t phaseRms;
     float32_t diffRms;
@@ -117,20 +126,24 @@ typedef struct{
     int8_t *logPutVoltage1;
     int8_t *logPutVoltage2;
     int8_t *logPutLeakage;
+
 }Panel;
 
 
 typedef struct{
-    char header[20];
+    char header[40]; // FIXME: This should match HEADER_SIZE defined in eth_network.h
     int8_t *phase;
     int8_t *diff;
     int8_t *voltage;
     int8_t *leakage;
+    int8_t outletNum;
 }Msg;
 
 
 static inline void copy_int16_f32( int16_t * pSrc, float32_t * pDst, uint32_t blockSize);
-static inline void logOutlet(int16_t outletNum);
+static inline void logOutlet(int16_t *outletNum);
+static inline void logPanel(void);
+static inline void sendMsg(int16_t *outletNum);
 
 extern Msg msg[];
 extern Msg *gMsg;

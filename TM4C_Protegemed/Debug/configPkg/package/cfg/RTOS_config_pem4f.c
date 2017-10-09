@@ -1485,13 +1485,13 @@ ti_sysbios_gates_GateMutex_Object__ ti_sysbios_gates_GateMutex_Object__table__V[
     #pragma data_alignment=8
 #endif
 /* --> ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A */
-__T1_ti_sysbios_heaps_HeapMem_Instance_State__buf ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A[20480];
+__T1_ti_sysbios_heaps_HeapMem_Instance_State__buf ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A[24576];
 #ifdef __ti__align
     #pragma DATA_ALIGN(ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A, 8);
 #endif
 #ifdef __GNUC__
 #ifndef __TI_COMPILER_VERSION__
-__T1_ti_sysbios_heaps_HeapMem_Instance_State__buf ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A[20480] __attribute__ ((aligned(8)));
+__T1_ti_sysbios_heaps_HeapMem_Instance_State__buf ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A[24576] __attribute__ ((aligned(8)));
 #endif
 #endif
 
@@ -3081,7 +3081,7 @@ uint ti_ndk_config_Global_Id2Size[]  =
  *  value for PKT_SIZE_FRAMEBUF must also be defined elsewhere.
  */  
 #ifndef _NDK_MIN_PBM_BUFS
-#define PKT_SIZE_FRAMEBUF   1536
+#define PKT_SIZE_FRAMEBUF   1540
 #endif
 
 const int ti_ndk_config_Global_numFrameBuf  = PKT_NUM_FRAMEBUF;
@@ -3089,25 +3089,21 @@ const int ti_ndk_config_Global_sizeFrameBuf = PKT_SIZE_FRAMEBUF;
 
 /* Data space for packet buffers */
 #ifdef __ti__
-#pragma DATA_ALIGN(ti_ndk_config_Global_pBufMem, 128);
 #pragma DATA_SECTION(ti_ndk_config_Global_pBufMem, ".bss:NDK_PACKETMEM");
 UINT8 ti_ndk_config_Global_pBufMem[PKT_NUM_FRAMEBUF * PKT_SIZE_FRAMEBUF];
 #elif defined (__IAR_SYSTEMS_ICC__)
-#pragma data_alignment = 128
 UINT8 ti_ndk_config_Global_pBufMem[PKT_NUM_FRAMEBUF*PKT_SIZE_FRAMEBUF];
 #else
-UINT8 ti_ndk_config_Global_pBufMem[PKT_NUM_FRAMEBUF * PKT_SIZE_FRAMEBUF] __attribute__ ((aligned(128), section(".bss:NDK_PACKETMEM")));
+UINT8 ti_ndk_config_Global_pBufMem[PKT_NUM_FRAMEBUF * PKT_SIZE_FRAMEBUF] __attribute__ ((section(".bss:NDK_PACKETMEM")));
 #endif
 
 #ifdef __ti__
-#pragma DATA_ALIGN(ti_ndk_config_Global_pHdrMem, 128);
 #pragma DATA_SECTION(ti_ndk_config_Global_pHdrMem, ".bss:NDK_PACKETMEM");
 UINT8 ti_ndk_config_Global_pHdrMem[PKT_NUM_FRAMEBUF * sizeof(PBM_Pkt)];
 #elif defined (__IAR_SYSTEMS_ICC__)
-#pragma data_alignment = 128
 UINT8 ti_ndk_config_Global_pHdrMem[PKT_NUM_FRAMEBUF*sizeof(PBM_Pkt)];
 #else
-UINT8 ti_ndk_config_Global_pHdrMem[PKT_NUM_FRAMEBUF * sizeof(PBM_Pkt)] __attribute__ ((aligned(128), section(".bss:NDK_PACKETMEM")));
+UINT8 ti_ndk_config_Global_pHdrMem[PKT_NUM_FRAMEBUF * sizeof(PBM_Pkt)] __attribute__ ((section(".bss:NDK_PACKETMEM")));
 #endif
 
 /* Our NETCTRL callback functions */
@@ -3157,8 +3153,25 @@ Void ti_ndk_config_Global_stackThread(UArg arg0, UArg arg1)
     /* add the Tcp module configuration settings. */
     ti_ndk_config_tcp_init(hCfg);
 
-    /* add the Udp module configuration settings. */
-    ti_ndk_config_udp_init(hCfg);
+    /* add the configuration settings for NDK low priority task level. */
+    rc = 4;
+    CfgAddEntry(hCfg, CFGTAG_OS, CFGITEM_OS_TASKPRILOW,
+                 CFG_ADDMODE_UNIQUE, sizeof(uint), (UINT8 *)&rc, 0 );
+
+    /* add the configuration settings for NDK normal priority task level. */
+    rc = 6;
+    CfgAddEntry(hCfg, CFGTAG_OS, CFGITEM_OS_TASKPRINORM,
+                 CFG_ADDMODE_UNIQUE, sizeof(uint), (UINT8 *)&rc, 0 );
+
+    /* add the configuration settings for NDK high priority task level. */
+    rc = 8;
+    CfgAddEntry(hCfg, CFGTAG_OS, CFGITEM_OS_TASKPRIHIGH,
+                 CFG_ADDMODE_UNIQUE, sizeof(uint), (UINT8 *)&rc, 0 );
+
+    /* add the configuration settings for NDK kernel priority task level. */
+    rc = 10;
+    CfgAddEntry(hCfg, CFGTAG_OS, CFGITEM_OS_TASKPRIKERN,
+                 CFG_ADDMODE_UNIQUE, sizeof(uint), (UINT8 *)&rc, 0 );
 
     /* add the configuration settings for NDK low priority tasks stack size. */
     rc = 1024;
@@ -3310,7 +3323,7 @@ Void ti_ndk_config_global_taskExitHook(ti_sysbios_knl_Task_Handle h)
 Void ti_ndk_config_tcp_init(HANDLE hCfg)
 {
     {
-        Int transmitBufSize = 15374;
+        Int transmitBufSize = 4096;
         CfgAddEntry(hCfg, CFGTAG_IP, CFGITEM_IP_SOCKTCPTXBUF,
                 CFG_ADDMODE_UNIQUE, sizeof(uint), (UINT8 *)&transmitBufSize, 0);
     }
@@ -3367,20 +3380,6 @@ Void ti_ndk_config_ip_init(HANDLE hCfg)
 
         CfgAddEntry(hCfg, CFGTAG_ROUTE, 0, 0,
                 sizeof(CI_ROUTE), (UINT8 *)&RT, 0);
-    }
-}
-
-/*
- * ======== ti.ndk.config.Udp TEMPLATE ========
- */
-
-
-Void ti_ndk_config_udp_init(HANDLE hCfg)
-{
-    {
-        Int receiveBufSize = 2048;
-        CfgAddEntry(hCfg, CFGTAG_IP, CFGITEM_IP_SOCKUDPRXLIMIT,
-            CFG_ADDMODE_UNIQUE, sizeof(uint), (UINT8 *)&receiveBufSize, 0);
     }
 }
 
@@ -4359,7 +4358,7 @@ __FAR__ const CT__ti_sysbios_BIOS_clockEnabled ti_sysbios_BIOS_clockEnabled__C =
 
 /* heapSize__C */
 #pragma DATA_SECTION(ti_sysbios_BIOS_heapSize__C, ".const:ti_sysbios_BIOS_heapSize__C");
-__FAR__ const CT__ti_sysbios_BIOS_heapSize ti_sysbios_BIOS_heapSize__C = (xdc_SizeT)0x5000;
+__FAR__ const CT__ti_sysbios_BIOS_heapSize ti_sysbios_BIOS_heapSize__C = (xdc_SizeT)0x6000;
 
 /* heapSection__C */
 #pragma DATA_SECTION(ti_sysbios_BIOS_heapSection__C, ".const:ti_sysbios_BIOS_heapSection__C");
@@ -5793,7 +5792,7 @@ __FAR__ const ti_sysbios_heaps_HeapMem_Params ti_sysbios_heaps_HeapMem_Object__P
 };
 
 /* --> ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A */
-__T1_ti_sysbios_heaps_HeapMem_Instance_State__buf ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A[20480];
+__T1_ti_sysbios_heaps_HeapMem_Instance_State__buf ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A[24576];
 
 /* Module__root__V */
 ti_sysbios_heaps_HeapMem_Module__ ti_sysbios_heaps_HeapMem_Module__root__V = {
@@ -5809,7 +5808,7 @@ ti_sysbios_heaps_HeapMem_Object__ ti_sysbios_heaps_HeapMem_Object__table__V[1] =
         ((void*)ti_sysbios_heaps_HeapMem_Instance_State_0_buf__A),  /* buf */
         {
             ((ti_sysbios_heaps_HeapMem_Header*)0),  /* next */
-            ((xdc_UArg)(0x5000)),  /* size */
+            ((xdc_UArg)(0x6000)),  /* size */
         },  /* head */
         (xdc_SizeT)0x8,  /* minBlockAlign */
     },
@@ -7160,8 +7159,8 @@ ti_sysbios_knl_Task_Object__ ti_sysbios_knl_Task_Object__table__V[7] = {
             ((ti_sysbios_knl_Queue_Elem*)((void*)&ti_sysbios_knl_Task_Object__table__V[0].qElem)),  /* next */
             ((ti_sysbios_knl_Queue_Elem*)((void*)&ti_sysbios_knl_Task_Object__table__V[0].qElem)),  /* prev */
         },  /* qElem */
-        (xdc_Int)0x3,  /* priority */
-        (xdc_UInt)0x8,  /* mask */
+        (xdc_Int)0x4,  /* priority */
+        (xdc_UInt)0x10,  /* mask */
         ((xdc_Ptr)0),  /* context */
         ti_sysbios_knl_Task_Mode_INACTIVE,  /* mode */
         ((ti_sysbios_knl_Task_PendElem*)0),  /* pendElem */
@@ -7184,8 +7183,8 @@ ti_sysbios_knl_Task_Object__ ti_sysbios_knl_Task_Object__table__V[7] = {
             ((ti_sysbios_knl_Queue_Elem*)((void*)&ti_sysbios_knl_Task_Object__table__V[1].qElem)),  /* next */
             ((ti_sysbios_knl_Queue_Elem*)((void*)&ti_sysbios_knl_Task_Object__table__V[1].qElem)),  /* prev */
         },  /* qElem */
-        (xdc_Int)0x3,  /* priority */
-        (xdc_UInt)0x8,  /* mask */
+        (xdc_Int)0x4,  /* priority */
+        (xdc_UInt)0x10,  /* mask */
         ((xdc_Ptr)0),  /* context */
         ti_sysbios_knl_Task_Mode_INACTIVE,  /* mode */
         ((ti_sysbios_knl_Task_PendElem*)0),  /* pendElem */
@@ -7232,8 +7231,8 @@ ti_sysbios_knl_Task_Object__ ti_sysbios_knl_Task_Object__table__V[7] = {
             ((ti_sysbios_knl_Queue_Elem*)((void*)&ti_sysbios_knl_Task_Object__table__V[3].qElem)),  /* next */
             ((ti_sysbios_knl_Queue_Elem*)((void*)&ti_sysbios_knl_Task_Object__table__V[3].qElem)),  /* prev */
         },  /* qElem */
-        (xdc_Int)0x2,  /* priority */
-        (xdc_UInt)0x4,  /* mask */
+        (xdc_Int)0x3,  /* priority */
+        (xdc_UInt)0x8,  /* mask */
         ((xdc_Ptr)0),  /* context */
         ti_sysbios_knl_Task_Mode_INACTIVE,  /* mode */
         ((ti_sysbios_knl_Task_PendElem*)0),  /* pendElem */
@@ -7256,8 +7255,8 @@ ti_sysbios_knl_Task_Object__ ti_sysbios_knl_Task_Object__table__V[7] = {
             ((ti_sysbios_knl_Queue_Elem*)((void*)&ti_sysbios_knl_Task_Object__table__V[4].qElem)),  /* next */
             ((ti_sysbios_knl_Queue_Elem*)((void*)&ti_sysbios_knl_Task_Object__table__V[4].qElem)),  /* prev */
         },  /* qElem */
-        (xdc_Int)0x1,  /* priority */
-        (xdc_UInt)0x2,  /* mask */
+        (xdc_Int)0x2,  /* priority */
+        (xdc_UInt)0x4,  /* mask */
         ((xdc_Ptr)0),  /* context */
         ti_sysbios_knl_Task_Mode_INACTIVE,  /* mode */
         ((ti_sysbios_knl_Task_PendElem*)0),  /* pendElem */

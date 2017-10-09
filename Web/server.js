@@ -30,7 +30,7 @@ net.createServer(function(sock) {
 		{
 		msg[i++] = data[j];
 		}
-        console.log('Received msg from ' + sock.remoteAddress + ' with length: ' + data.length);
+        //console.log('Received msg from ' + sock.remoteAddress + ' with length: ' + data.length);
         //Write answer or not..
         //sock.write('OK');
         
@@ -38,8 +38,8 @@ net.createServer(function(sock) {
     
     // connectio closed by TM4C
     sock.on('close', function(data) {
-        console.log('TM4C disconnected: ' + sock.remoteAddress +':'+ sock.remotePort);
-		console.log('Total msg length:' + msg.length + '\n');
+        //console.log('TM4C disconnected: ' + sock.remoteAddress +':'+ sock.remotePort);
+		//console.log('Total msg length:' + msg.length + '\n');
 		processData(msg);
     });
     
@@ -104,8 +104,8 @@ for(var i=HEADER_SIZE; i < DATA_SIZE ;i++)
 }
 
 // print msgs size
-console.log('\tHeader size: ' + header.length);	
-console.log('\tData size: ' + data.length);	
+// console.log('\tHeader size: ' + header.length);	
+// console.log('\tData size: ' + data.length);	
 
 
 // object to access data header

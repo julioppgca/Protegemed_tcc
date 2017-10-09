@@ -12,7 +12,7 @@ clc;
 
 % Configuration and connection
 disp ('Receiver started');
-t=tcpip('192.168.2.110', 80,'NetworkRole','server');
+t=tcpip('192.168.2.151', 7891,'NetworkRole','server');
 
 % Wait for connection
 disp('Waiting for connection');

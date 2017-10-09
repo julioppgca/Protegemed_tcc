@@ -69,7 +69,6 @@ struct PtgmSettings
     uint8_t outlet4;
     uint8_t outlet5;
     uint8_t outlet6;
-
 };
 
 extern struct PtgmSettings ptgmSettingsWrite;

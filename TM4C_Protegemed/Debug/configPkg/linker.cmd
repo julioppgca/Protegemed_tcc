@@ -11,8 +11,6 @@
 
 -l"C:\Users\skelter_win\Protegemed_tcc\TM4C_Protegemed\Debug\configPkg\package\cfg\RTOS_config_pem4f.oem4f"
 -l"C:\ti\tirtos_tivac_2_16_00_08\products\uia_2_00_05_50\packages\ti\uia\sysbios\lib\release\ti.uia.sysbios.aem4f"
--l"C:\ti\tirtos_tivac_2_16_00_08\products\ns_1_11_00_10\packages\ti\net\http\lib\http_ndk.aem4f"
--l"C:\ti\tirtos_tivac_2_16_00_08\products\ns_1_11_00_10\packages\ti\net\lib\network_ndk.aem4f"
 -l"C:\ti\tirtos_tivac_2_16_00_08\products\ndk_2_25_00_09\packages\ti\ndk\hal\timer_bios\lib\hal_timer_bios.aem4f"
 -l"C:\ti\tirtos_tivac_2_16_00_08\products\ndk_2_25_00_09\packages\ti\ndk\os\lib\os.aem4f"
 -l"C:\ti\tirtos_tivac_2_16_00_08\products\ndk_2_25_00_09\packages\ti\ndk\hal\userled_stub\lib\hal_userled_stub.aem4f"
@@ -179,10 +177,6 @@ ti_sysbios_family_arm_m3_Hwi_nvic = 0xe000e000;
 /* Content from ti.sysbios.syncs (null): */
 
 /* Content from ti.ndk.config (null): */
-
-/* Content from ti.net (null): */
-
-/* Content from ti.net.http (null): */
 
 /* Content from ti.sysbios.gates (null): */
 

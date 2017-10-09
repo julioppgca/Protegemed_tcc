@@ -2,22 +2,23 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="sendCount" key="selection"/>
+		<item value="printError" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="true" key="wholeword"/>
 		<list key="findhistory">
+			<item value="printError"/>
+			<item value="logOutlet"/>
+			<item value="capture"/>
+			<item value="outletNum"/>
+			<item value="sendMsg"/>
 			<item value="sendCount"/>
 			<item value="ADCchannel[CH14]"/>
 			<item value="logPutLeakage"/>
-			<item value="temp"/>
-			<item value="inline"/>
-			<item value="g_str_LogOff"/>
-			<item value="count"/>
-			<item value="doLogOffEvent"/>
 		</list>
 		<list key="replacehistory">
+			<item value="*outletNum"/>
 			<item value="panel.voltageFFTOutlets2"/>
 			<item value="panel.voltageFFTOutlets1"/>
 			<item value="voltageFFTOutlets2"/>
@@ -25,7 +26,6 @@
 			<item value="limitCounter"/>
 			<item value="outlet[OUTLET_1].fft[PHASE] "/>
 			<item value="httpPOST_Task"/>
-			<item value="EEPROM_START_ADR"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

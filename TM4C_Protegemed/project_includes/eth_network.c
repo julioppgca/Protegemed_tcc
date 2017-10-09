@@ -6,26 +6,89 @@
 #include "project_includes/eth_network.h"
 #include "project_includes/capture.h"
 
-//#define MSG_LEN 7694  // 15370 - 4 wave forms + 10 bytes
-//char lixo[_LEN];
 
-//void client(void);
+// debug global variables
+uint32_t tcpCount=0;
+uint32_t sendError=0;
+uint32_t socketErro=0;
 
-     uint32_t tcpCount=0;
-
-uint32_t sendError=0, socketErro=0;
-//char j,temp[2500];
+// transmit string
 char g_str_PostSend[POST_DATA_SIZE];
 
-/*
- *  ======== printError ========
- */
-void printError(char *errString, int code)
+// prototypes
+static inline serializeMsg(void);
+
+
+static inline serializeMsg(void)
 {
-    System_printf("Error! code = %d, desc = %s\n", code, errString);
-    //System_flush();
-    BIOS_exit(code);
+    int8_t *pStrPost;   // pointer to g_str_PostSend
+    int8_t i;           // block counter
+
+    // initiate pointer
+    pStrPost = (int8_t *)&g_str_PostSend[0];
+
+    // get a message header
+    arm_copy_q7((int8_t*)gMsg->header, pStrPost, HEADER_SIZE);
+    pStrPost += HEADER_SIZE;
+
+    // get message raw data
+    for(i=0;i<MAX_WAVE_LOG;i++) // phase raw data
+    {
+       arm_copy_q7(gMsg->phase, pStrPost, MERGE_LOG_BLOCK);
+       pStrPost += MERGE_LOG_BLOCK;
+       gMsg->phase += MERGE_LOG_BLOCK;
+       if(gMsg->phase >= &outlet[gMsg->outletNum].logPhase[LOG_BUFFER_SIZE])
+           gMsg->phase = &outlet[gMsg->outletNum].logPhase[0];
+
+    }
+    for(i=0;i<MAX_WAVE_LOG;i++) // diff raw data
+    {
+       arm_copy_q7(gMsg->diff, pStrPost, MERGE_LOG_BLOCK);
+       pStrPost += MERGE_LOG_BLOCK;
+       gMsg->diff += MERGE_LOG_BLOCK;
+       if(gMsg->diff >= &outlet[gMsg->outletNum].logDiff[LOG_BUFFER_SIZE])
+           gMsg->diff = &outlet[gMsg->outletNum].logDiff[0];
+    }
+    for(i=0;i<MAX_WAVE_LOG;i++) // voltage raw data
+    {
+       arm_copy_q7(gMsg->voltage, pStrPost, MERGE_LOG_BLOCK);
+       pStrPost += MERGE_LOG_BLOCK;
+       gMsg->voltage += MERGE_LOG_BLOCK;
+       if(gMsg->outletNum < OUTLET_COUNTER>>1) // voltage 1 or 2
+       {
+       if(gMsg->voltage >= &panel.logVoltage1[LOG_BUFFER_SIZE_PANEL])
+           gMsg->voltage = &panel.logVoltage1[0];
+       }
+       else
+       {
+       if(gMsg->voltage >= &panel.logVoltage2[LOG_BUFFER_SIZE_PANEL])
+           gMsg->voltage = &panel.logVoltage2[0];
+       }
+    }
+    for(i=0;i<MAX_WAVE_LOG;i++) // leakage raw data
+    {
+       arm_copy_q7(gMsg->leakage, pStrPost, MERGE_LOG_BLOCK);
+       pStrPost += MERGE_LOG_BLOCK;
+       gMsg->leakage += MERGE_LOG_BLOCK;
+       if(gMsg->leakage >= &panel.logEarthLeakage[LOG_BUFFER_SIZE_PANEL])
+           gMsg->leakage = &panel.logEarthLeakage[0];
+    }
+
+    // increment to the next queued message or reset circular buffer
+    if(++gMsg > &msg[OUTLET_COUNTER])
+       gMsg=&msg[0];
+
 }
+
+///*
+// *  ======== printError ========
+// */
+//void printError(char *errString, int code)
+//{
+//    System_printf("Error! code = %d, desc = %s\n", code, errString);
+//    //System_flush();
+//    BIOS_exit(code);
+//}
 
 ///* TCP/IP client */
 void dataSendTcpIp(void)
@@ -34,9 +97,8 @@ void dataSendTcpIp(void)
     int status;
     struct sockaddr_in serverAddr;
 
-    int8_t i;           // index increment
-    int8_t *pStrPost;   // pointer to g_str_PostSend
-    int8_t *pHeader;    // pointer to extract header from the msg struct
+//    int8_t i;           // index increment
+//    int8_t *pStrPost;   // pointer to g_str_PostSend
 
     Semaphore_pend(s_networkIsUp, BIOS_WAIT_FOREVER);
 
@@ -48,57 +110,8 @@ void dataSendTcpIp(void)
 
         fdOpenSession(dataSendTcpIp_Handle);
 
-        memset(g_str_PostSend,' ',sizeof(g_str_PostSend));
-
-
-        pStrPost = (int8_t *)&g_str_PostSend[0];
-        pHeader = (int8_t *)&gMsg->header[0];
-
-        // get a message header
-        for(i=0;i<HEADER_SIZE;i++)
-        {
-            *pStrPost++ = *pHeader++;
-        }
-
-        // get message data
-        for(i=0;i<MAX_WAVE_LOG;i++)
-        {
-            arm_copy_q7(gMsg->phase, pStrPost, MERGE_LOG_BLOCK);
-            pStrPost += MERGE_LOG_BLOCK;
-            gMsg->phase += MERGE_LOG_BLOCK;
-            if(gMsg->phase >= &outlet[gMsg->header[0]].logPhase[LOG_BUFFER_SIZE])
-                gMsg->phase = &outlet[gMsg->header[0]].logPhase[0];
-
-        }
-        for(i=0;i<MAX_WAVE_LOG;i++)
-        {
-            arm_copy_q7(gMsg->diff, pStrPost, MERGE_LOG_BLOCK);
-            pStrPost += MERGE_LOG_BLOCK;
-            gMsg->diff += MERGE_LOG_BLOCK;
-            if(gMsg->diff >= &outlet[gMsg->header[0]].logDiff[LOG_BUFFER_SIZE])
-                gMsg->diff = &outlet[gMsg->header[0]].logDiff[0];
-        }
-        for(i=0;i<MAX_WAVE_LOG;i++)
-        {
-            arm_copy_q7(gMsg->voltage, pStrPost, MERGE_LOG_BLOCK);
-            pStrPost += MERGE_LOG_BLOCK;
-            gMsg->voltage += MERGE_LOG_BLOCK;
-            if(gMsg->voltage >= &panel.logVoltage1[LOG_BUFFER_SIZE_PANEL])
-                gMsg->voltage = &panel.logVoltage1[0];
-        }
-        for(i=0;i<MAX_WAVE_LOG;i++)
-        {
-            arm_copy_q7(gMsg->leakage, pStrPost, MERGE_LOG_BLOCK);
-            pStrPost += MERGE_LOG_BLOCK;
-            gMsg->leakage += MERGE_LOG_BLOCK;
-            if(gMsg->leakage >= &panel.logEarthLeakage[LOG_BUFFER_SIZE_PANEL])
-                gMsg->leakage = &panel.logEarthLeakage[0];
-        }
-
-        // get next queued message or reset circular buffer
-        if(++gMsg > &msg[OUTLET_COUNTER])
-            gMsg=&msg[0];
-
+        // serialize message to send
+        serializeMsg();
 
         do{ // TODO: error log...
             client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);

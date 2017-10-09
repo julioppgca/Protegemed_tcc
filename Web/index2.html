@@ -1,0 +1,533 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Protegemed - TM4C </title>
+
+<link href="semantic/dist/semantic.min.css" rel="stylesheet" type="text/css">
+
+<!--
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+-->
+
+<script src="node_modules/jquery/dist/jquery.min.js"> </script>
+<script src="semantic/dist/semantic.min.js"></script>
+<script src="semantic/dist/icon.min.js"></script>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="node_modules/chart.js/dist/Chart.bundle.js"> </script>
+<script src="node_modules/chart.js/samples/utils.js"> </script>
+
+<script>
+
+const MAIN_MENU_ITEM1 = 'Menu1';
+const MAIN_MENU_ITEM2 = 'Menu2';
+const MAIN_MENU_ITEM3 = 'Menu3';
+const MAIN_MENU_ITEM4 = 'Menu4';
+
+const ACTIVE_PAGE1 = 'Page1';
+const ACTIVE_PAGE2 = 'Page2';
+const ACTIVE_PAGE3 = 'Page3';
+const ACTIVE_PAGE4 = 'Page4';
+
+const TIME_INTERVAL_TM4C_ALIVE_SIGNAL = 2000; // in miliseconds
+
+const BASE_FREQUENCY = 60;
+const SAMPLE_POINTS = 256;
+const SAMPLE_FREQUENCY = BASE_FREQUENCY*SAMPLE_POINTS;
+
+
+var events = [
+   'UNKNOWN', 'OFF', 'TURNS_ON', 'TURNS_OFF', 'ON', 'BEGIN_DIFF_LEAKAGE', 'END_DIFF_LEAKAGE', 'STAND_BY', 'OVER_VOLTAGE', 'UNDER_VOLTAGE', 'EVENT_COUNT'
+];
+
+/**
+* 
+******************* General Initialization 
+*
+*/
+$(document).ready(function() {
+	
+		menuHandler(MAIN_MENU_ITEM1);
+		aliveSignalTM4C(); 
+		
+		//plot([],[],'graphDataSample','Reconstructed Wave Form', 'rgba(75,192,192,0.4)');
+		
+	});
+	
+	/**
+	*
+	*---------- Menu Handler
+	*
+	*/
+	function menuHandler(active)
+	{
+	console.log('Menu active: '+active);
+		switch(active)
+			{
+				case MAIN_MENU_ITEM1:{
+					document.getElementById(MAIN_MENU_ITEM1).className='item active';
+					document.getElementById(ACTIVE_PAGE1).style.display='block';
+					document.getElementById(MAIN_MENU_ITEM2).className='item';
+					document.getElementById(ACTIVE_PAGE2).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM3).className='item';
+					document.getElementById(ACTIVE_PAGE3).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM4).className='item';
+					document.getElementById(ACTIVE_PAGE4).style.display='none';
+					break;
+			}
+					case MAIN_MENU_ITEM2:{
+					document.getElementById(MAIN_MENU_ITEM1).className='item';
+					document.getElementById(ACTIVE_PAGE1).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM2).className='item active';
+					document.getElementById(ACTIVE_PAGE2).style.display='block';
+					document.getElementById(MAIN_MENU_ITEM3).className='item';
+					document.getElementById(ACTIVE_PAGE3).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM4).className='item';
+					document.getElementById(ACTIVE_PAGE4).style.display='none';
+					break;
+					}
+					case MAIN_MENU_ITEM3:{
+					document.getElementById(MAIN_MENU_ITEM1).className='item';
+					document.getElementById(ACTIVE_PAGE1).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM2).className='item ';
+					document.getElementById(ACTIVE_PAGE2).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM3).className='item active';
+					document.getElementById(ACTIVE_PAGE3).style.display='block';
+					document.getElementById(MAIN_MENU_ITEM4).className='item';
+					document.getElementById(ACTIVE_PAGE4).style.display='none';
+					break;
+					}
+					case MAIN_MENU_ITEM4:{
+					document.getElementById(MAIN_MENU_ITEM1).className='item';
+					document.getElementById(ACTIVE_PAGE1).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM2).className='item';
+					document.getElementById(ACTIVE_PAGE2).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM3).className='item';
+					document.getElementById(ACTIVE_PAGE3).style.display='none';
+					document.getElementById(MAIN_MENU_ITEM4).className='item active';
+					document.getElementById(ACTIVE_PAGE4).style.display='block';
+					break;
+					}
+			}
+		
+	}
+	/**
+	* 
+	******************* Socket process for TM4C threads
+	*
+	*/
+	var newCanvasId=0;
+	var socket = io();	
+	socket.on("TM4CAnswer", function(data) {
+		
+		//console.log('TM4C Answered: ' + data);	
+		var res = JSON.parse(data);
+		
+		var outletNum = res[0].Outlet+1;
+		var eventId = events[res[0].Event];
+		document.getElementById('txtEvent').value = eventId;
+		document.getElementById('txtOutlet').value = outletNum;
+		
+		var sampledPhase=res[1].phase;
+		var sampledDiff=res[1].diff; console.log('Diff Samples: ' + sampledDiff);
+		var sampledVoltage=res[1].voltage;
+		var sampledLeakage=res[1].leakage;
+		var totalTime=[];
+		
+		totalTime[0]=0;
+		for(var i = 1 ; i< sampledDiff.length; i++)
+		{
+			totalTime[i] = totalTime[i-1]+(1/(60*256));
+		}
+		for(var i = 1 ; i< sampledDiff.length; i++)
+		{
+			totalTime[i] = totalTime[i].toFixed(3);
+		}
+		
+		// create new graph
+		var canvas = document.createElement('canvas');
+		var newCanvas = 'Id' + newCanvasId;
+		//console.log('Canvas Id: ' + newCanvas);
+		newCanvasId++;
+		canvas.setAttribute('id',newCanvas);
+		document.getElementById("graphPlace").appendChild(canvas)
+		
+		// set graph tittle acording to outlet number and event Id
+		var graphTittle = 'Outlet ' + outletNum + ' had an ' + eventId+ ' event';
+		console.log(graphTittle);
+		
+		// plot new graph
+		plot4(totalTime,sampledPhase,sampledDiff,sampledVoltage, sampledLeakage,newCanvas,graphTittle);
+		
+		//plot(totalTime,sampledPhase,newCanvas,graphTittle,'blue')
+		//plot4(totalTime,sampledPhase,sampledDiff,sampledVoltage, sampledLeakage,'graphDataSample','Reconstructed Wave Form');
+
+	});
+	
+	
+	socket.on("aliveFromTM4C", function(data) {		
+		if(data=='Alive')
+			{
+			var con = document.getElementById("aliveLabel");
+			con.setAttribute('class','ui green label');
+			con.text="TM4C connected"; 
+			document.getElementById("btnStart").disabled = false;
+			}
+		else if(data=='Dead')
+			{
+			var con = document.getElementById("aliveLabel");
+			con.setAttribute('class','ui red label');
+			con.text="TM4C offline";
+			document.getElementById("btnStart").disabled = true;
+			
+			}
+	});
+		
+	
+	/*
+	*
+	*---------- Execution Time funtcions, create HTML objects
+	*
+	*/
+	function createFrequencyTable(){
+				
+				var table = document.createElement('table');
+				table.setAttribute('id','frequencyTable');
+				table.setAttribute('class','ui striped blue table');	
+			for (var i = 1; i < 29; i++){
+				if(i==1){
+					var caption = document.createElement('caption'); 
+					table.appendChild(caption);
+				}
+				var tr = document.createElement('tr');   
+				var td = [];
+				var text = [];
+				for(var j=1; j<8; j++){
+					if(i==1){
+					td[j] = document.createElement('th');
+					text[j] = document.createTextNode('');
+					td[j].appendChild(text[j]);
+					tr.appendChild(td[j]);	
+					}
+					else{
+					td[j] = document.createElement('td');
+					text[j] = document.createTextNode('');
+					td[j].appendChild(text[j]);
+					tr.appendChild(td[j]);
+					}
+				}	
+				table.appendChild(tr);
+			}
+			document.getElementById('frequencyTablePlace').appendChild(table);
+		
+	}
+	
+	
+	/*
+	*
+	*---------- Plot functions
+	*
+	*/
+	function plot(x,y,graph,label,color){
+			var ctx = document.getElementById(graph).getContext('2d');
+			var myChart = new Chart(ctx, {
+				  type: 'line',
+				  data: {
+				    labels: x,
+				    datasets: [{
+				      label: label,
+				      data: y,
+				      fill: false,
+						borderWidth: 0.5,
+			            lineTension: 0.1,
+			            backgroundColor: color,//"rgba(75,192,192,0.4)",
+			            borderColor: color,//"rgba(75,192,192,1)",
+			            borderCapStyle: 'butt',
+			            borderDash: [],
+			            borderDashOffset: 0.0,
+			            borderJoinStyle: 'miter',
+			            pointBorderColor: color,//"rgba(75,192,192,1)",
+			            pointBackgroundColor: "#fff",
+			            pointBorderWidth: 0.1,
+			            pointHoverRadius: 0.5,
+			            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+			            pointHoverBorderColor: "rgba(220,220,220,1)",
+			            pointHoverBorderWidth: 2,
+			            pointRadius: 0.1,
+			            pointHitRadius: 2,
+						responsive: true,	
+						xAxes:[{
+						  scaleLabel: {
+							display: true,
+							labelString: 'probability'
+						  }
+						}]
+				  	}]
+				  }
+				}); 
+		
+		}	
+	//var myChart=null;
+	function plot4(x,y1,y2,y3,y4,graph,label){
+		//if(myChart!=null){
+		//	myChart.destroy();
+		//}
+		var ctx = document.getElementById(graph).getContext('2d');
+		var myChart = new Chart(ctx, {
+			  type: 'line',
+			  data:{
+				    labels: x,
+				     datasets: [{
+						 borderWidth: 0.8,
+				         label: "Phase Current",
+				         borderColor: window.chartColors.blue,
+				         backgroundColor: window.chartColors.blue,
+				         fill: false,
+				         data: y1
+				         //yAxisID: "y-axis-1",
+				     }, {
+						 borderWidth: 0.8,
+				         label: "Differential Current",
+				         borderColor: window.chartColors.purple,
+				         backgroundColor: window.chartColors.purple,
+				         fill: false,
+				         data:y2
+				         //yAxisID: "y-axis-2"
+				     }, {
+						 borderWidth: 0.5,
+				         label: "Voltage",
+				         borderColor: window.chartColors.red,
+				         backgroundColor: window.chartColors.red,
+				         fill: false,
+				         data:y3
+				         //yAxisID: "y-axis-2"
+				     }, {
+						 borderWidth: 0.5,
+				         label: "Leakage",
+				         borderColor: window.chartColors.green,
+				         backgroundColor: window.chartColors.green,
+				         fill: false,
+				         data:y4
+				         //yAxisID: "y-axis-2"
+				     }]
+			  },
+			  options: {
+		             responsive: true,
+		             hoverMode: 'index',
+		             stacked: false,
+					 lineTension: 1,
+					 pointRadius: 0,
+					 pointHitRadius: 0,
+					 cubicInterpolationMode: 'default',
+					 elements: {
+								point:{
+								radius: 0
+								}
+					},
+		             title:{
+		                 display: true,
+		                 text:label
+		             },
+		             scales: {
+		                 yAxes: [{
+		                     type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+		                     display: true,
+		                     position: "left",
+		                     id: "y-axis-1",
+		                     gridLines: {
+		                         drawOnChartArea: true, // only want the grid lines for one axis to show up
+		                     },
+							 pointRadius: 0,
+		                 }
+ 		                 ,
+		                 {
+		                     type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+		                     display: true,
+		                     position: "left",
+		                     id: "y-axis-2",
+		                     // grid line settings
+		                     gridLines: {
+		                         drawOnChartArea: false, // only want the grid lines for one axis to show up
+		                     }, 
+							 pointRadius: 0,
+		                 }
+						 ,
+						 {
+		                     type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+		                     display: true,
+		                     position: "right",
+		                     id: "y-axis-3",
+		                     // grid line settings
+		                     gridLines: {
+		                         drawOnChartArea: false, // only want the grid lines for one axis to show up
+		                     }, 
+							 pointRadius: 0,
+		                 },
+						 {
+		                     type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+		                     display: true,
+		                     position: "right",
+		                     id: "y-axis-4",
+		                     // grid line settings
+		                     gridLines: {
+		                         drawOnChartArea: false, // only want the grid lines for one axis to show up
+		                     }, 
+							 pointRadius: 0,
+		                 }
+		                 ],
+		             }
+		         }
+			}); 
+	}	
+	
+	
+	// Request signal of life from TM4C
+	var aliveTimer
+	function aliveSignalTM4C() {
+		aliveTimer = setInterval(function(){ 
+		socket.emit('TM4CDeadAlive'); 
+		}, TIME_INTERVAL_TM4C_ALIVE_SIGNAL);
+	}
+	
+	
+	function fcnGenerateFail()
+	{
+		socket.emit('GenerateFail');
+	}
+	
+	function fcnChangeState(state)
+	{
+		if(state=='On')
+			socket.emit('TurnOn');
+		else if(state=='Off')
+			socket.emit('TurnOff');	
+	}
+	
+	function hex2float(n){
+	  n = '0x' + n;
+	  var sign = (n >> 31) * 2 + 1; // +1 or -1.
+	  var exp = (n >>> 23) & 0xff;
+	  var mantissa = n & 0x007fffff;
+	  if (exp === 0xff) {
+		// NaN or Infinity
+		return mantissa ? NaN : sign * Infinity;
+
+	  }
+	  else if (exp) {
+		// Normalized value
+		exp -= 127;
+
+		// Add implicit bit in normal mode.
+		mantissa |= 0x00800000;
+	  }
+	  else {
+		// Subnormal number
+		exp = -126;
+	  }
+	  return sign * mantissa * Math.pow(2, exp - 23);
+	}
+	
+</script>
+
+</head>
+
+<body>
+
+<h2 class="ui center aligned header">
+	Protegemed - TM4C and Node.js - Beta Version
+</h2>
+	<h3 id="statusHeader" class="ui green center aligned block header">
+  				........ 
+	</h3>
+
+<div class="ui grid">
+	<div class="two wide column">
+	<a class="ui red label" id="aliveLabel">TM4C offline</a>
+		<div id="mainMenu" class="ui vertical huge fluid tabular menu">
+		  <div id='Menu1' class="item active" onClick="menuHandler('Menu1')">
+			SoftKey1
+		  </div>
+		  <a id='Menu2' class="item" onClick="menuHandler('Menu2')">SoftKey2 </a>
+		  <a id='Menu3' class="item" onClick="menuHandler('Menu3')">SoftKey3</a>
+		  <a id='Menu4' class="item" onClick="menuHandler('Menu4')">SoftKey4</a>
+		</div>
+		
+	</div>
+	
+	<div class="twelve wide stretched column">
+	
+		<div id='Page1' class="ui segment" >
+			<div class="ui segment">
+			<div class="ui labeled input">
+				  <div class="ui label">
+					Event ID
+				  </div>
+				  <input id="txtEvent" placeholder="event" type="text">
+				</div>
+				<div class="ui labeled input">
+				  <div class="ui label">
+					Outlet Number
+				  </div>
+				  <input id="txtOutlet" placeholder="Outlet" type="text">
+				</div>
+				<!-- <div class="ui labeled input"> -->
+				  <!-- <div class="ui label"> -->
+					<!-- Phase RMS -->
+				  <!-- </div> -->
+				  <!-- <input id="txtPhaseRMS" placeholder="Arms" type="text"> -->
+				<!-- </div> -->
+				<!-- <div class="ui labeled input"> -->
+				  <!-- <div class="ui label"> -->
+					<!-- Differential RMS -->
+				  <!-- </div> -->
+				  <!-- <input id="txtDiffRMS" placeholder="Arms" type="text"> -->
+				<!-- </div> -->
+				<!-- <div class="ui labeled input"> -->
+				  <!-- <div class="ui label"> -->
+					<!-- Voltage RMS -->
+				  <!-- </div> -->
+				  <!-- <input id="txtVoltageRMS" placeholder="Vrms" type="text"> -->
+				<!-- </div> -->
+				<div>
+				<button id="btnGenerateFail" class="ui primary button" onClick="fcnGenerateFail()">
+				  Generate Fail
+				</button>
+				
+				<button id="btnGenerateFail" class="positive ui button" onClick="fcnChangeState('On')">
+				  Turn on
+				</button>
+				
+				<button id="btnGenerateFail" class="negative ui button" onClick="fcnChangeState('Off')">
+				  Turn off
+				</button>
+				</div>
+			</div>
+				
+			<div id="graphPlace" class="ui segment">	
+				<canvas id="graphDataSample"></canvas>
+			</div>
+		</div>
+
+		<div id='Page2' class="ui segment">
+			
+		</div>
+		
+		<div id='Page3' class="ui segment">
+						
+		</div>
+	
+		<div id='Page4' class="ui segment">
+			
+		</div>
+	
+	</div>
+</div>
+
+
+</body>
+</html>
