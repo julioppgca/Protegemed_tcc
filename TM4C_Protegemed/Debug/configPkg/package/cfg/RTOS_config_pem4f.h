@@ -55,6 +55,9 @@ extern const ti_sysbios_knl_Semaphore_Handle s_doDataSendTcpIp;
 #include <ti/sysbios/knl/Semaphore.h>
 extern const ti_sysbios_knl_Semaphore_Handle s_networkIsUp;
 
+#include <ti/sysbios/knl/Task.h>
+extern const ti_sysbios_knl_Task_Handle httpPOST_Task_Handle;
+
 extern int xdc_runtime_Startup__EXECFXN__C;
 
 extern int xdc_runtime_Startup__RESETFXN__C;

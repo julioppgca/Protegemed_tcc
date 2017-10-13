@@ -28,6 +28,7 @@
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/knl/Semaphore.h>
+#include <ti/net/http/httpcli.h> // http protocol
 
 
 /* TM4C tivaware lib */
@@ -47,12 +48,17 @@
 #include "project_includes/settings.h"
 #include "project_includes/capture.h"
 
+/* ARM Math CMSIS DSP */
+#include <arm_math.h>
 
 /**
  *
  *      Network parameters
  *
  */
+
+//#define USE_HTTP
+
 // http protocol
 #define PTGM_URI            "/"//"/Ptgm-Scripts/capture.php"         // Protegemed request URI
 #define PTGM_HOSTNAME       "192.168.2.151"                     // Protegemed Server IP
@@ -61,11 +67,26 @@
 #define HTTPTASKSTACKSIZE   4096
 #define HEADER_SIZE         40      // FIXME: adjust manually in capture.h Msg struct
 #define POST_DATA_SIZE      15400
+#define CONTENT_LENGTH      "15400"
+#define MAX_TRIES_CREATE_SOCKET 10
 // TCP/IP server
 #define TCPPORT             1000
 #define TCPHANDLERSTACK     1024
 #define TCPPACKETSIZE       256
 #define NUMTCPWORKERS       3
+
+// communications commands
+#define COMMAND_ACK                 "OK"
+#define READ_OUTLET_ID              0X11
+#define WRITE_OUTLET_ID             0X12
+#define READ_CHANNEL_OFFSET         0X13
+#define WRITE_CHANNEL_OFFSET        0X14
+#define READ_CHANNEL_GAIN           0X15
+#define WRITE_CHANNEL_GAIN          0X16
+#define READ_OUTLET_PHASE_LIMIT     0X17
+#define WRITE_OUTLET_PHASE_LIMIT    0X18    // volatile memory, format <0x18> <outletNum:0..5> <IEEE754 hex MSB> <IEEE754 hex> <IEEE754 hex> <IEEE754 hex LSB>
+#define READ_OUTLET_DIFF_LIMIT      0X19
+#define WRITE_OUTLET_DIFF_LIMIT     0X20
 
 extern char g_str_PostSend[];
 

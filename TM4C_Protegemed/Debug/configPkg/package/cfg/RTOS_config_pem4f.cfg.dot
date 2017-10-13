@@ -500,6 +500,22 @@ digraph configuration {
     }
     subgraph cluster61 {
         label="";
+        ti_net__top [shape=box,label="ti.net\n1,0,0,0", color=white];
+        ti_net__bot [shape=point,label="", style=invis];
+        ti_net_Network [style=filled,fillcolor=lightgray, label="Network"];
+        ti_net__top -> ti_net_Network[style=invis];
+        ti_net_Network -> ti_net__bot[style=invis];
+    }
+    subgraph cluster62 {
+        label="";
+        ti_net_http__top [shape=box,label="ti.net.http\n1,0,0,0", color=white];
+        ti_net_http__bot [shape=point,label="", style=invis];
+        ti_net_http_Http [style=filled,fillcolor=lightgray, label="Http"];
+        ti_net_http__top -> ti_net_http_Http[style=invis];
+        ti_net_http_Http -> ti_net_http__bot[style=invis];
+    }
+    subgraph cluster63 {
+        label="";
         ti_sysbios_gates__top [shape=box,label="ti.sysbios.gates\n2,0,0,0,1449624895255", color=white];
         ti_sysbios_gates__bot [shape=point,label="", style=invis];
         ti_sysbios_gates_GateHwi [style=filled,fillcolor=lightgray, label="GateHwi"];
@@ -509,7 +525,7 @@ digraph configuration {
         ti_sysbios_gates__top -> ti_sysbios_gates_GateMutex[style=invis];
         ti_sysbios_gates_GateMutex -> ti_sysbios_gates__bot[style=invis];
     }
-    subgraph cluster62 {
+    subgraph cluster64 {
         label="";
         ti_sysbios_xdcruntime__top [shape=box,label="ti.sysbios.xdcruntime\n1,0,0,1449624895255", color=white];
         ti_sysbios_xdcruntime__bot [shape=point,label="", style=invis];
@@ -517,7 +533,7 @@ digraph configuration {
         ti_sysbios_xdcruntime__top -> ti_sysbios_xdcruntime_Settings[style=invis];
         ti_sysbios_xdcruntime_Settings -> ti_sysbios_xdcruntime__bot[style=invis];
     }
-    subgraph cluster63 {
+    subgraph cluster65 {
         label="";
         ti_sysbios_heaps__top [shape=box,label="ti.sysbios.heaps\n2,0,0,0,1449624895255", color=white];
         ti_sysbios_heaps__bot [shape=point,label="", style=invis];
@@ -528,7 +544,7 @@ digraph configuration {
         ti_sysbios_heaps__top -> ti_sysbios_heaps_HeapMem_Module_GateProxy[style=invis];
         ti_sysbios_heaps_HeapMem_Module_GateProxy -> ti_sysbios_heaps__bot[style=invis];
     }
-    subgraph cluster64 {
+    subgraph cluster66 {
         label="";
         ti_sysbios_utils__top [shape=box,label="ti.sysbios.utils\n2,0,0,0,1449624895255", color=white];
         ti_sysbios_utils__bot [shape=point,label="", style=invis];
@@ -536,7 +552,7 @@ digraph configuration {
         ti_sysbios_utils__top -> ti_sysbios_utils_Load[style=invis];
         ti_sysbios_utils_Load -> ti_sysbios_utils__bot[style=invis];
     }
-    subgraph cluster65 {
+    subgraph cluster67 {
         label="";
         ti_uia_sysbios__top [shape=box,label="ti.uia.sysbios\n1,0,0,0,0", color=white];
         ti_uia_sysbios__bot [shape=point,label="", style=invis];
@@ -544,11 +560,11 @@ digraph configuration {
         ti_uia_sysbios__top -> ti_uia_sysbios_LoggingSetup[style=invis];
         ti_uia_sysbios_LoggingSetup -> ti_uia_sysbios__bot[style=invis];
     }
-    subgraph cluster66 {
+    subgraph cluster68 {
         label="";
         configPkg__top [shape=box,label="configPkg\n", color=white];
     }
-    subgraph cluster67 {
+    subgraph cluster69 {
         label="";
         xdc_services_io__top [shape=box,label="xdc.services.io\n1,0,0,0", color=white];
         xdc_services_io__bot [shape=point,label="", style=invis];
@@ -614,15 +630,19 @@ digraph configuration {
     ti_targets_arm_elf_M4F__1_0_5__2_5 [shape=record,label="ti.targets.arm.elf.M4F|1,0,5.2,5",style=filled, fillcolor=lightgrey];
     ti_sysbios_syncs__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster59];
     ti_targets_arm_elf_M4F__1_0_5__2_5 [shape=record,label="ti.targets.arm.elf.M4F|1,0,5.2,5",style=filled, fillcolor=lightgrey];
-    ti_sysbios_gates__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster61];
+    ti_net__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster61];
     ti_targets_arm_elf_M4F__1_0_5__2_5 [shape=record,label="ti.targets.arm.elf.M4F|1,0,5.2,5",style=filled, fillcolor=lightgrey];
-    ti_sysbios_xdcruntime__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster62];
+    ti_net_http__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster62];
     ti_targets_arm_elf_M4F__1_0_5__2_5 [shape=record,label="ti.targets.arm.elf.M4F|1,0,5.2,5",style=filled, fillcolor=lightgrey];
-    ti_sysbios_heaps__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster63];
+    ti_sysbios_gates__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster63];
     ti_targets_arm_elf_M4F__1_0_5__2_5 [shape=record,label="ti.targets.arm.elf.M4F|1,0,5.2,5",style=filled, fillcolor=lightgrey];
-    ti_sysbios_utils__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster64];
+    ti_sysbios_xdcruntime__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster64];
     ti_targets_arm_elf_M4F__1_0_5__2_5 [shape=record,label="ti.targets.arm.elf.M4F|1,0,5.2,5",style=filled, fillcolor=lightgrey];
-    ti_uia_sysbios__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster65];
+    ti_sysbios_heaps__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster65];
+    ti_targets_arm_elf_M4F__1_0_5__2_5 [shape=record,label="ti.targets.arm.elf.M4F|1,0,5.2,5",style=filled, fillcolor=lightgrey];
+    ti_sysbios_utils__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster66];
+    ti_targets_arm_elf_M4F__1_0_5__2_5 [shape=record,label="ti.targets.arm.elf.M4F|1,0,5.2,5",style=filled, fillcolor=lightgrey];
+    ti_uia_sysbios__bot -> ti_targets_arm_elf_M4F__1_0_5__2_5 [ltail=cluster67];
     ti_targets_arm_elf_M4F__1_0_16__9_4 [shape=record,label="ti.targets.arm.elf.M4F|1,0,16.9,4",style=filled, fillcolor=lightgrey];
-    configPkg__top -> ti_targets_arm_elf_M4F__1_0_16__9_4 [ltail=cluster66];
+    configPkg__top -> ti_targets_arm_elf_M4F__1_0_16__9_4 [ltail=cluster68];
 }

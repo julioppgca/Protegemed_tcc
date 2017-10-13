@@ -6,7 +6,6 @@ exports.hex2float = function(n){
   if (exp === 0xff) {
     // NaN or Infinity
     return mantissa ? NaN : sign * Infinity;
-
   }
   else if (exp) {
     // Normalized value
@@ -21,3 +20,4 @@ exports.hex2float = function(n){
   }
   return sign * mantissa * Math.pow(2, exp - 23);
 }
+

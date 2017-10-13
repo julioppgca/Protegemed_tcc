@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="printError" key="selection"/>
+		<item value="pMsg" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="true" key="wholeword"/>
 		<list key="findhistory">
+			<item value="pMsg"/>
+			<item value="msg"/>
 			<item value="printError"/>
 			<item value="logOutlet"/>
 			<item value="capture"/>
 			<item value="outletNum"/>
 			<item value="sendMsg"/>
 			<item value="sendCount"/>
-			<item value="ADCchannel[CH14]"/>
-			<item value="logPutLeakage"/>
 		</list>
 		<list key="replacehistory">
 			<item value="*outletNum"/>

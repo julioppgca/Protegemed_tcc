@@ -10,10 +10,11 @@
 // debug global variables
 uint32_t tcpCount=0;
 uint32_t sendError=0;
-uint32_t socketErro=0;
+uint32_t socketError=0; //TODO: transfer to local in release
 
 // transmit string
 char g_str_PostSend[POST_DATA_SIZE];
+
 
 // prototypes
 static inline serializeMsg(void);
@@ -26,6 +27,10 @@ static inline serializeMsg(void)
 
     // initiate pointer
     pStrPost = (int8_t *)&g_str_PostSend[0];
+
+    // get a message header
+    //arm_copy_q7((int8_t*)postHeader, pStrPost, 99);
+    //pStrPost += 100;
 
     // get a message header
     arm_copy_q7((int8_t*)gMsg->header, pStrPost, HEADER_SIZE);
@@ -80,17 +85,9 @@ static inline serializeMsg(void)
 
 }
 
-///*
-// *  ======== printError ========
-// */
-//void printError(char *errString, int code)
-//{
-//    System_printf("Error! code = %d, desc = %s\n", code, errString);
-//    //System_flush();
-//    BIOS_exit(code);
-//}
 
-///* TCP/IP client */
+#ifndef USE_HTTP
+/* TCP/IP client send data */
 void dataSendTcpIp(void)
 {
     int client;
@@ -113,10 +110,18 @@ void dataSendTcpIp(void)
         // serialize message to send
         serializeMsg();
 
-        do{ // TODO: error log...
+        do{
             client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-            if(client==-1) socketErro++;
+            if(client==-1)
+            {
+                if( ++socketError > MAX_TRIES_CREATE_SOCKET )
+                {
+                    Log_info1("Maximum tries to create the socket has been reached. Tries: %d", socketError);
+                    goto shutdown;
+                }
+            }
         }while(client < 0);
+        socketError=0;
 
         if (client == -1)
         {
@@ -158,6 +163,121 @@ void dataSendTcpIp(void)
     }
 
 }
+void httpPOST_Task(UArg arg0, UArg arg1) // dummy function to avoid static configuration error, missing symbols
+{
+    //dummy
+}
+#else
+void dataSendTcpIp(void) // dummy function to avoid static configuration error
+{
+    //dummy
+}
+/*
+ *
+ *          HTTP Task - POST to the server
+ *  This Task is created dynamically, it sends the captured data through
+ *  a POST method to Protegmed server
+ *  whenever is needed.
+ *
+ *  TODO: Treat errors on connections
+ */
+void httpPOST_Task(UArg arg0, UArg arg1)
+{
+    bool moreFlag = false;
+    int ret;
+    int len;
+//    char CONTENT_LENGTH[4]=;
+    struct sockaddr_in addr;
+
+    char data[100]={};
+
+    while(1)
+    {
+        Semaphore_pend(s_doDataSendTcpIp, BIOS_WAIT_FOREVER);
+        Log_write1(UIABenchmark_start,(xdc_IArg)"HTTP Send");
+        GPIO_write(DEBUG_PIN_SEND, 1); // hardware debug pin on
+
+        fdOpenSession(httpPOST_Task_Handle);
+
+        // serialize message to send
+        serializeMsg();
+
+
+        HTTPCli_Struct cli;
+        HTTPCli_Field fields[3] = {
+                                  { HTTPStd_FIELD_NAME_HOST, PTGM_HOSTNAME },
+                                  { HTTPStd_FIELD_NAME_USER_AGENT, USER_AGENT },
+                                  { NULL, NULL }
+                                  };
+
+        /* construct client */
+        HTTPCli_construct(&cli);
+
+        /* set fields to http POST */
+        HTTPCli_setRequestFields(&cli, fields);
+
+        /* */
+        ret = HTTPCli_initSockAddr((struct sockaddr *)&addr, PTGM_HOSTNAME, 0);
+        if (ret < 0) {
+            Log_info1("httpPOST_Task: address resolution failed", ret);
+        }
+
+
+        ret = HTTPCli_connect(&cli, (struct sockaddr *)&addr, 0, NULL);
+        if (ret < 0) {
+            Log_info1("%d: httpPOST_Task: connect failed", ret);
+        }
+
+        ret = HTTPCli_sendRequest(&cli, HTTPStd_POST, PTGM_URI, true);
+        if (ret < 0) {
+            Log_info1("%d: httpPOST_Task: send failed", ret);
+        }
+
+        ret = HTTPCli_sendField(&cli, HTTPStd_FIELD_NAME_CONTENT_LENGTH, CONTENT_LENGTH, false);
+        ret = HTTPCli_sendField(&cli, HTTPStd_FIELD_NAME_CONTENT_TYPE, PTGM_CONTENT_TYPE, true);
+
+        if (ret < 0) {
+            Log_info1("%d: httpPOST_Task: send failed", ret);
+        }
+
+        ret = HTTPCli_sendRequestBody(&cli, g_str_PostSend, POST_DATA_SIZE);
+        if (ret < 0) {
+            Log_info1("%d: httpPOST_Task: Variable data couldn't be sent", ret);
+        }
+
+        ret = HTTPCli_getResponseStatus(&cli);
+        if (ret != HTTPStd_OK) {
+            Log_info1("%d httpPOST_Task: cannot get status", ret);
+        }
+
+        ret = HTTPCli_getResponseField(&cli, data, sizeof(data), &moreFlag);
+
+        if (ret != HTTPCli_FIELD_ID_END) {
+            Log_info1("%d: httpPOST_Task: response field processing failed", ret);
+        }
+
+        len = 0;
+        do {
+            ret = HTTPCli_readResponseBody(&cli, data, sizeof(data), &moreFlag);
+            if (ret < 0) {
+                Log_info1("%d: httpPOST_Task: response body processing failed", ret);
+            }
+
+            len += ret;
+        } while (moreFlag);
+
+        Log_info1("Received: %d characters", strlen(data));
+
+        HTTPCli_disconnect(&cli);
+        HTTPCli_destruct(&cli);
+
+        fdCloseSession(httpPOST_Task_Handle);
+
+        GPIO_write(DEBUG_PIN_SEND, 0); // hardware debug pin off
+        Log_write1(UIABenchmark_stop,(xdc_IArg)"HTTP Send");
+    }
+}
+#endif
 
 
 /*
@@ -185,9 +305,38 @@ Log_write1(UIABenchmark_start,(xdc_IArg)"TCP Worker");
 
                 break;
             }
-            case 'g': // test
+            case READ_OUTLET_ID:
             {
-                //send(clientfd, temp, sizeof(temp), 0);
+                char temp[2];
+                temp[0] = ptgmSettings.outlet[buffer[1]]>>8;
+                temp[1] = ptgmSettings.outlet[buffer[1]];
+                send(clientfd, temp, sizeof(temp), 0);
+                break;
+            }
+            case WRITE_OUTLET_ID:
+            {
+                ptgmSettings.outlet[buffer[1]] = (buffer[2]<<8 | buffer[3]);
+                send(clientfd, COMMAND_ACK, sizeof(COMMAND_ACK), 0);
+                break;
+            }
+            case READ_OUTLET_PHASE_LIMIT:
+            {
+                char temp[4];
+                temp[0] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>24;
+                temp[1] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>16;
+                temp[2] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>8;
+                temp[3] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit;
+                send(clientfd, temp, sizeof(temp), 0);
+                break;
+            }
+            case WRITE_OUTLET_PHASE_LIMIT:
+            {
+                // from hex to float
+                *(uint32_t *)&outlet[buffer[1]].limitPhase = ((int32_t)buffer[2] << 24) |
+                                                             ((int32_t)buffer[3] << 16) |
+                                                             ((int32_t)buffer[4] << 8)  |
+                                                             buffer[5];
+                send(clientfd, COMMAND_ACK, sizeof(COMMAND_ACK), 0);
                 break;
             }
             default:

@@ -207,14 +207,14 @@ void dataProcess_Task(void)
  */
 void eventAnalysis_Task(void)
 {
-    int16_t outletNum, j;
+    int16_t outletNum;
 
     // set detect limits
-    for (outletNum = 0, j = 0; outletNum < OUTLET_COUNTER; outletNum++, j += 2)
+    for (outletNum = 0; outletNum < OUTLET_COUNTER; outletNum++)
     {
-        outlet[outletNum].num = outletNum;
-        outlet[outletNum].limitPhase = ptgmSettings.channel[j].channel_limit;
-        outlet[outletNum].limitDiff = ptgmSettings.channel[j + 1].channel_limit;
+        outlet[outletNum].num = ptgmSettings.outlet[outletNum];
+        outlet[outletNum].limitPhase = ptgmSettings.channel[outletNum * 2].channel_limit;
+        outlet[outletNum].limitDiff = ptgmSettings.channel[(outletNum * 2) + 1].channel_limit;
         outlet[outletNum].logCounter = 0;
         outlet[outletNum].event = OFF;
         outlet[outletNum].logPutPhase = &outlet[outletNum].logPhase[0];
@@ -224,23 +224,11 @@ void eventAnalysis_Task(void)
         outlet[outletNum].logGetVoltage1 = &panel.logVoltage1[LOG_GET_OFFSET_PANEL*MERGE_LOG_BLOCK];
         outlet[outletNum].logGetVoltage2 = &panel.logVoltage2[LOG_GET_OFFSET_PANEL*MERGE_LOG_BLOCK];
         outlet[outletNum].logGetLeakage = &panel.logEarthLeakage[LOG_GET_OFFSET_PANEL*MERGE_LOG_BLOCK];
-
     }
-
     // Panel init
     panel.logPutVoltage1 = &panel.logVoltage1[0];
     panel.logPutVoltage2 = &panel.logVoltage2[0];
     panel.logPutLeakage = &panel.logEarthLeakage[0];
-
-//    // Circular log buffer pre filling
-//    for(j=0;j<2*MAX_WAVE_LOG;j++)
-//    {
-//        logPanel();
-//        for (outletNum = 0; outletNum < OUTLET_COUNTER; outletNum++)
-//            {
-//                logOutlet(&outletNum);
-//            }
-//    }
 
     // initiate message pointers
     pMsg = &msg[0];
@@ -331,16 +319,16 @@ static inline void logOutlet(int16_t *outletNum)
     for(j=0;j<SAMPLE_FRAME;j+=2)
     {
         // phase current samples merge
-        *outlet[*outletNum].logPutPhase++ = ADCchannel[(*outletNum >> 1)][j] >> 4;
-        *outlet[*outletNum].logPutPhase = ADCchannel[(*outletNum >> 1)][j]<<4;
-        *outlet[*outletNum].logPutPhase++ |= ADCchannel[(*outletNum >> 1)][j+1]>>8;
-        *outlet[*outletNum].logPutPhase++ = ADCchannel[(*outletNum >> 1)][j+1];
+        *outlet[*outletNum].logPutPhase++ = ADCchannel[(*outletNum * 2)][j] >> 4;
+        *outlet[*outletNum].logPutPhase = ADCchannel[(*outletNum * 2)][j]<<4;
+        *outlet[*outletNum].logPutPhase++ |= ADCchannel[(*outletNum * 2)][j+1]>>8;
+        *outlet[*outletNum].logPutPhase++ = ADCchannel[(*outletNum * 2)][j+1];
 
         // diff current samples merge
-        *outlet[*outletNum].logPutDiff++ = ADCchannel[(*outletNum >> 1)+1][j] >> 4;
-        *outlet[*outletNum].logPutDiff = ADCchannel[(*outletNum >> 1)+1][j]<<4;
-        *outlet[*outletNum].logPutDiff++ |= ADCchannel[(*outletNum >> 1)+1][j+1]>>8;
-        *outlet[*outletNum].logPutDiff++ = ADCchannel[(*outletNum >> 1)+1][j+1];
+        *outlet[*outletNum].logPutDiff++ = ADCchannel[(*outletNum * 2)+1][j] >> 4;
+        *outlet[*outletNum].logPutDiff = ADCchannel[(*outletNum * 2)+1][j]<<4;
+        *outlet[*outletNum].logPutDiff++ |= ADCchannel[(*outletNum * 2)+1][j+1]>>8;
+        *outlet[*outletNum].logPutDiff++ = ADCchannel[(*outletNum * 2)+1][j+1];
 
     }
     /*   Outlet specifics  */
@@ -583,7 +571,7 @@ static inline void sendMsg(int16_t *outletNum)
     pMsg->header[11]=ptgmSettings.channel[LEAKAGE].channel_offset;
     pMsg->header[24]=*(uint32_t *)&ptgmSettings.channel[LEAKAGE].channel_gain>>24;
     pMsg->header[25]=*(uint32_t *)&ptgmSettings.channel[LEAKAGE].channel_gain>>16;
-    pMsg->header[25]=*(uint32_t *)&ptgmSettings.channel[LEAKAGE].channel_gain>>8;
+    pMsg->header[26]=*(uint32_t *)&ptgmSettings.channel[LEAKAGE].channel_gain>>8;
     pMsg->header[27]=*(uint32_t *)&ptgmSettings.channel[LEAKAGE].channel_gain;
     pMsg->leakage = outlet[*outletNum].logGetLeakage;
 

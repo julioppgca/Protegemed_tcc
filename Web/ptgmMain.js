@@ -12,9 +12,6 @@ const TM4C_IP_ADR = '192.168.2.110';
 
 const convert = require('./scripts/IEEE754_hex2float');
 
-//var fftData = {sine:[], cosine:[]};	// Object to save fftData received from TM4C html POST
-var outlet = {id:[],fftData:{sine:[], cosine:[]}};
-
 /**
  * 
  * ---- HTML Server ----
@@ -59,13 +56,9 @@ var app = http.createServer(function(req, res) {
 	if (req.method === 'POST'){
 		getPost.processPost(req, res, function() {
             console.log(req.post);
-            // extract sine and cosine data from TM4C Post
-			//outlet.id = req.post.OUTLET;
-			//outlet.fftData.sine = req.post.SIN.split(';');
-			//outlet.fftData.cosine = req.post.COS.split(';');
 			var temp = JSON.stringify(req.post);
 			//io.emit('TM4CAnswer', temp);
-			console.log('\nfftData: ' + JSON.stringify(temp));//+ JSON.stringify(outlet)); // + sine.length );
+			console.log('\nReceived Data length: ' + JSON.stringify(temp));
             res.writeHead(200, "OK", {'Content-Type': 'text/plain'});
             res.end();
         });
@@ -142,12 +135,13 @@ function TM4CDeadAlive()
 }
 
 
-
+/*------------------------------------*/
+/*    C2000 MCU Serial Interface      */
+/*------------------------------------*/
 var SerialPort = require('serialport');
 var serialPort = new SerialPort('COM2', {baudRate: 115200});
-const FAIL_COMMAND =  new Buffer([0x53,250,230,230,100,0x45]); 
-const NO_FAIL_COMMAND =  new Buffer([0x53,1,1,1,1,0x45]);
-
+const FAIL_COMMAND =  new Buffer([0x53,250,230,230,100,0x45]);  //waves amplitudes (0..255), set On event
+const NO_FAIL_COMMAND =  new Buffer([0x53,1,1,1,1,0x45]);		//waves amplitudes (0..255), set Off event
 
 // sends data to the connected device via serial port
 function writeSerial(data) {
@@ -209,9 +203,12 @@ net.createServer(function(sock) {
 		//console.log('Total msg length:' + msg.length + '\n');
 		processData(msg);
     });
+	
+	// log error 
+	sock.on('error', err => {
+	console.log(err.stack);});
     
 }).listen(PORT, HOST);
-
 console.log('Server listening on ' + HOST +':'+ PORT);
 
 /*------------------------------------*/
@@ -312,24 +309,67 @@ var eventEnum = ['unknow','Off','Turns On','Turns Off', 'On' ];
 // unpack data header
 objHeader.Outlet = parseInt(header[1]<<8 | header[2]);
 objHeader.Event = header[3];
-/*
-objHeader.phaseOffset = parseInt(header[4]<<8 | header[5]);
-objHeader.diffOffset = parseInt(header[6]<<8 | header[7]);
-objHeader.voltageOffset = parseInt(header[8]<<8 | header[9]);
+
+objHeader.phaseOffset 	= parseInt(header[4]<<8  | header[5]);
+objHeader.diffOffset 	= parseInt(header[6]<<8  | header[7]);
+objHeader.voltageOffset = parseInt(header[8]<<8  | header[9]);
 objHeader.leakageOffset = parseInt(header[10]<<8 | header[11]);
 
-objHeader.phaseGain = convert.hex2float(parseInt(header[12]<<24 | header[13]<<16 | header[14]<<8 | header[15]));
-objHeader.diffGain = convert.hex2float(parseInt(header[16]<<24 | header[17]<<16 | header[18]<<8 | header[19]));
-objHeader.voltageGain = convert.hex2float(parseInt(header[20]<<24 | header[21]<<16 | header[22]<<8 | header[23]));
-objHeader.leakageGain = convert.hex2float(parseInt(header[24]<<24 | header[25]<<16 | header[26]<<8 | header[27]));
-*/
-objHeader.Resever = 0;
+objHeader.phaseGain 	= convert.hex2float(parseInt(header[12]<<24 | header[13]<<16 | header[14]<<8 | header[15]));
+objHeader.diffGain 		= convert.hex2float(parseInt(header[16]<<24 | header[17]<<16 | header[18]<<8 | header[19]));
+objHeader.voltageGain 	= convert.hex2float(parseInt(header[20]<<24 | header[21]<<16 | header[22]<<8 | header[23]));
+objHeader.leakageGain 	= convert.hex2float(parseInt(header[24]<<24 | header[25]<<16 | header[26]<<8 | header[27]));
+
+objHeader.Reseverd = 0;
 // log to console
 console.log('\nNew message at ' + timeStamp());
-console.log('\tOutlet Number: ' +  (objHeader.Outlet + 1));
+console.log('\tOutlet Number: ' +  objHeader.Outlet);
 console.log('\tOutlet Event: ' +  eventEnum[objHeader.Event]);
-//console.log('Phase offset: ' + objHeader.voltageOffset);
-//console.log('Phase gain: ' + objHeader.voltageGain);
+console.log('\tPhase Offset: ' + objHeader.phaseOffset);
+console.log('\tPhase Gain: ' + objHeader.phaseGain);
+console.log('\tDiff Offset: ' + objHeader.diffOffset);
+console.log('\tDiff Gain: ' + objHeader.diffGain);
+console.log('\tVoltage Offset: ' + objHeader.voltageOffset);
+console.log('\tVoltage Gain: ' + objHeader.voltageGain);
+console.log('\tLeakage Offset: ' + objHeader.leakageOffset);
+console.log('\tLeakage Gain: ' + objHeader.leakageGain);
+
+var test = 0.01;
+
+function toFloat32(value) {
+    var bytes = 0;
+    switch (value) {
+        case Number.POSITIVE_INFINITY: bytes = 0x7F800000; break;
+        case Number.NEGATIVE_INFINITY: bytes = 0xFF800000; break;
+        case +0.0: bytes = 0x40000000; break;
+        case -0.0: bytes = 0xC0000000; break;
+        default:
+            if (Number.isNaN(value)) { bytes = 0x7FC00000; break; }
+
+            if (value <= -0.0) {
+                bytes = 0x80000000;
+                value = -value;
+            }
+
+            var exponent = Math.floor(Math.log(value) / Math.log(2));
+            var significand = ((value / Math.pow(2, exponent)) * 0x00800000) | 0;
+
+            exponent += 127;
+            if (exponent >= 0xFF) {
+                exponent = 0xFF;
+                significand = 0;
+            } else if (exponent < 0) exponent = 0;
+
+            bytes = bytes | (exponent << 23);
+            bytes = bytes | (significand & ~(-1 << 23));
+        break;
+    }
+    return bytes;
+};
+
+
+console.log('float is: ' + test + ' hex is: ' + toFloat32(test).toString(16)); 
+
 // object to access data Samples
 var objSamples = {phase:[],diff:[],voltage:[],leakage:[]};
 

@@ -63,12 +63,7 @@ struct PtgmSettings
     uint16_t logMarksInterval;
     uint16_t logLevel;
     channelSettings channel[NUM_OF_ADC_CHANNELS];
-    uint8_t outlet1;
-    uint8_t outlet2;
-    uint8_t outlet3;
-    uint8_t outlet4;
-    uint8_t outlet5;
-    uint8_t outlet6;
+    uint16_t outlet[6];
 };
 
 extern struct PtgmSettings ptgmSettingsWrite;

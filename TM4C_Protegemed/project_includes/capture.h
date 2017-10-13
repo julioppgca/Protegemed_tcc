@@ -145,6 +145,7 @@ static inline void logOutlet(int16_t *outletNum);
 static inline void logPanel(void);
 static inline void sendMsg(int16_t *outletNum);
 
+extern Outlet outlet[];
 extern Msg msg[];
 extern Msg *gMsg;
 extern Outlet outlet[];
