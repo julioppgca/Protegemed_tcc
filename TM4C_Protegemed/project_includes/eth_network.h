@@ -36,13 +36,16 @@
 
 /* NDK BSD support */
 #include <sys/socket.h>
-//#include <ti/ndk/inc/socketndk.h>
-
-//#include <ti/ndk/inc/_stack.h>  // test
 
 /* Strings functions */
 #include <string.h>
 #include <stdio.h>
+
+/* Tivaware Lib. */
+#include "inc/hw_nvic.h"
+#include "driverlib/systick.h"
+#include "driverlib/rom.h"
+#include "driverlib/rom_map.h"
 
 /* Project Header files */
 #include "project_includes/settings.h"
@@ -87,6 +90,20 @@
 #define WRITE_OUTLET_PHASE_LIMIT    0X18    // volatile memory, format <0x18> <outletNum:0..5> <IEEE754 hex MSB> <IEEE754 hex> <IEEE754 hex> <IEEE754 hex LSB>
 #define READ_OUTLET_DIFF_LIMIT      0X19
 #define WRITE_OUTLET_DIFF_LIMIT     0X20
+#define REQUEST_FIRMWARE_UPDATE     0X55
+
+
+#define FIRMWARE_DEBUG
+#ifdef FIRMWARE_DEBUG
+#define FIRMWARE_VERSION    "FW V1.01 - USB_Debug"
+#else
+#define FIRMWARE_VERSION    "FW V1.01 - ETH Bootloader"
+#endif
+
+#define ALIVE_MSG           "System Connected..."
+#define FIRMWARE_UPDATED_REQUEST    "Firmware Update. Reseting MCU..."
+#define OK_MSG "Ok"
+
 
 extern char g_str_PostSend[];
 

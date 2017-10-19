@@ -147,11 +147,22 @@ $(document).ready(function() {
 		for(var i = 1 ; i< sampledDiff.length; i++)
 		{
 			totalTime[i] = totalTime[i].toFixed(3);
-			// fill for test purpose
-			 sampledDiff[i] = sampledPhase[i];
-			 sampledLeakage[i] = sampledVoltage[i];
 		}
 		
+		// TEST: shift voltage wave
+/*		var temp=[];
+		for(var i = 0, j=21; i < sampledVoltage.length ; i++)
+		{
+			temp[i] = sampledVoltage[j];
+			if(++j > sampledVoltage.length)
+				j=0;
+		}
+		for(var i = 0 ; i< sampledVoltage.length; i++)
+		{
+			sampledVoltage[i]=temp[i];
+		}
+*/
+
 		// create new graph
 		var canvas = document.createElement('canvas');
 		var newCanvas = 'Id' + newCanvasId;
@@ -496,7 +507,7 @@ $(document).ready(function() {
 				</div>
 				<div class="ui labeled input">
 				  <div class="ui label">
-					Phase Limit (Arms)
+					Phase Limit (Arms) Outlet 1 Only
 				  </div>
 				  <input id="txtPhaseLimit" placeholder="Phase Limit" type="text">
 				  <div class="ui buttons">
@@ -505,37 +516,6 @@ $(document).ready(function() {
 					  <button id="btnSetPhaseLimit" class="ui negative button" onClick="fcnSetPhaseLimit()">Set Actual Phase Limit</button>
 				  </div>
 				</div>
-				<!-- <div class="ui labeled input"> -->
-				  <!-- <div class="ui label"> -->
-					<!-- Phase RMS -->
-				  <!-- </div> -->
-				  <!-- <input id="txtPhaseRMS" placeholder="Arms" type="text"> -->
-				<!-- </div> -->
-				<!-- <div class="ui labeled input"> -->
-				  <!-- <div class="ui label"> -->
-					<!-- Differential RMS -->
-				  <!-- </div> -->
-				  <!-- <input id="txtDiffRMS" placeholder="Arms" type="text"> -->
-				<!-- </div> -->
-				<!-- <div class="ui labeled input"> -->
-				  <!-- <div class="ui label"> -->
-					<!-- Voltage RMS -->
-				  <!-- </div> -->
-				  <!-- <input id="txtVoltageRMS" placeholder="Vrms" type="text"> -->
-				<!-- </div> -->
-				<!-- <div>
-				<button id="btnGenerateFail" class="ui primary button" onClick="fcnGenerateFail()">
-				  Generate Fail
-				</button>
-				
-				<button id="btnGenerateFail" class="positive ui button" onClick="fcnChangeState('On')">
-				  Turn on
-				</button>
-				
-				<button id="btnGenerateFail" class="negative ui button" onClick="fcnChangeState('Off')">
-				  Turn off
-				</button>
-				</div> -->
 			</div>
 				
 			<div id="graphPlace" class="ui segment">	

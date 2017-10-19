@@ -1,0 +1,50 @@
+
+**** Build of configuration Debug for project i2ctmp006_EK_TM4C129EXL_TI ****
+
+"C:\\ti\\ccsv7\\utils\\bin\\gmake" -k -j 4 all -O 
+gmake[1]: Entering directory 'C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI/Debug'
+'Building file: ../i2ctmp006.cfg'
+'Invoking: XDCtools'
+"C:/ti/xdctools_3_32_00_06_core/xs" --xdcpath="C:/ti/tirtos_tivac_2_16_00_08/packages;C:/ti/tirtos_tivac_2_16_00_08/products/tidrivers_tivac_2_16_00_08/packages;C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages;C:/ti/tirtos_tivac_2_16_00_08/products/ndk_2_25_00_09/packages;C:/ti/tirtos_tivac_2_16_00_08/products/uia_2_00_05_50/packages;C:/ti/tirtos_tivac_2_16_00_08/products/ns_1_11_00_10/packages;C:/ti/ccsv7/ccs_base;" xdc.tools.configuro -o configPkg -t ti.targets.arm.elf.M4F -p ti.platforms.tiva:TM4C129ENCPDT -r release -c "C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS" --compileOptions "-mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --include_path=\"C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI\" --include_path=\"C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI\" --include_path=\"C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b\" --include_path=\"C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/posix\" --include_path=\"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include\" --define=ccs=\"ccs\" --define=PART_TM4C129ENCPDT --define=ccs --define=TIVAWARE -g --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi  " "../i2ctmp006.cfg"
+making package.mak (because of package.bld) ...
+generating interfaces for package configPkg (because package/package.xdc.inc is older than package.xdc) ...
+configuring i2ctmp006.xem4f from package/cfg/i2ctmp006_pem4f.cfg ...
+generating custom ti.sysbios library makefile ... 
+Starting build of library sources ...
+making C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI/src/sysbios/sysbios.aem4f ...
+gmake[1]: Entering directory `C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI/src/sysbios'
+clem4f C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/BIOS.c ...
+asmem4f C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/family/arm/m3/Hwi_asm.sv7M ...
+asmem4f C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/family/arm/m3/Hwi_asm_switch.sv7M ...
+asmem4f C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/family/arm/m3/IntrinsicsSupport_asm.sv7M ...
+asmem4f C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/family/arm/m3/TaskSupport_asm.sv7M ...
+arem4f BIOS.obj m3_Hwi_asm.obj m3_Hwi_asm_switch.obj m3_IntrinsicsSupport_asm.obj m3_TaskSupport_asm.obj ...
+gmake[1]: Leaving directory `C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI/src/sysbios'
+Build of libraries done.
+clem4f package/cfg/i2ctmp006_pem4f.c ...
+'Finished building: ../i2ctmp006.cfg'
+' '
+gmake[1]: Leaving directory 'C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI/Debug'
+        1 arquivo(s) copiado(s).
+making ../src/sysbios/sysbios.aem4f ...
+gmake[1]: Nothing to be done for 'all'.
+'Building file: ../i2ctmp006.c'
+'Invoking: ARM Compiler'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --include_path="C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI" --include_path="C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI" --include_path="C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b" --include_path="C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/posix" --include_path="C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include" --define=ccs="ccs" --define=PART_TM4C129ENCPDT --define=ccs --define=TIVAWARE -g --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --preproc_with_compile --preproc_dependency="i2ctmp006.d" --cmd_file="configPkg/compiler.opt" "../i2ctmp006.c"
+'Finished building: ../i2ctmp006.c'
+' '
+'Building file: ../EK_TM4C129EXL.c'
+'Invoking: ARM Compiler'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --include_path="C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI" --include_path="C:/Users/skelter_win/Protegemed_tcc/i2ctmp006_EK_TM4C129EXL_TI" --include_path="C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b" --include_path="C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/sysbios/posix" --include_path="C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include" --define=ccs="ccs" --define=PART_TM4C129ENCPDT --define=ccs --define=TIVAWARE -g --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --preproc_with_compile --preproc_dependency="EK_TM4C129EXL.d" --cmd_file="configPkg/compiler.opt" "../EK_TM4C129EXL.c"
+'Finished building: ../EK_TM4C129EXL.c'
+' '
+making ../src/sysbios/sysbios.aem4f ...
+gmake[2]: Nothing to be done for 'all'.
+'Building target: i2ctmp006_EK_TM4C129EXL_TI.out'
+'Invoking: ARM Linker'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C129ENCPDT --define=ccs --define=TIVAWARE -g --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"i2ctmp006_EK_TM4C129EXL_TI.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="i2ctmp006_EK_TM4C129EXL_TI_linkInfo.xml" --rom_model -o "i2ctmp006_EK_TM4C129EXL_TI.out" "./EK_TM4C129EXL.obj" "./i2ctmp006.obj" "../EK_TM4C129EXL.cmd" -l"configPkg/linker.cmd" -l"C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/grlib/ccs/Debug/grlib.lib" -l"C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/usblib/ccs/Debug/usblib.lib" -l"C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/ccs/Debug/driverlib.lib" -llibc.a 
+<Linking>
+'Finished building target: i2ctmp006_EK_TM4C129EXL_TI.out'
+' '
+
+**** Build Finished ****

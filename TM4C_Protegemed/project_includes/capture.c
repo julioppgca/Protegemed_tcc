@@ -493,7 +493,15 @@ static inline void copy_int16_f32( int16_t * pSrc, float32_t * pDst, uint32_t bl
  *  [25]    = Channel Gain: Panel earth leakage IEEE-754 Floating Point format
  *  [26]    = Channel Gain: Panel earth leakage IEEE-754 Floating Point format
  *  [27]    = Channel Gain: Panel earth leakage IEEE-754 Floating Point format LSB
- *  [28..39]= Reserved.
+ *  [28]    = RFID MSB ( ASCII Data format)
+ *  [29]    = RFID
+ *  [30]    = RFID
+ *  [31]    = RFID
+ *  [32]    = RFID
+ *  [33]    = RFID
+ *  [34]    = RFID
+ *  [35]    = RFID LSB
+ *  [36..39]= Reserved.
  *
  * DATA:
  *  [00040...03879]  = Raw Data: Phase Samples +merged format
@@ -543,6 +551,15 @@ static inline void sendMsg(int16_t *outletNum)
     pMsg->header[17]=*(uint32_t *)&ptgmSettings.channel[(*outletNum<<1) + 1].channel_gain>>16;
     pMsg->header[18]=*(uint32_t *)&ptgmSettings.channel[(*outletNum<<1) + 1].channel_gain>>8;
     pMsg->header[19]=*(uint32_t *)&ptgmSettings.channel[(*outletNum<<1) + 1].channel_gain;
+    // TODO: RFID Data, not implemented yet.
+    pMsg->header[28]='d';
+    pMsg->header[29]='f';
+    pMsg->header[30]='a';
+    pMsg->header[31]='3';
+    pMsg->header[32]='7';
+    pMsg->header[33]='1';
+    pMsg->header[34]='b';
+    pMsg->header[35]='c';
 
     // panel specific data
     if(*outletNum < OUTLET_COUNTER>>1)

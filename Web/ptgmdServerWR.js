@@ -5,8 +5,8 @@
  */
 
 /*jshint esversion: 6 */ 
-const HTML_LISTEN_PORT = 8080;
-const HTML_INDEX = "./index2.html";
+const HTML_LISTEN_PORT = 80;
+const HTML_INDEX = "./ptgmIndex.html";
 const CSS_STYLE = "./semantic/dist/semantic.min.css";
 const TM4C_IP_ADR = '192.168.2.110';
 const TM4C_LISTEN_PORT = 1000;
@@ -84,36 +84,13 @@ io.on('connection', function(socket) {
     	//console.log('Html Request: TM4CDeadAlive ');
     	TM4CDeadAlive();
 	});
-	
-	socket.on('GenerateFail', function(){
-		//setTimeout(function(){
-			for(var i=0;i<100;i++)
-				writeSerial(FAIL_COMMAND);
-		//},500);
-		setTimeout(function(){
-			for(var i=0;i<100;i++)
-				writeSerial(NO_FAIL_COMMAND);
-		},300);
-	});
-	
-	socket.on('TurnOn', function(){
-		console.log('setOn');
-			for(var i=0;i<100;i++)
-				writeSerial(FAIL_COMMAND);	
-				});
-		
-	socket.on('TurnOff', function(){
-		console.log('setOff');
-			for(var i=0;i<100;i++)
-				writeSerial(NO_FAIL_COMMAND);	
-				});
 
     socket.on('newPhaseLimit', function(data){
         setPhaseLimit(data);
     })
 	
     socket.on('getPhaseLimit', function(){
-        var cmd = new Buffer([0x17, 0x05]);
+        var cmd = new Buffer([0x17, 0x00]); // read direct from outlet 1
         sendToTM4C(cmd);
     });
 
@@ -124,7 +101,7 @@ io.on('connection', function(socket) {
 function setPhaseLimit(data) 
 {
     var value = new Buffer(toFloat32(data).toString('16'),'hex');
-    var cmdHeader = new Buffer([0x18, 0x05]);
+    var cmdHeader = new Buffer([0x18, 0x00]); // write direct to outlet 1
     var cmd = new Buffer(6);
     cmd = Buffer.concat([cmdHeader, value]);;
     //console.log('cmd: ' + cmd);
@@ -151,28 +128,6 @@ function TM4CDeadAlive()
     		}
 	});
 	
-	
-}
-
-
-/*------------------------------------*/
-/*    C2000 MCU Serial Interface      */
-/*------------------------------------*/
-var SerialPort = require('serialport');
-var serialPort = new SerialPort('COM2', {baudRate: 115200});
-const FAIL_COMMAND =  new Buffer([0x53,250,230,230,100,0x45]);  //waves amplitudes (0..255), set On event
-const NO_FAIL_COMMAND =  new Buffer([0x53,1,1,1,1,0x45]);		//waves amplitudes (0..255), set Off event
-
-// sends data to the connected device via serial port
-function writeSerial(data) {
-	// write/send data to serial port
-	serialPort.write(data, function (error) {
-		if ( error ) {
-		console.log('Failed to write serial port. \n\t' + error + '\n\n');
-	}else{
-		//console.log(data);
-	}
-	});
 	
 }
 
@@ -275,7 +230,15 @@ function processData(msg)
  *  [25]    = Channel Gain: Panel earth leakage IEEE-754 Floating Point format
  *  [26]    = Channel Gain: Panel earth leakage IEEE-754 Floating Point format
  *  [27]    = Channel Gain: Panel earth leakage IEEE-754 Floating Point format LSB
- *  [28..39]= Reserved.
+ *  [28]    = RFID MSB ( ASCII Data format)
+ *  [29]    = RFID
+ *  [30]    = RFID
+ *  [31]    = RFID
+ *  [32]    = RFID
+ *  [33]    = RFID
+ *  [34]    = RFID
+ *  [35]    = RFID LSB
+ *  [36..39]= Reserved.
  *
  * DATA:
  *  [00040...03879]  = Raw Data: Phase Samples +merged format
@@ -325,7 +288,7 @@ for(var i=HEADER_SIZE; i < TOTAL_SIZE ;i++)
 // object to access data header
 var objHeader = {netVersion:0,Outlet:0,Event:0, 
 				phaseOffset:0, diffOffset:0, voltageOffset:0,leakageOffset:0,
-				phaseGain:0, diffGain:0, voltageGain:0, leakageGain:0, Reserved:0};
+				phaseGain:0, diffGain:0, voltageGain:0, leakageGain:0, RFID:'',Reserved:0};
 var eventEnum = ['unknow','Off','Turns On','Turns Off', 'On' ];
 // unpack data header
 objHeader.Outlet = parseInt(header[1]<<8 | header[2]);
@@ -341,6 +304,11 @@ objHeader.diffGain 		= convert.hex2float(parseInt(header[16]<<24 | header[17]<<1
 objHeader.voltageGain 	= convert.hex2float(parseInt(header[20]<<24 | header[21]<<16 | header[22]<<8 | header[23]));
 objHeader.leakageGain 	= convert.hex2float(parseInt(header[24]<<24 | header[25]<<16 | header[26]<<8 | header[27]));
 
+objHeader.RFID = String.fromCharCode(header[28]) + String.fromCharCode(header[29]) + 
+				 String.fromCharCode(header[30]) + String.fromCharCode(header[31]) + 
+				 String.fromCharCode(header[32]) + String.fromCharCode(header[33]) + 
+				 String.fromCharCode(header[34]) + String.fromCharCode(header[35]) ;
+				 
 objHeader.Reseverd = 0;
 // log to console
 console.log('\nNew message at ' + timeStamp());
@@ -354,6 +322,7 @@ console.log('\tVoltage Offset: ' + objHeader.voltageOffset);
 console.log('\tVoltage Gain: ' + objHeader.voltageGain);
 console.log('\tLeakage Offset: ' + objHeader.leakageOffset);
 console.log('\tLeakage Gain: ' + objHeader.leakageGain);
+console.log('\tRFID: ' + objHeader.RFID);
 
 // object to access data Samples
 var objSamples = {phase:[],diff:[],voltage:[],leakage:[]};
@@ -431,6 +400,16 @@ function toCSV(fileName, dataToWrite)
 
 var client = new net.Socket(); // client to send/receive commands
 
+/**
+*
+*		Send new phase limit to Outlet 1 only 
+*
+* Msg Format:
+*	0x18 = Set new phase limit
+*	0x?? = ??:Outlet number, 0x00 - outlet 1, 0x01 outlet 2 ...
+*   value = IEEE-754 floating point in hex format
+*
+*/
 function sendToTM4C(cmd) {
     "use strict";
     //console.log("cmd: " + cmd + " data: " + data);
@@ -442,6 +421,11 @@ function sendToTM4C(cmd) {
 
 }
 
+/**
+*
+*		Get actual phase limit in Outlet 1
+*
+*/
 client.on('data', function(data){
     var res = JSON.stringify(data);
     console.log('TM4C response: ' + res);
@@ -453,11 +437,16 @@ client.on('data', function(data){
     {
         var res = JSON.stringify(data);
         res = convert.hex2float(parseInt(data[0]<<24 | data[1]<<16 | data[2]<<8 | data[3]));
-        console.log('Its a number: '+ res);
+        //console.log('Its a number: '+ res);
         io.emit('actualPhaseLimit', res);
     }
 })
 
+/**
+*
+*		Timestamp to log incomming messages
+*
+*/
 function timeStamp() {
     var str = "";
 
@@ -482,6 +471,11 @@ function timeStamp() {
     return str;
 }
 
+/**
+*
+*		Convert Float to byte stream format (float to IEEE-754 hex format)
+*
+*/
 function toFloat32(value) {
     var bytes = 0;
     switch (value) {

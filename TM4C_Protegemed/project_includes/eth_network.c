@@ -15,6 +15,13 @@ uint32_t socketError=0; //TODO: transfer to local in release
 // transmit string
 char g_str_PostSend[POST_DATA_SIZE];
 
+// post header
+//const char postHeader[]=\
+//        "POST / HTTP/1.1\r\n"
+//        "Host: 192.168.2.151\r\n"
+//        "Content-Type: application/octet-stream\r\n"
+//        "Content-Length: 15400\r\n"
+//        "\r\n";
 
 // prototypes
 static inline serializeMsg(void);
@@ -28,9 +35,9 @@ static inline serializeMsg(void)
     // initiate pointer
     pStrPost = (int8_t *)&g_str_PostSend[0];
 
-    // get a message header
-    //arm_copy_q7((int8_t*)postHeader, pStrPost, 99);
-    //pStrPost += 100;
+//    // get a message header
+//    arm_copy_q7((int8_t*)postHeader, pStrPost, 101);
+//    pStrPost += 102;
 
     // get a message header
     arm_copy_q7((int8_t*)gMsg->header, pStrPost, HEADER_SIZE);
@@ -322,10 +329,14 @@ Log_write1(UIABenchmark_start,(xdc_IArg)"TCP Worker");
             case READ_OUTLET_PHASE_LIMIT:
             {
                 char temp[4];
-                temp[0] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>24;
-                temp[1] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>16;
-                temp[2] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>8;
-                temp[3] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit;
+//                temp[0] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>24;
+//                temp[1] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>16;
+//                temp[2] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit>>8;
+//                temp[3] = *(uint32_t *)&ptgmSettings.channel[buffer[1]*2].channel_limit;
+                temp[0] =  *(uint32_t *)&outlet[buffer[1]].limitPhase >> 24;
+                temp[1] =  *(uint32_t *)&outlet[buffer[1]].limitPhase >> 16;
+                temp[2] =  *(uint32_t *)&outlet[buffer[1]].limitPhase >> 8;
+                temp[3] =  *(uint32_t *)&outlet[buffer[1]].limitPhase ;
                 send(clientfd, temp, sizeof(temp), 0);
                 break;
             }
@@ -338,6 +349,45 @@ Log_write1(UIABenchmark_start,(xdc_IArg)"TCP Worker");
                                                              buffer[5];
                 send(clientfd, COMMAND_ACK, sizeof(COMMAND_ACK), 0);
                 break;
+            }
+            case REQUEST_FIRMWARE_UPDATE:
+            {
+                //
+                // Firmware Update Request -> 'U' + MAC address (U=0x55 in ascii)
+                // eg.:  0x55 0x08 0x00 0x28 0x5a 0x8c 0x56
+                //
+                if ((buffer[0] == 'U') && (buffer[1] == 0x08) && (buffer[2] == 0x00)
+                        && (buffer[3] == 0x28) && (buffer[4] == 0x5a)
+                        && (buffer[5] == 0x8c) && (buffer[6] == 0x56))
+                {
+                    //const char UpdateRequest[] = "Firmware Update. Reseting...";
+                    send(clientfd, FIRMWARE_UPDATED_REQUEST, sizeof(FIRMWARE_UPDATED_REQUEST), 0);
+
+                    //
+                    // Disable all processor interrupts.  Instead of disabling them
+                    // one at a time (and possibly missing an interrupt if new sources
+                    // are added), a direct write to NVIC is done to disable all
+                    // peripheral interrupts.
+                    //
+                    HWREG(NVIC_DIS0) = 0xffffffff;
+                    HWREG(NVIC_DIS1) = 0xffffffff;
+                    HWREG(NVIC_DIS2) = 0xffffffff;
+                    HWREG(NVIC_DIS3) = 0xffffffff;
+                    HWREG(NVIC_DIS4) = 0xffffffff;
+
+                    //
+                    // Also disable the SysTick interrupt.
+                    //
+                    SysTickIntDisable();
+                    SysTickDisable();
+
+                    //
+                    // Return control to the boot loader.
+                    // This is a call to the ROM bootloader.
+                    //
+                    ROM_UpdateEMAC(120000000);
+                }
+        break;
             }
             default:
             {

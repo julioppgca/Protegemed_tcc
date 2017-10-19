@@ -257,6 +257,10 @@ ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/string.h
 ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/linkage.h
 ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdio.h
 ptgm_main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdarg.h
+ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/inc/hw_nvic.h
+ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/systick.h
+ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/rom.h
+ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/rom_map.h
 ptgm_main.obj: C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/settings.h
 ptgm_main.obj: C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/capture.h
 ptgm_main.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h
@@ -294,7 +298,6 @@ ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/adc.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/udma.h
 ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/gpio.h
-ptgm_main.obj: C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/rom_map.h
 ptgm_main.obj: C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/eth_network.h
 ptgm_main.obj: C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/arm_math.h
 ptgm_main.obj: C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/core_cm4.h
@@ -565,6 +568,10 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/string.h:
 C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/linkage.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdio.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.4.LTS/include/stdarg.h: 
+C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/inc/hw_nvic.h: 
+C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/systick.h: 
+C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/rom.h: 
+C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/rom_map.h: 
 C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/settings.h: 
 C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/capture.h: 
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h: 
@@ -602,7 +609,6 @@ C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/int
 C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/adc.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/udma.h: 
 C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/gpio.h: 
-C:/ti/tirtos_tivac_2_16_00_08/products/TivaWare_C_Series-2.1.1.71b/driverlib/rom_map.h: 
 C:/Users/skelter_win/Protegemed_tcc/TM4C_Protegemed/project_includes/eth_network.h: 
 C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/arm_math.h: 
 C:/ti/CMSIS-SP-00300-r4p5-00rel0/CMSIS/Include/core_cm4.h: 

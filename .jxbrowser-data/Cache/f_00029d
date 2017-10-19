@@ -1,0 +1,290 @@
+[
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHChr84T8VGtA&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Driver Examples/FatFs Examples/FatSD Raw&removeoffline=true",
+    "name": "Board.h",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHChr84T8VGtA",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHChr84T8VGtA?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw&extname=.h",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/driverExamples/tiDriverExamples/fatFsExamples/com_ti_rtsc_tirtostivac_example_232.dependency.tirex.json",
+    "parentID": "SrHgiQwDtCH8jE",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "Board.h",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Driver%20Examples/FatFs%20Examples/FatSD%20Raw&package=c2000ware_software_package__1.00.02.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.50.00.08::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.4.3::cc3200sdk__::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.50.00.12::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.50.00.06::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.80.01.01::sysbios__6.50.01.12",
+    "packageOrder": 87,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrH8LQezR4VMng&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Driver Examples/FatFs Examples/FatSD Raw&removeoffline=true",
+    "name": "EK_TM4C129EXL.c",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrH8LQezR4VMng",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrH8LQezR4VMng?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw&extname=.c",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/driverExamples/tiDriverExamples/fatFsExamples/com_ti_rtsc_tirtostivac_example_232.dependency.tirex.json",
+    "parentID": "SrHgiQwDtCH8jE",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "EK_TM4C129EXL.c",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Driver%20Examples/FatFs%20Examples/FatSD%20Raw&package=c2000ware_software_package__1.00.02.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.50.00.08::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.4.3::cc3200sdk__::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.50.00.12::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.50.00.06::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.80.01.01::sysbios__6.50.01.12",
+    "packageOrder": 87,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHoYYAyvI8WDU&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Driver Examples/FatFs Examples/FatSD Raw&removeoffline=true",
+    "name": "EK_TM4C129EXL.cmd",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHoYYAyvI8WDU",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHoYYAyvI8WDU?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw&extname=.cmd",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/driverExamples/tiDriverExamples/fatFsExamples/com_ti_rtsc_tirtostivac_example_232.dependency.tirex.json",
+    "parentID": "SrHgiQwDtCH8jE",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "EK_TM4C129EXL.cmd",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Driver%20Examples/FatFs%20Examples/FatSD%20Raw&package=c2000ware_software_package__1.00.02.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.50.00.08::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.4.3::cc3200sdk__::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.50.00.12::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.50.00.06::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.80.01.01::sysbios__6.50.01.12",
+    "packageOrder": 87,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHSLqgE4XxlQ4&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Driver Examples/FatFs Examples/FatSD Raw&removeoffline=true",
+    "name": "EK_TM4C129EXL.h",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHSLqgE4XxlQ4",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHSLqgE4XxlQ4?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw&extname=.h",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/driverExamples/tiDriverExamples/fatFsExamples/com_ti_rtsc_tirtostivac_example_232.dependency.tirex.json",
+    "parentID": "SrHgiQwDtCH8jE",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "EK_TM4C129EXL.h",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Driver%20Examples/FatFs%20Examples/FatSD%20Raw&package=c2000ware_software_package__1.00.02.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.50.00.08::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.4.3::cc3200sdk__::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.50.00.12::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.50.00.06::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.80.01.01::sysbios__6.50.01.12",
+    "packageOrder": 87,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrH7YImzxDsPDE&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Driver Examples/FatFs Examples/FatSD Raw&removeoffline=true",
+    "name": "fatsdraw.c",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrH7YImzxDsPDE",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrH7YImzxDsPDE?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw&extname=.c",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/driverExamples/tiDriverExamples/fatFsExamples/com_ti_rtsc_tirtostivac_example_232.dependency.tirex.json",
+    "parentID": "SrHgiQwDtCH8jE",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "fatsdraw.c",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Driver%20Examples/FatFs%20Examples/FatSD%20Raw&package=c2000ware_software_package__1.00.02.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.50.00.08::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.4.3::cc3200sdk__::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.50.00.12::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.50.00.06::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.80.01.01::sysbios__6.50.01.12",
+    "packageOrder": 87,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHoGXKwELHzIQ&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Driver Examples/FatFs Examples/FatSD Raw&removeoffline=true",
+    "name": "fatsdraw.cfg",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHoGXKwELHzIQ",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHoGXKwELHzIQ?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw&extname=.cfg",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/driverExamples/tiDriverExamples/fatFsExamples/com_ti_rtsc_tirtostivac_example_232.dependency.tirex.json",
+    "parentID": "SrHgiQwDtCH8jE",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "fatsdraw.cfg",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Driver%20Examples/FatFs%20Examples/FatSD%20Raw&package=c2000ware_software_package__1.00.02.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.50.00.08::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.4.3::cc3200sdk__::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.50.00.12::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.50.00.06::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.80.01.01::sysbios__6.50.01.12",
+    "packageOrder": 87,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHVXr1gwmT5oc&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Driver Examples/FatFs Examples/FatSD Raw&removeoffline=true",
+    "name": "fatsdraw_readme.txt",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHVXr1gwmT5oc",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHVXr1gwmT5oc?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw&extname=.txt",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/driverExamples/tiDriverExamples/fatFsExamples/com_ti_rtsc_tirtostivac_example_232.dependency.tirex.json",
+    "parentID": "SrHgiQwDtCH8jE",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "fatsdraw_readme.txt",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Driver%20Examples/FatFs%20Examples/FatSD%20Raw&package=c2000ware_software_package__1.00.02.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.50.00.08::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.4.3::cc3200sdk__::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.50.00.12::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.50.00.06::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.80.01.01::sysbios__6.50.01.12",
+    "packageOrder": 87,
+    "offline": "true"
+  },
+  {
+    "downloadLink": "api/bundle?vid=tirtos_tivac__2.16.00.08&download=true&analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw",
+    "makeofflineLink": "api/bundles?vids=tirtos_tivac__2.16.00.08",
+    "removeofflineLink": "api/resources?id=SrHQ3QOLajR55k&path=Software/TI-RTOS for TivaC/Development Tools/EK-TM4C129EXL/Driver Examples/FatFs Examples/FatSD Raw&removeoffline=true",
+    "name": "makefile.defs",
+    "resourceType": "file",
+    "coreTypes": [
+      "Cortex M.TM4C129ENCPDT"
+    ],
+    "devtools": [
+      "EK-TM4C129EXL"
+    ],
+    "advanced": {
+      "overrideProjectSpecDeviceId": true
+    },
+    "_id": "SrHQ3QOLajR55k",
+    "version": "UNVERSIONED",
+    "semver": "0.0.0",
+    "dependencies": [],
+    "link": "api/linkTo/SrHQ3QOLajR55k?analyticsDevice=undefined&analyticsDevtool=undefined&analyticsPath=Software%2FTI-RTOS%20for%20TivaC%2FDevelopment%20Tools%2FEK-TM4C129EXL%2FDriver%20Examples%2FFatFs%20Examples%2FFatSD%20Raw&extname=.defs",
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageVersion": "2.16.00.08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "allowPartialDownload": false,
+    "linkType": "local",
+    "implictDependencyFile": "tirtos_tivac_2_16_00_08/resources/ek_tm4C129EXLEvaluationKit/driverExamples/tiDriverExamples/fatFsExamples/com_ti_rtsc_tirtostivac_example_232.dependency.tirex.json",
+    "parentID": "SrHgiQwDtCH8jE",
+    "isIncludedFile": true,
+    "type": "resource",
+    "text": "makefile.defs",
+    "url": "/api/resources?path=Software/TI-RTOS%20for%20TivaC/Development%20Tools/EK-TM4C129EXL/Driver%20Examples/FatFs%20Examples/FatSD%20Raw&package=c2000ware_software_package__1.00.02.00::com.ti.MMWAVE_SDK__01.00.00.05::com.ti.SAIL__1.10.00.06::com.ti.AZURE_CC32XX__1.00.00.10::com.ti.AWS_CC32XX__1.10.00.07::com.ti.SIMPLELINK_CC13X0_SDK__1.50.00.08::com.ti.SIMPLELINK_CC2640R2_SDK__1.40.00.45::com.ti.mmwave_training__1.4.3::cc3200sdk__::sitara__1.02.00.00::com.ti.SIMPLELINK_SDK_BLE_PLUGIN__1.20.00.42::com.ti.SIMPLELINK_MSP432_SDK__1.50.00.12::com.ti.SIMPLELINK_MSP432_SDK_WIFI_PLUGIN__1.40.00.02::com.ti.SIMPLELINK_CC2640R2_SDK_BLE_EXAMPLE_PACK__1.40.00.50::com.ti.SIMPLELINK_CC32XX_SDK__1.50.00.06::tirtos_simplelink__2.13.01.09::tm4c__2.1.3.156::tirtos_tivac__2.16.00.08::tirtos_msp43x__2.20.00.06::tirtos_cc13xx_cc26xx__2.21.00.06::xdctools__3.50.02.20::msp430ware__3.80.01.01::sysbios__6.50.01.12",
+    "packageOrder": 87,
+    "offline": "true"
+  }
+]

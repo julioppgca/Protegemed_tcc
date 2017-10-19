@@ -7,7 +7,7 @@
 #include "project_includes/settings.h"
 
 // use line bellow to reset all settings
-#define STANDARD_SETTINGS
+//#define STANDARD_SETTINGS
 
 #define EEPROM_START_ADR 0x0000
 
@@ -34,7 +34,7 @@ struct PtgmSettings ptgmSettingsWrite =
     1,                      //logMarks=true
     600,                    //logMarksInterval=600
     90,                     //logLevel=90
-    (3.3/4095),             //channel0_gain=123.9107
+    (3.3/4095)*5.43804490731911,             //channel0_gain=123.9107
     2048,                   //channel0_offset=2085
     0.5,                    //channel0_limit=0.1
     'p',                    //channel0_purpose=p
@@ -74,9 +74,9 @@ struct PtgmSettings ptgmSettingsWrite =
     2048,                   //channel9_offset=2063
     1.5,                    //channel9_limit=0.1
     'd',                    //channel9_purpose=d
-    (3.3/4095)*5.35,        //channel10_gain=123.9107
+    (3.3/4095),        //channel10_gain=123.9107
     2048,                   //channel10_offset=2085
-    0.100,                   //channel 10 limit = 100mA
+    0.500,                   //channel 10 limit = 100mA
     'p',                    //channel10_purpose=p
     (3.3/4095),             //channel11_gain=1154.7621
     2048,                   //channel11_offset=2063
